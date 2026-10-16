@@ -19,62 +19,116 @@
         {
           "no": 1,
           "title": "예술가의 판단",
+          "color": {
+            "name": "울트라마린",
+            "hex": "#283C9E",
+            "ink": "#FFFFFF"
+          },
           "goal": "",
           "materials": [],
           "steps": [],
           "questions": [],
           "videos": [],
-          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+          "teacher": {
+            "ppt": "",
+            "planHwp": "",
+            "planPdf": ""
+          }
         },
         {
           "no": 2,
           "title": "예술가의 발견",
+          "color": {
+            "name": "카드뮴 옐로",
+            "hex": "#F0B400",
+            "ink": "#1C1C1F"
+          },
           "goal": "",
           "materials": [],
           "steps": [],
           "questions": [],
           "videos": [],
-          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+          "teacher": {
+            "ppt": "",
+            "planHwp": "",
+            "planPdf": ""
+          }
         },
         {
           "no": 3,
           "title": "예술가의 해석",
+          "color": {
+            "name": "비리디언",
+            "hex": "#1F7A63",
+            "ink": "#FFFFFF"
+          },
           "goal": "",
           "materials": [],
           "steps": [],
           "questions": [],
           "videos": [],
-          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+          "teacher": {
+            "ppt": "",
+            "planHwp": "",
+            "planPdf": ""
+          }
         },
         {
           "no": 4,
           "title": "예술가의 재구성",
+          "color": {
+            "name": "카민",
+            "hex": "#C42A3C",
+            "ink": "#FFFFFF"
+          },
           "goal": "",
           "materials": [],
           "steps": [],
           "questions": [],
           "videos": [],
-          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+          "teacher": {
+            "ppt": "",
+            "planHwp": "",
+            "planPdf": ""
+          }
         },
         {
           "no": 5,
           "title": "예술가의 소통",
+          "color": {
+            "name": "카드뮴 오렌지",
+            "hex": "#E8742C",
+            "ink": "#1C1C1F"
+          },
           "goal": "",
           "materials": [],
           "steps": [],
           "questions": [],
           "videos": [],
-          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+          "teacher": {
+            "ppt": "",
+            "planHwp": "",
+            "planPdf": ""
+          }
         },
         {
           "no": 6,
           "title": "예술가의 성찰",
+          "color": {
+            "name": "페인즈 그레이",
+            "hex": "#3F4A5A",
+            "ink": "#FFFFFF"
+          },
           "goal": "",
           "materials": [],
           "steps": [],
           "questions": [],
           "videos": [],
-          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+          "teacher": {
+            "ppt": "",
+            "planHwp": "",
+            "planPdf": ""
+          }
         }
       ]
     }

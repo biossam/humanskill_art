@@ -63,7 +63,15 @@ function lessonStatus(lesson) {
   const parts = [];
   if (v) parts.push(`영상 ${v}개`);
   if (f && !isStudent) parts.push(`자료 ${f}개`);
-  return parts.length ? parts.join(" · ") : "준비 중";
+  return parts.length ? parts.join(", ") : "준비 중";
+}
+
+// 차시마다 정해 둔 물감 색 (없으면 흑연색)
+function colorVars(lesson) {
+  const c = lesson.color ?? {};
+  const hex = /^#[0-9a-f]{3,8}$/i.test(c.hex ?? "") ? c.hex : "#2b2b30";
+  const ink = /^#[0-9a-f]{3,8}$/i.test(c.ink ?? "") ? c.ink : "#ffffff";
+  return `--c:${hex};--ink:${ink}`;
 }
 
 /* ---------- 첫 화면 ---------- */
@@ -74,16 +82,18 @@ function renderHome() {
   const unitBlocks = units.map((unit) => `
     <section class="unit">
       ${multiUnit ? `<h2 class="unit-title">${esc(unit.title)}</h2>` : ""}
-      <ol class="lessons">
+      <ol class="swatches">
         ${unit.lessons.map((lesson) => {
           const ready = (lesson.videos?.length ?? 0) + (isStudent ? 0 : teacherFileCount(lesson)) > 0;
           return `
           <li>
-            <a class="lesson-row" href="${lessonHref(unit, lesson)}">
-              <span class="lesson-num">${pad(lesson.no)}</span>
-              <span class="lesson-name">${esc(lesson.title)}</span>
-              <span class="lesson-status${ready ? "" : " is-empty"}">${esc(lessonStatus(lesson))}</span>
-              <span class="lesson-go">${icon.arrow}</span>
+            <a class="swatch" href="${lessonHref(unit, lesson)}" style="${colorVars(lesson)}">
+              <span class="chip"><span class="chip-no">${lesson.no}</span></span>
+              <span class="label">
+                <span class="label-title">${esc(lesson.title)}</span>
+                ${lesson.color?.name ? `<span class="label-pigment">${esc(lesson.color.name)}</span>` : ""}
+                <span class="label-status${ready ? "" : " is-empty"}">${esc(lessonStatus(lesson))}</span>
+              </span>
             </a>
           </li>`;
         }).join("")}
@@ -94,13 +104,13 @@ function renderHome() {
 
   app.innerHTML = `
     <section class="intro">
-      <p class="eyebrow">${esc(course.subject)} · ${esc(course.grade)} · ${lessonCount}차시</p>
       <h1>${esc(course.title)}</h1>
       <p class="lede">${esc(course.tagline)}</p>
-      ${isStudent
-        ? `<p class="intro-note">차시를 골라 수업 영상을 다시 볼 수 있어요.</p>`
-        : `<p class="intro-note">차시마다 수업 영상과 수업 PPT, 지도안을 무료로 받을 수 있습니다.</p>
-           <a class="text-link" href="#/qr">학생에게 나눠 줄 QR 코드 ${icon.arrow}</a>`}
+      <p class="intro-note">${esc(course.grade)} ${esc(course.subject)}, ${lessonCount}차시.
+        ${isStudent
+          ? "차시를 골라 수업 영상을 다시 볼 수 있어요."
+          : "차시마다 수업 영상과 PPT, 지도안을 무료로 받을 수 있습니다."}</p>
+      ${isStudent ? "" : `<a class="text-link" href="#/qr">학생용 QR 코드 보기</a>`}
     </section>
     ${unitBlocks}`;
   document.title = course.title;
@@ -184,12 +194,19 @@ function renderLesson(unitId, no) {
   const canClassMode = !isStudent && (lesson.videos?.length || lesson.steps?.length);
 
   app.innerHTML = `
-    <nav class="crumb"><a href="#/">${esc(course.title)}</a>${units.length > 1 ? ` <span>/</span> ${esc(unit.title)}` : ""}</nav>
-    <header class="lesson-head">
-      <p class="lesson-kicker">${lesson.no}차시</p>
-      <h1>${esc(lesson.title)}</h1>
-      ${lesson.goal ? `<p class="goal"><span>학습 목표</span>${esc(lesson.goal)}</p>` : ""}
-      ${canClassMode ? `<button class="btn-primary" id="class-mode" type="button">${icon.screen}수업 모드</button>` : ""}
+    <header class="lesson-band" style="${colorVars(lesson)}">
+      <div class="band-inner">
+        <nav class="crumb"><a href="#/">${esc(course.title)}</a>${units.length > 1 ? ` <span>/</span> ${esc(unit.title)}` : ""}</nav>
+        <div class="band-title">
+          <span class="band-no">${lesson.no}</span>
+          <div>
+            <p class="band-kicker">${lesson.no}차시${lesson.color?.name ? `, ${esc(lesson.color.name)}` : ""}</p>
+            <h1>${esc(lesson.title)}</h1>
+          </div>
+        </div>
+        ${lesson.goal ? `<p class="goal"><span>학습 목표</span>${esc(lesson.goal)}</p>` : ""}
+        ${canClassMode ? `<button class="btn-band" id="class-mode" type="button">${icon.screen}수업 모드</button>` : ""}
+      </div>
     </header>
 
     <div class="videos">${videos}</div>
@@ -219,6 +236,7 @@ function openClassMode(lesson) {
 
   const overlay = document.createElement("div");
   overlay.className = "classmode";
+  overlay.setAttribute("style", colorVars(lesson));
   overlay.setAttribute("role", "dialog");
   overlay.setAttribute("aria-modal", "true");
   overlay.setAttribute("aria-label", `${lesson.title} 수업 모드`);
@@ -331,7 +349,7 @@ function route() {
 function renderChrome() {
   document.getElementById("view-label").textContent = isStudent ? "학생용" : "선생님 자료실";
   document.getElementById("footer").innerHTML = `
-    <p>${esc(course.title)} · 개발 ${esc(course.author)}</p>
+    <p>${esc(course.title)}, 개발 ${esc(course.author)}</p>
     <p>수업 자료는 <a href="${esc(course.license.url)}" target="_blank" rel="noopener">${esc(course.license.name)}</a> 조건으로 무료 공개합니다.</p>`;
 }
 
