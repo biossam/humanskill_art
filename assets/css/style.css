@@ -59,6 +59,12 @@ a { color: inherit; }
 .doodle .fl { fill: #fff; stroke: var(--line); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .doodle .dot { fill: var(--line); }
 .doodle .blob { fill: var(--c); opacity: 0.9; }
+.doodle .limb-o { fill: none; stroke: var(--line); stroke-width: 11; stroke-linecap: round; stroke-linejoin: round; }
+.doodle .limb-i { fill: none; stroke: #fff; stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; }
+.doodle .lens { fill: rgba(255, 255, 255, 0.55); stroke: var(--line); stroke-width: 3; }
+.doodle .pink { fill: var(--pink); stroke: none; }
+.doodle .water { fill: none; stroke: var(--line); stroke-width: 3; stroke-linecap: round; }
+.doodle .echo { fill: none; stroke: var(--line); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 2 7; opacity: 0.45; }
 
 /* 머리말 */
 .site-header { border-bottom: 2.5px solid var(--ink); }
@@ -104,7 +110,7 @@ a { color: inherit; }
 .swatch:hover, .swatch:focus-visible { transform: rotate(-2deg) translateY(-4px); }
 .swatches li:nth-child(even) .swatch:hover { transform: rotate(2deg) translateY(-4px); }
 .chip { position: relative; display: block; padding: 2.75rem var(--s4) 0; }
-.chip .doodle { max-width: 150px; margin: 0 auto; }
+.chip .doodle { max-width: 170px; margin: 0 auto; }
 .chip-no {
   position: absolute; left: var(--s3); top: var(--s2);
   font-family: var(--font-hand); font-weight: 700; font-size: 2rem; line-height: 1;
