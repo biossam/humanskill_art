@@ -17,7 +17,8 @@ function esc(text) {
   }[c]));
 }
 
-const pad = (n) => String(n).padStart(2, "0");
+const ROMAN = ["", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
+const roman = (n) => ROMAN[n] ?? String(n);
 
 function safeUrl(url) {
   if (!url || !String(url).trim()) return "";
@@ -88,7 +89,7 @@ function renderHome() {
           return `
           <li>
             <a class="swatch" href="${lessonHref(unit, lesson)}" style="${colorVars(lesson)}">
-              <span class="chip"><span class="chip-no">${lesson.no}</span></span>
+              <span class="chip"><span class="chip-no">${roman(lesson.no)}</span></span>
               <span class="label">
                 <span class="label-title">${esc(lesson.title)}</span>
                 ${lesson.color?.name ? `<span class="label-pigment">${esc(lesson.color.name)}</span>` : ""}
@@ -105,6 +106,7 @@ function renderHome() {
   app.innerHTML = `
     <section class="intro">
       <h1>${esc(course.title)}</h1>
+      <span class="rule" aria-hidden="true"></span>
       <p class="lede">${esc(course.tagline)}</p>
       <p class="intro-note">${esc(course.grade)} ${esc(course.subject)}, ${lessonCount}차시.
         ${isStudent
@@ -198,11 +200,12 @@ function renderLesson(unitId, no) {
       <div class="band-inner">
         <nav class="crumb"><a href="#/">${esc(course.title)}</a>${units.length > 1 ? ` <span>/</span> ${esc(unit.title)}` : ""}</nav>
         <div class="band-title">
-          <span class="band-no">${lesson.no}</span>
+          <span class="band-no">${roman(lesson.no)}</span>
           <div>
             <p class="band-kicker">${lesson.no}차시${lesson.color?.name ? `, ${esc(lesson.color.name)}` : ""}</p>
             <h1>${esc(lesson.title)}</h1>
           </div>
+          <span class="tear" aria-hidden="true"></span>
         </div>
         ${lesson.goal ? `<p class="goal"><span>학습 목표</span>${esc(lesson.goal)}</p>` : ""}
         ${canClassMode ? `<button class="btn-band" id="class-mode" type="button">${icon.screen}수업 모드</button>` : ""}

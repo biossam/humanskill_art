@@ -20,9 +20,9 @@
           "no": 1,
           "title": "예술가의 판단",
           "color": {
-            "name": "울트라마린",
-            "hex": "#283C9E",
-            "ink": "#FFFFFF"
+            "name": "사파이어",
+            "hex": "#2F5DA8",
+            "ink": "#F4F1EA"
           },
           "goal": "",
           "materials": [],
@@ -39,9 +39,9 @@
           "no": 2,
           "title": "예술가의 발견",
           "color": {
-            "name": "카드뮴 옐로",
-            "hex": "#F0B400",
-            "ink": "#1C1C1F"
+            "name": "토파즈",
+            "hex": "#D9A53A",
+            "ink": "#10162A"
           },
           "goal": "",
           "materials": [],
@@ -58,9 +58,9 @@
           "no": 3,
           "title": "예술가의 해석",
           "color": {
-            "name": "비리디언",
-            "hex": "#1F7A63",
-            "ink": "#FFFFFF"
+            "name": "에메랄드",
+            "hex": "#2E8B6A",
+            "ink": "#F4F1EA"
           },
           "goal": "",
           "materials": [],
@@ -77,9 +77,9 @@
           "no": 4,
           "title": "예술가의 재구성",
           "color": {
-            "name": "카민",
-            "hex": "#C42A3C",
-            "ink": "#FFFFFF"
+            "name": "루비",
+            "hex": "#A8243E",
+            "ink": "#F4F1EA"
           },
           "goal": "",
           "materials": [],
@@ -96,9 +96,9 @@
           "no": 5,
           "title": "예술가의 소통",
           "color": {
-            "name": "카드뮴 오렌지",
-            "hex": "#E8742C",
-            "ink": "#1C1C1F"
+            "name": "앰버",
+            "hex": "#C7772E",
+            "ink": "#10162A"
           },
           "goal": "",
           "materials": [],
@@ -115,9 +115,9 @@
           "no": 6,
           "title": "예술가의 성찰",
           "color": {
-            "name": "페인즈 그레이",
-            "hex": "#3F4A5A",
-            "ink": "#FFFFFF"
+            "name": "진주",
+            "hex": "#D8D3CB",
+            "ink": "#10162A"
           },
           "goal": "",
           "materials": [],
