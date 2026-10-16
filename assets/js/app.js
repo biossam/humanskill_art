@@ -2,8 +2,6 @@
 // 내용은 data/course.json 한 파일에서 관리합니다.
 // 학생용 화면: 주소 끝에 ?view=student (선생님 자료 칸이 숨겨집니다)
 
-import { doodle, squiggle } from "./doodles.js";
-
 const app = document.getElementById("app");
 const isStudent = new URLSearchParams(location.search).get("view") === "student";
 document.documentElement.dataset.view = isStudent ? "student" : "teacher";
@@ -19,7 +17,6 @@ function esc(text) {
   }[c]));
 }
 
-const pad = (n) => String(n).padStart(2, "0");
 
 function safeUrl(url) {
   if (!url || !String(url).trim()) return "";
@@ -68,13 +65,6 @@ function lessonStatus(lesson) {
   return parts.length ? parts.join(", ") : "준비 중";
 }
 
-// 차시마다 정해 둔 물감 색 (없으면 흑연색)
-function colorVars(lesson) {
-  const c = lesson.color ?? {};
-  const hex = /^#[0-9a-f]{3,8}$/i.test(c.hex ?? "") ? c.hex : "#2b2b30";
-  const ink = /^#[0-9a-f]{3,8}$/i.test(c.ink ?? "") ? c.ink : "#ffffff";
-  return `--c:${hex};--ink:${ink}`;
-}
 
 /* ---------- 첫 화면 ---------- */
 
@@ -84,18 +74,19 @@ function renderHome() {
   const unitBlocks = units.map((unit) => `
     <section class="unit">
       ${multiUnit ? `<h2 class="unit-title">${esc(unit.title)}</h2>` : ""}
-      <ol class="swatches">
+      <ol class="sequence">
         ${unit.lessons.map((lesson) => {
           const ready = (lesson.videos?.length ?? 0) + (isStudent ? 0 : teacherFileCount(lesson)) > 0;
+          const thumbId = (lesson.videos ?? []).map((v) => String(v.youtubeId ?? "").trim()).find(Boolean);
           return `
-          <li>
-            <a class="swatch" href="${lessonHref(unit, lesson)}" style="${colorVars(lesson)}">
-              <span class="chip">${doodle(lesson.no)}<span class="chip-no">${lesson.no}</span></span>
-              <span class="label">
-                <span class="label-title">${esc(lesson.title)}</span>
-                ${lesson.color?.name ? `<span class="label-pigment">${esc(lesson.color.name)}</span>` : ""}
-                <span class="label-status${ready ? "" : " is-empty"}">${esc(lessonStatus(lesson))}</span>
+          <li class="${ready ? "is-ready" : "is-empty"}">
+            <a class="step" href="${lessonHref(unit, lesson)}">
+              <span class="step-no">${lesson.no}</span>
+              <span class="step-text">
+                <span class="step-title">${esc(lesson.title)}</span>
+                <span class="step-status">${esc(lessonStatus(lesson))}</span>
               </span>
+              ${thumbId ? `<img class="step-thumb" src="https://i.ytimg.com/vi/${encodeURIComponent(thumbId)}/mqdefault.jpg" alt="" loading="lazy">` : ""}
             </a>
           </li>`;
         }).join("")}
@@ -107,7 +98,6 @@ function renderHome() {
   app.innerHTML = `
     <section class="intro">
       <h1>${esc(course.title)}</h1>
-      ${squiggle}
       <p class="lede">${esc(course.tagline)}</p>
       <p class="intro-note">${esc(course.grade)} ${esc(course.subject)}, ${lessonCount}차시.
         ${isStudent
@@ -197,20 +187,12 @@ function renderLesson(unitId, no) {
   const canClassMode = !isStudent && (lesson.videos?.length || lesson.steps?.length);
 
   app.innerHTML = `
-    <header class="lesson-band" style="${colorVars(lesson)}">
-      <div class="band-inner">
-        <nav class="crumb"><a href="#/">${esc(course.title)}</a>${units.length > 1 ? ` <span>/</span> ${esc(unit.title)}` : ""}</nav>
-        <div class="band-title">
-          <span class="band-doodle">${doodle(lesson.no)}</span>
-          <span class="band-no">${lesson.no}</span>
-          <div>
-            <p class="band-kicker">${lesson.no}차시</p>
-            <h1>${esc(lesson.title)}</h1>
-          </div>
-        </div>
-        ${lesson.goal ? `<p class="goal"><span>학습 목표</span>${esc(lesson.goal)}</p>` : ""}
-        ${canClassMode ? `<button class="btn-band" id="class-mode" type="button">${icon.screen}수업 모드</button>` : ""}
-      </div>
+    <nav class="crumb"><a href="#/">${esc(course.title)}</a>${units.length > 1 ? ` <span>/</span> ${esc(unit.title)}` : ""}</nav>
+    <header class="lesson-head">
+      <p class="lesson-kicker">${lesson.no}차시</p>
+      <h1>${esc(lesson.title)}</h1>
+      ${lesson.goal ? `<p class="goal"><span>학습 목표</span>${esc(lesson.goal)}</p>` : ""}
+      ${canClassMode ? `<button class="btn-primary" id="class-mode" type="button">${icon.screen}수업 모드</button>` : ""}
     </header>
 
     <div class="videos">${videos}</div>
@@ -240,13 +222,12 @@ function openClassMode(lesson) {
 
   const overlay = document.createElement("div");
   overlay.className = "classmode";
-  overlay.setAttribute("style", colorVars(lesson));
   overlay.setAttribute("role", "dialog");
   overlay.setAttribute("aria-modal", "true");
   overlay.setAttribute("aria-label", `${lesson.title} 수업 모드`);
   overlay.innerHTML = `
     <div class="cm-top">
-      <p><span class="cm-doodle">${doodle(lesson.no)}</span><span>${lesson.no}차시</span> ${esc(lesson.title)}</p>
+      <p><span>${lesson.no}차시</span> ${esc(lesson.title)}</p>
       <button class="cm-close" type="button" aria-label="수업 모드 닫기">${icon.close}</button>
     </div>
     <div class="cm-body${video ? "" : " no-video"}">
