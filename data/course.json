@@ -1,0 +1,82 @@
+{
+  "course": {
+    "title": "휴먼스킬아트",
+    "tagline": "판단에서 성찰까지, 예술가처럼 생각하는 여섯 차시 미술 수업",
+    "subject": "미술",
+    "grade": "초등 6학년",
+    "author": "장혜림",
+    "license": {
+      "name": "CC BY-NC 4.0",
+      "summary": "출처(휴먼스킬아트·장혜림)를 밝히면 자유롭게 고쳐 쓸 수 있으며, 영리 목적으로는 사용할 수 없습니다.",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/deed.ko"
+    }
+  },
+  "units": [
+    {
+      "id": "1",
+      "title": "휴먼스킬아트",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "예술가의 판단",
+          "goal": "",
+          "materials": [],
+          "steps": [],
+          "questions": [],
+          "videos": [],
+          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+        },
+        {
+          "no": 2,
+          "title": "예술가의 발견",
+          "goal": "",
+          "materials": [],
+          "steps": [],
+          "questions": [],
+          "videos": [],
+          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+        },
+        {
+          "no": 3,
+          "title": "예술가의 해석",
+          "goal": "",
+          "materials": [],
+          "steps": [],
+          "questions": [],
+          "videos": [],
+          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+        },
+        {
+          "no": 4,
+          "title": "예술가의 재구성",
+          "goal": "",
+          "materials": [],
+          "steps": [],
+          "questions": [],
+          "videos": [],
+          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+        },
+        {
+          "no": 5,
+          "title": "예술가의 소통",
+          "goal": "",
+          "materials": [],
+          "steps": [],
+          "questions": [],
+          "videos": [],
+          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+        },
+        {
+          "no": 6,
+          "title": "예술가의 성찰",
+          "goal": "",
+          "materials": [],
+          "steps": [],
+          "questions": [],
+          "videos": [],
+          "teacher": { "ppt": "", "planHwp": "", "planPdf": "" }
+        }
+      ]
+    }
+  ]
+}
