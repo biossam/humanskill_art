@@ -2,6 +2,8 @@
 // 내용은 data/course.json 한 파일에서 관리합니다.
 // 학생용 화면: 주소 끝에 ?view=student (선생님 자료 칸이 숨겨집니다)
 
+import { doodle, squiggle } from "./doodles.js";
+
 const app = document.getElementById("app");
 const isStudent = new URLSearchParams(location.search).get("view") === "student";
 document.documentElement.dataset.view = isStudent ? "student" : "teacher";
@@ -88,7 +90,7 @@ function renderHome() {
           return `
           <li>
             <a class="swatch" href="${lessonHref(unit, lesson)}" style="${colorVars(lesson)}">
-              <span class="chip"><span class="chip-no">${lesson.no}</span></span>
+              <span class="chip">${doodle(lesson.no)}<span class="chip-no">${lesson.no}</span></span>
               <span class="label">
                 <span class="label-title">${esc(lesson.title)}</span>
                 ${lesson.color?.name ? `<span class="label-pigment">${esc(lesson.color.name)}</span>` : ""}
@@ -105,6 +107,7 @@ function renderHome() {
   app.innerHTML = `
     <section class="intro">
       <h1>${esc(course.title)}</h1>
+      ${squiggle}
       <p class="lede">${esc(course.tagline)}</p>
       <p class="intro-note">${esc(course.grade)} ${esc(course.subject)}, ${lessonCount}차시.
         ${isStudent
@@ -198,9 +201,10 @@ function renderLesson(unitId, no) {
       <div class="band-inner">
         <nav class="crumb"><a href="#/">${esc(course.title)}</a>${units.length > 1 ? ` <span>/</span> ${esc(unit.title)}` : ""}</nav>
         <div class="band-title">
+          <span class="band-doodle">${doodle(lesson.no)}</span>
           <span class="band-no">${lesson.no}</span>
           <div>
-            <p class="band-kicker">${lesson.no}차시${lesson.color?.name ? `, ${esc(lesson.color.name)}` : ""}</p>
+            <p class="band-kicker">${lesson.no}차시</p>
             <h1>${esc(lesson.title)}</h1>
           </div>
         </div>
@@ -242,7 +246,7 @@ function openClassMode(lesson) {
   overlay.setAttribute("aria-label", `${lesson.title} 수업 모드`);
   overlay.innerHTML = `
     <div class="cm-top">
-      <p><span>${lesson.no}차시</span> ${esc(lesson.title)}</p>
+      <p><span class="cm-doodle">${doodle(lesson.no)}</span><span>${lesson.no}차시</span> ${esc(lesson.title)}</p>
       <button class="cm-close" type="button" aria-label="수업 모드 닫기">${icon.close}</button>
     </div>
     <div class="cm-body${video ? "" : " no-video"}">
