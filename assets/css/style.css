@@ -63,6 +63,7 @@ a { color: inherit; }
 .doodle .limb-i { fill: none; stroke: #fff; stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; }
 .doodle .lens { fill: rgba(255, 255, 255, 0.55); stroke: var(--line); stroke-width: 3; }
 .doodle .pink { fill: var(--pink); stroke: none; }
+.doodle .pink-ln { fill: none; stroke: var(--pink); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
 .doodle .water { fill: none; stroke: var(--line); stroke-width: 3; stroke-linecap: round; }
 .doodle .echo { fill: none; stroke: var(--line); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 2 7; opacity: 0.45; }
 
