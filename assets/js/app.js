@@ -833,9 +833,17 @@ async function saveCertImage({ name, course: title, count, date, issuer, badges 
 /* ---------- 수업 모드 (교실 TV) ---------- */
 
 function openClassMode(lesson) {
-  const steps = lesson.steps ?? [];
   const videos = (lesson.videos ?? []).filter((v) => String(v.youtubeId ?? "").trim());
   const video = videos[0];
+  // 파트가 있는 영상은 파트가 곧 수업 단계: 단계를 고르면 그 구간만 재생하고 끝나면 멈춤
+  const parts = video?.parts?.length ? video.parts : null;
+  const steps = parts
+    ? parts.map((p) => {
+        const acts = [...new Set((p.activity ?? []).map((a) => ({ write: "생각 쓰기", quiz: "개념 퀴즈", check: "미션 체크" })[a.type]).filter(Boolean))];
+        if (p.links?.length) acts.unshift("자료 영상");
+        return `${p.title} (${fmtTime(p.end - p.start)})${p.summary ? `: ${p.summary}` : ""}${acts.length ? ` [${acts.join(" · ")}]` : ""}`;
+      })
+    : lesson.steps ?? [];
   const embedSrc = (v) => `https://www.youtube-nocookie.com/embed/${encodeURIComponent(String(v.youtubeId).trim())}?rel=0`;
   let current = 0;
 
@@ -851,9 +859,9 @@ function openClassMode(lesson) {
     </div>
     <div class="cm-body${video ? "" : " no-video"}">
       ${video ? `<div class="cm-media">
-        <div class="cm-player"><iframe src="${embedSrc(video)}"
+        <div class="cm-player">${parts ? `<div data-cm-yt></div>` : `<iframe src="${embedSrc(video)}"
           title="${esc(video.title || "수업 영상")}" allowfullscreen
-          allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe></div>
+          allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe>`}</div>
         ${videos.length > 1 ? `<div class="cm-videos" role="group" aria-label="영상 고르기">
           ${videos.map((v, k) => `<button type="button" data-v="${k}" aria-pressed="${k === 0}"><span>${k + 1}</span>${esc(v.title || `영상 ${k + 1}`)}</button>`).join("")}
         </div>` : ""}
@@ -870,6 +878,25 @@ function openClassMode(lesson) {
       <button type="button" data-move="1" aria-label="다음 단계">${icon.right}</button>
     </div>` : ""}`;
 
+  // 파트 재생기
+  let yt = null, stopAt = null, ytTimer = null;
+  if (parts) {
+    loadYT().then((YT) => {
+      const el = overlay.querySelector("[data-cm-yt]");
+      if (!el) return;
+      const pl = new YT.Player(el, { videoId: String(video.youtubeId).trim(), host: "https://www.youtube-nocookie.com",
+        playerVars: { rel: 0, playsinline: 1 }, events: { onReady: () => { yt = pl; } } });
+      ytTimer = setInterval(() => {
+        if (!overlay.isConnected) { clearInterval(ytTimer); return; }
+        if (yt && stopAt !== null && (yt.getCurrentTime?.() ?? 0) >= stopAt - 0.15) { yt.pauseVideo(); stopAt = null; }
+      }, 250);
+    }).catch(() => {});
+  }
+  const playPart = (k) => {
+    if (!parts || !yt) return;
+    yt.seekTo(parts[k].start, true); yt.playVideo(); stopAt = parts[k].end;
+  };
+
   const update = () => {
     overlay.querySelectorAll(".cm-steps li").forEach((li, k) => {
       li.classList.toggle("is-current", k === current);
@@ -883,11 +910,12 @@ function openClassMode(lesson) {
   const move = (d) => {
     if (!steps.length) return;
     current = Math.min(steps.length - 1, Math.max(0, current + d));
-    update();
+    update(); playPart(current);
   };
 
   const close = () => {
     document.removeEventListener("keydown", onKey);
+    clearInterval(ytTimer);
     if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
     overlay.remove();
     document.body.classList.remove("no-scroll");
@@ -905,7 +933,7 @@ function openClassMode(lesson) {
   overlay.querySelectorAll("[data-move]").forEach((b) =>
     b.addEventListener("click", () => move(Number(b.dataset.move))));
   overlay.querySelectorAll(".cm-steps li").forEach((li) =>
-    li.addEventListener("click", () => { current = Number(li.dataset.k); update(); }));
+    li.addEventListener("click", () => { current = Number(li.dataset.k); update(); playPart(current); }));
   overlay.querySelectorAll(".cm-videos button").forEach((b) =>
     b.addEventListener("click", () => {
       const v = videos[Number(b.dataset.v)];

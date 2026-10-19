@@ -579,3 +579,4 @@ a.file .icon { color: var(--accent); }
 .part-nav { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s5); }
 .part-nav .btn-primary { margin: 0; }
 @media (max-width: 599px) { .part-nav > * { width: 100%; justify-content: center; } .part-panel { padding: var(--s4); } }
+
