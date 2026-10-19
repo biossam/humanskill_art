@@ -54,6 +54,8 @@ function allLessons() {
   return units.flatMap((unit) => unit.lessons.map((lesson) => ({ unit, lesson })));
 }
 
+// 차시 대신 "편"처럼 다른 말을 쓰는 교재: course.lessonWord
+const LW = () => course?.lessonWord || "차시";
 const homeHref = (id = cid) => `#/c/${encodeURIComponent(id)}`;
 const lessonHref = (unit, lesson) => `${homeHref()}/lesson/${encodeURIComponent(unit.id)}/${lesson.no}`;
 const ytThumb = (id) => `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg`;
@@ -143,7 +145,7 @@ function renderHome() {
           const thumbId = vids[0]?.id;
           // 차시 줄 오른쪽에 영상 썸네일 띠. 누르면 그 차시 화면에서 해당 영상으로 바로 감
           const strip = vids.length ? `
-            <ul class="step-videos" aria-label="${lesson.no}차시 영상">
+            <ul class="step-videos" aria-label="${lesson.no}${LW()} 영상">
               ${vids.map((v) => `<li><a href="${lessonHref(unit, lesson)}/v${v.k + 1}">
                 <img src="${ytThumb(v.id)}" alt="" loading="lazy" width="320" height="180">
                 <span><b>${v.k + 1}</b>${esc(v.title)}</span></a></li>`).join("")}
@@ -171,10 +173,10 @@ function renderHome() {
     <section class="intro">
       <h1 class="course-title">${esc(course.title)}</h1>
       ${course.tagline ? `<p class="lede">${esc(course.tagline)}</p>` : ""}
-      <p class="intro-note">${esc(course.grade)} ${esc(course.subject)}, ${lessonCount}차시${course.author ? ` · ${esc(course.author)}` : ""}.
+      <p class="intro-note">${esc(course.grade)} ${esc(course.subject)}, ${lessonCount}${LW()}${course.author ? ` · ${esc(course.author)}` : ""}.
         ${isStudent
-          ? "차시를 골라 수업 영상을 다시 볼 수 있어요."
-          : "차시마다 수업 영상을 보고 활동지를 무료로 받을 수 있습니다."}</p>
+          ? `${LW()}${LW() === "편" ? "을" : "를"} 골라 수업 영상을 다시 볼 수 있어요.`
+          : `${LW()}마다 수업 영상을 보고 활동지를 무료로 받을 수 있습니다.`}</p>
       ${isStudent ? "" : `<a class="text-link" href="${homeHref()}/qr">학생용 QR 코드 보기</a>`}
     </section>
     ${unitBlocks}`;
@@ -238,7 +240,7 @@ function teacherSection(lesson) {
     // 사이트 안에 올린 파일은 "휴먼스킬아트_1차시_수업 활동지.hwpx" 같은 이름으로 내려받게 함
     const local = url && !/^https?:/i.test(String(f.url).trim());
     const ext = local ? (String(f.url).match(/\.[a-z0-9]+$/i)?.[0] ?? "") : "";
-    const dl = local ? ` download="${esc(`${course.title}_${lesson.no}차시_${f.label}${ext}`)}"` : "";
+    const dl = local ? ` download="${esc(`${course.title}_${lesson.no}${LW()}_${f.label}${ext}`)}"` : "";
     return url
       ? `<li><a class="file" href="${esc(url)}"${dl} target="_blank" rel="noopener">${icon.download}<span>${f.label}</span><span class="format">받기</span></a></li>`
       : `<li><span class="file is-empty" aria-disabled="true">${icon.download}<span>${f.label}</span><span class="format">준비 중</span></span></li>`;
@@ -298,7 +300,7 @@ function renderLesson(unitId, no, pick = 0) {
       <div class="lesson-title${isStudent && lesson.badge && !isEarned(cid, unit, lesson) ? " not-earned" : ""}">
         ${badgeImg(lesson, "lesson-badge")}
         <div>
-          <p class="lesson-kicker">${lesson.no}차시</p>
+          <p class="lesson-kicker">${lesson.no}${LW()}</p>
           <h1>${esc(lesson.title)}</h1>
           ${lesson.topic ? `<p class="lesson-topic">${esc(lesson.topic)}</p>` : ""}
           ${badgeNote(unit, lesson)}
@@ -312,19 +314,19 @@ function renderLesson(unitId, no, pick = 0) {
 
     ${details
       ? `<div class="details">${details}</div>`
-      : `<p class="empty-note">이 차시의 활동 안내는 준비 중입니다.</p>`}
+      : `<p class="empty-note">이 ${LW()}의 활동 안내는 준비 중입니다.</p>`}
 
     ${notesSection(unit, lesson)}
 
     ${teacherSection(lesson)}
 
     <nav class="pager">
-      ${prev ? `<a href="${lessonHref(prev.unit, prev.lesson)}"><span>이전 차시</span>${esc(prev.lesson.title)}</a>` : "<span></span>"}
-      ${next ? `<a class="next" href="${lessonHref(next.unit, next.lesson)}"><span>다음 차시</span>${esc(next.lesson.title)}</a>` : ""}
+      ${prev ? `<a href="${lessonHref(prev.unit, prev.lesson)}"><span>이전 ${LW()}</span>${esc(prev.lesson.title)}</a>` : "<span></span>"}
+      ${next ? `<a class="next" href="${lessonHref(next.unit, next.lesson)}"><span>다음 ${LW()}</span>${esc(next.lesson.title)}</a>` : ""}
     </nav>`;
 
   document.getElementById("class-mode")?.addEventListener("click", () => openClassMode(lesson));
-  document.title = `${lesson.no}차시 ${lesson.title} · ${course.title}`;
+  document.title = `${lesson.no}${LW()} ${lesson.title} · ${course.title}`;
   if (track.length) watchBadgeVideos(unit, lesson);
   bindNotes(unit, lesson);
   (lesson.videos ?? []).forEach((v, k) => { if (v.parts?.length) bindParts(unit, lesson, v, k); });
@@ -657,7 +659,7 @@ async function saveNotesImage(lesson, items) {
   x.fillStyle = "#fffdf8"; x.fillRect(0, 0, W, H);
   x.strokeStyle = ink; x.lineWidth = 4; x.strokeRect(20, 20, W - 40, H - 40);
   let y = pad + 20;
-  x.fillStyle = sub; x.font = `500 26px ${body}`; x.fillText(`${course.title} · ${lesson.no}차시`, pad, y);
+  x.fillStyle = sub; x.font = `500 26px ${body}`; x.fillText(`${course.title} · ${lesson.no}${LW()}`, pad, y);
   y += 70; x.fillStyle = ink; x.font = `700 60px ${disp}`; x.fillText(`${lesson.title} — 내 생각`, pad, y);
   y += 30; x.fillStyle = accent; x.fillRect(pad, y, 120, 5); y += 60;
   plan.forEach(({ ql, al, empty }) => {
@@ -673,7 +675,7 @@ async function saveNotesImage(lesson, items) {
   x.fillStyle = sub; x.font = `400 24px ${body}`;
   const d = new Date(); x.fillText(`${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 · ${siteTitle}`, pad, H - pad + 10);
   const a = document.createElement("a");
-  a.download = `${course.title}_${lesson.no}차시_내 생각.png`;
+  a.download = `${course.title}_${lesson.no}${LW()}_내 생각.png`;
   a.href = c.toDataURL("image/png");
   document.body.appendChild(a); a.click(); a.remove();
 }
@@ -842,7 +844,7 @@ function openClassMode(lesson) {
   overlay.setAttribute("aria-label", `${lesson.title} 수업 모드`);
   overlay.innerHTML = `
     <div class="cm-top">
-      <p>${badgeImg(lesson, "cm-badge")}<span>${lesson.no}차시</span> ${esc(lesson.title)}</p>
+      <p>${badgeImg(lesson, "cm-badge")}<span>${lesson.no}${LW()}</span> ${esc(lesson.title)}</p>
       <button class="cm-close" type="button" aria-label="수업 모드 닫기">${icon.close}</button>
     </div>
     <div class="cm-body${video ? "" : " no-video"}">
