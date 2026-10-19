@@ -104,7 +104,7 @@ function lessonStatus(lesson) {
 
 /* ---------- 첫 화면 ---------- */
 
-// 선생님 자료 목록 (공미톡처럼 차시가 없는 교재)
+// 선생님 자료 목록 ("누구나 예술가가 될 수 있다"처럼 차시가 없는 교재)
 function renderResources() {
   const list = course.resources ?? [];
   app.innerHTML = `
