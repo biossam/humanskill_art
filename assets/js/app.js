@@ -1,0 +1,899 @@
+// 휴먼스킬아트 — 선생님 자료실 + 학생용 영상 보기
+// 교재 목록은 data/site.json, 교재마다 내용은 각자의 json 파일(휴먼스킬아트는 data/course.json)에서 관리합니다.
+// 학생용 화면: 주소 끝에 ?view=student (선생님 자료 칸이 숨겨집니다)
+
+const app = document.getElementById("app");
+const isStudent = new URLSearchParams(location.search).get("view") === "student";
+document.documentElement.dataset.view = isStudent ? "student" : "teacher";
+
+let course = null;
+let siteTitle = "";
+let units = [];
+let courses = [];      // site.json의 교재 목록
+let cid = "";          // 지금 보고 있는 교재 id
+let defaultId = "";    // 주소에 교재가 없을 때 여는 교재 (예전 주소·QR 호환)
+const loaded = {};     // 교재 id → { course, units }
+
+/* ---------- 도구 ---------- */
+
+function esc(text) {
+  return String(text ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[c]));
+}
+
+
+function safeUrl(url) {
+  if (!url || !String(url).trim()) return "";
+  try {
+    const u = new URL(url, location.href);
+    return ["http:", "https:"].includes(u.protocol) ? u.href : "";
+  } catch { return ""; }
+}
+
+const svg = (path, size = 20) =>
+  `<svg class="icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg>`;
+
+const icon = {
+  download: svg('<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>'),
+  screen: svg('<rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8"/><path d="M12 17v4"/>'),
+  left: svg('<path d="m15 18-6-6 6-6"/>', 28),
+  right: svg('<path d="m9 18 6-6-6-6"/>', 28),
+  close: svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>', 24),
+  arrow: svg('<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>', 18),
+  external: svg('<path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>', 16),
+};
+
+function findLesson(unitId, no) {
+  const unit = units.find((u) => u.id === unitId);
+  const lesson = unit?.lessons.find((l) => String(l.no) === String(no));
+  return unit && lesson ? { unit, lesson } : null;
+}
+
+function allLessons() {
+  return units.flatMap((unit) => unit.lessons.map((lesson) => ({ unit, lesson })));
+}
+
+const homeHref = (id = cid) => `#/c/${encodeURIComponent(id)}`;
+const lessonHref = (unit, lesson) => `${homeHref()}/lesson/${encodeURIComponent(unit.id)}/${lesson.no}`;
+const ytThumb = (id) => `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg`;
+
+function teacherFileCount(lesson) {
+  const t = lesson.teacher ?? {};
+  return [t.worksheet].filter(Boolean).length;
+}
+
+/* ---------- 배지 모으기 (학생용 화면만) ----------
+   차시의 "배지 영상"을 실제로 70% 이상 보면 그 차시 배지를 얻음 (학생에게 기준은 알리지 않음).
+   배지 영상: "short": true 표시한 숏츠가 있으면 그 영상, 없으면 그 차시의 영상 아무거나.
+   기록은 이 기기 브라우저(localStorage)에만 남고, 이름·로그인은 쓰지 않음. */
+const BADGE_KEY = "hsa-badges-v1";
+function readEarned() {
+  try { return JSON.parse(localStorage.getItem(BADGE_KEY) || "{}") || {}; } catch { return {}; }
+}
+function writeEarned(map) {
+  try { localStorage.setItem(BADGE_KEY, JSON.stringify(map)); return true; } catch { return false; }
+}
+const badgeKey = (courseId, unit, lesson) => `${courseId}/${unit.id}/${lesson.no}`;
+const isEarned = (courseId, unit, lesson) => Boolean(readEarned()[badgeKey(courseId, unit, lesson)]);
+function badgeVideoIndexes(lesson) {
+  const vids = lesson.videos ?? [];
+  const ok = vids.map((v, k) => (String(v?.youtubeId ?? "").trim() ? k : -1)).filter((k) => k >= 0);
+  const shorts = ok.filter((k) => vids[k].short);
+  return shorts.length ? shorts : ok;
+}
+
+// 차시 배지 (지도안의 휴먼스킬아트 배지 퀘스트 이미지)
+function badgeImg(lesson, cls) {
+  const src = String(lesson.badge ?? "").trim();
+  if (!src || /^[a-z]+:/i.test(src)) return "";
+  return `<img class="${cls}" src="${esc(src)}" alt="${lesson.no}차시 ${esc(lesson.title)} 배지 (Google Gemini로 생성한 이미지)" title="Google Gemini로 생성한 이미지" width="120" height="136" loading="lazy">`;
+}
+
+function lessonStatus(lesson) {
+  const v = lesson.videos?.length ?? 0;
+  const f = teacherFileCount(lesson);
+  const parts = [];
+  if (v) parts.push(`영상 ${v}개`);
+  if (f && !isStudent) parts.push(`자료 ${f}개`);
+  return parts.length ? parts.join(", ") : "준비 중";
+}
+
+
+/* ---------- 첫 화면 ---------- */
+
+// 선생님 자료 목록 (공미톡처럼 차시가 없는 교재)
+function renderResources() {
+  const list = course.resources ?? [];
+  app.innerHTML = `
+    <section class="intro">
+      <h1 class="course-title">${esc(course.title)}</h1>
+      ${course.tagline ? `<p class="lede">${esc(course.tagline)}</p>` : ""}
+      <p class="intro-note">선생님 자료 ${list.length}개. 누르면 원본이 새 창으로 열려요.</p>
+    </section>
+    <ul class="resources">
+      ${list.map((r) => {
+        const url = safeUrl(r.url);
+        return `<li>${url ? `<a class="resource" href="${esc(url)}" target="_blank" rel="noopener">` : `<span class="resource is-empty">`}
+          <span class="resource-title">${esc(r.title)}</span>
+          <span class="resource-meta">${[r.author, r.source].filter(Boolean).map(esc).join(" · ")}</span>
+          ${url ? `${icon.external}</a>` : `</span>`}</li>`;
+      }).join("")}
+    </ul>`;
+  document.title = `${course.title} · ${siteTitle}`;
+  fitTitle();
+  window.scrollTo(0, 0);
+}
+
+function renderHome() {
+  if (course.resources && !units.length) return renderResources();
+  const multiUnit = units.length > 1;
+
+  const unitBlocks = units.map((unit) => `
+    <section class="unit">
+      ${multiUnit ? `<h2 class="unit-title">${esc(unit.title)}</h2>` : ""}
+      <ol class="sequence">
+        ${unit.lessons.map((lesson) => {
+          const ready = (lesson.videos?.length ?? 0) + (isStudent ? 0 : teacherFileCount(lesson)) > 0;
+          const vids = (lesson.videos ?? [])
+            .map((v, k) => ({ id: String(v.youtubeId ?? "").trim(), title: v.title || `영상 ${k + 1}`, k }))
+            .filter((v) => v.id);
+          const thumbId = vids[0]?.id;
+          // 차시 줄 오른쪽에 영상 썸네일 띠. 누르면 그 차시 화면에서 해당 영상으로 바로 감
+          const strip = vids.length ? `
+            <ul class="step-videos" aria-label="${lesson.no}차시 영상">
+              ${vids.map((v) => `<li><a href="${lessonHref(unit, lesson)}/v${v.k + 1}">
+                <img src="${ytThumb(v.id)}" alt="" loading="lazy" width="320" height="180">
+                <span><b>${v.k + 1}</b>${esc(v.title)}</span></a></li>`).join("")}
+            </ul>` : "";
+          const earned = isStudent && isEarned(cid, unit, lesson);
+          return `
+          <li class="${ready ? "is-ready" : "is-empty"}${vids.length ? " has-videos" : ""}${isStudent ? (earned ? " is-earned" : " not-earned") : ""}">
+            <a class="step" href="${lessonHref(unit, lesson)}">
+              ${badgeImg(lesson, "step-badge") || `<span class="step-no">${lesson.no}</span>`}
+              <span class="step-text">
+                <span class="step-title">${esc(lesson.title)}</span>
+                ${lesson.topic ? `<span class="step-topic">${esc(lesson.topic)}</span>` : ""}
+                <span class="step-status">${esc(lessonStatus(lesson))}</span>
+              </span>
+              ${thumbId ? `<img class="step-thumb" src="${ytThumb(thumbId)}" alt="" loading="lazy">` : ""}
+            </a>${strip}
+          </li>`;
+        }).join("")}
+      </ol>
+    </section>`).join("");
+
+  const lessonCount = allLessons().length;
+
+  app.innerHTML = `
+    <section class="intro">
+      <h1 class="course-title">${esc(course.title)}</h1>
+      ${course.tagline ? `<p class="lede">${esc(course.tagline)}</p>` : ""}
+      <p class="intro-note">${esc(course.grade)} ${esc(course.subject)}, ${lessonCount}차시${course.author ? ` · ${esc(course.author)}` : ""}.
+        ${isStudent
+          ? "차시를 골라 수업 영상을 다시 볼 수 있어요."
+          : "차시마다 수업 영상을 보고 활동지를 무료로 받을 수 있습니다."}</p>
+      ${isStudent ? "" : `<a class="text-link" href="${homeHref()}/qr">학생용 QR 코드 보기</a>`}
+    </section>
+    ${unitBlocks}`;
+  document.title = `${course.title} · ${siteTitle}`;
+  fitTitle();
+  document.fonts?.ready.then(fitTitle);
+}
+
+// 교재 제목을 줄바꿈 없이 한 줄에 맞춤. 너무 작아지면(휴대폰의 긴 제목) 그때만 줄바꿈
+function fitTitle() {
+  const h = document.querySelector(".intro h1");
+  if (!h) return;
+  h.style.fontSize = "";
+  h.classList.remove("is-wrap");
+  const base = parseFloat(getComputedStyle(h).fontSize);
+  const room = h.clientWidth;
+  if (h.scrollWidth <= room) return;
+  const size = Math.floor(base * room / h.scrollWidth * 0.98);
+  if (size >= 16) h.style.fontSize = `${size}px`;
+  else { h.style.fontSize = "16px"; h.classList.add("is-wrap"); }
+}
+window.addEventListener("resize", () => requestAnimationFrame(fitTitle));
+
+/* ---------- 차시 화면 ---------- */
+
+function videoBlock(video, index, total, play = false, track = false) {
+  const id = String(video.youtubeId ?? "").trim();
+  const player = id
+    ? `<iframe${track ? ` data-badge-video` : ""} src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?rel=0${play ? "&autoplay=1" : ""}${track ? `&enablejsapi=1&origin=${encodeURIComponent(location.origin)}` : ""}"
+         title="${esc(video.title || "수업 영상")}"${play ? "" : ` loading="lazy"`} allowfullscreen
+         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>`
+    : `<div class="player-empty">영상 준비 중</div>`;
+
+  const sourceUrl = safeUrl(video.url);
+  const credit = video.external
+    ? `<p class="credit">출처: ${esc(video.channel || "외부 영상")}${sourceUrl
+        ? ` · <a href="${esc(sourceUrl)}" target="_blank" rel="noopener">원본 보기 ${icon.external}</a>` : ""}</p>`
+    : "";
+
+  const caption = total > 1 || video.title
+    ? `<p class="video-title">${total > 1 ? `<span>영상 ${index + 1}</span>` : ""}${esc(video.title || "")}</p>`
+    : "";
+
+  return `<figure class="video${video.short ? " is-short" : ""}${play ? " is-picked" : ""}" id="video-${index + 1}"><div class="player">${player}</div>${caption}${credit}</figure>`;
+}
+
+function listSection(title, items, ordered = false) {
+  if (!items?.length) return "";
+  const tag = ordered ? "ol" : "ul";
+  return `<section class="detail"><h2>${title}</h2><${tag}>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</${tag}></section>`;
+}
+
+function teacherSection(lesson) {
+  if (isStudent) return "";
+  const t = lesson.teacher ?? {};
+  const files = [
+    { label: "수업 활동지", url: t.worksheet },
+  ];
+  const items = files.map((f) => {
+    const url = safeUrl(f.url);
+    // 사이트 안에 올린 파일은 "휴먼스킬아트_1차시_수업 활동지.hwpx" 같은 이름으로 내려받게 함
+    const local = url && !/^https?:/i.test(String(f.url).trim());
+    const ext = local ? (String(f.url).match(/\.[a-z0-9]+$/i)?.[0] ?? "") : "";
+    const dl = local ? ` download="${esc(`${course.title}_${lesson.no}차시_${f.label}${ext}`)}"` : "";
+    return url
+      ? `<li><a class="file" href="${esc(url)}"${dl} target="_blank" rel="noopener">${icon.download}<span>${f.label}</span><span class="format">받기</span></a></li>`
+      : `<li><span class="file is-empty" aria-disabled="true">${icon.download}<span>${f.label}</span><span class="format">준비 중</span></span></li>`;
+  }).join("");
+
+  // 수업 지도안·PPT는 이 사이트에 올리지 않고 경기형 AI 교수·학습 플랫폼으로 안내
+  const m = course.materials ?? {};
+  const mUrl = safeUrl(m.url);
+  const platform = mUrl
+    ? `<li><a class="file" href="${esc(mUrl)}" target="_blank" rel="noopener">${icon.external}<span>${esc(m.label || "수업 지도안·PPT")}</span><span class="format">외부 사이트</span></a></li>`
+    : "";
+  const note = mUrl
+    ? `<p class="files-note">${esc(m.label || "수업 지도안·PPT")}는 <a href="${esc(mUrl)}" target="_blank" rel="noopener">${esc(m.source || "외부 사이트")}</a>에서 받을 수 있어요.</p>`
+    : "";
+
+  return `
+    <section class="teacher">
+      <h2>선생님 자료</h2>
+      <ul class="files">${items}${platform}</ul>
+      ${note}
+      ${course.license ? `<p class="license">${esc(course.license.summary)}
+        <a href="${esc(course.license.url)}" target="_blank" rel="noopener">${esc(course.license.name)}</a></p>` : ""}
+    </section>`;
+}
+
+function renderLesson(unitId, no, pick = 0) {
+  const found = findLesson(unitId, no);
+  if (!found) {
+    app.innerHTML = `<p class="status">차시를 찾을 수 없어요. <a href="${homeHref()}">처음으로</a></p>`;
+    return;
+  }
+  const { unit, lesson } = found;
+  const list = allLessons();
+  const i = list.findIndex((x) => x.lesson === lesson);
+  const prev = list[i - 1];
+  const next = list[i + 1];
+
+  // 학생용 화면에서 아직 못 얻은 배지면 배지 영상을 지켜봄
+  const track = isStudent && lesson.badge && !isEarned(cid, unit, lesson) ? badgeVideoIndexes(lesson) : [];
+  const videos = lesson.videos?.length
+    ? lesson.videos.map((v, k) => videoBlock(v, k, lesson.videos.length, k + 1 === pick, track.includes(k))).join("")
+    : "";
+
+  const details = [
+    listSection("준비물", lesson.materials),
+    listSection("활동 순서", lesson.steps, true),
+    isStudent ? "" : listSection("생각해 볼 질문", lesson.questions),
+  ].join("");
+
+  const canClassMode = !isStudent && (lesson.videos?.length || lesson.steps?.length);
+
+  app.innerHTML = `
+    <nav class="crumb"><a href="${homeHref()}">${esc(course.title)}</a>${units.length > 1 ? ` <span>/</span> ${esc(unit.title)}` : ""}</nav>
+    <header class="lesson-head">
+      <div class="lesson-title${isStudent && lesson.badge && !isEarned(cid, unit, lesson) ? " not-earned" : ""}">
+        ${badgeImg(lesson, "lesson-badge")}
+        <div>
+          <p class="lesson-kicker">${lesson.no}차시</p>
+          <h1>${esc(lesson.title)}</h1>
+          ${lesson.topic ? `<p class="lesson-topic">${esc(lesson.topic)}</p>` : ""}
+          ${badgeNote(unit, lesson)}
+        </div>
+      </div>
+      ${lesson.goal ? `<p class="goal"><span>학습 목표</span>${esc(lesson.goal)}</p>` : ""}
+      ${canClassMode ? `<button class="btn-primary" id="class-mode" type="button">${icon.screen}수업 모드</button>` : ""}
+    </header>
+
+    ${videos ? `<div class="videos">${videos}</div>` : `<p class="empty-note">수업 영상은 준비 중입니다.</p>`}
+
+    ${details
+      ? `<div class="details">${details}</div>`
+      : `<p class="empty-note">이 차시의 활동 안내는 준비 중입니다.</p>`}
+
+    ${notesSection(unit, lesson)}
+
+    ${teacherSection(lesson)}
+
+    <nav class="pager">
+      ${prev ? `<a href="${lessonHref(prev.unit, prev.lesson)}"><span>이전 차시</span>${esc(prev.lesson.title)}</a>` : "<span></span>"}
+      ${next ? `<a class="next" href="${lessonHref(next.unit, next.lesson)}"><span>다음 차시</span>${esc(next.lesson.title)}</a>` : ""}
+    </nav>`;
+
+  document.getElementById("class-mode")?.addEventListener("click", () => openClassMode(lesson));
+  document.title = `${lesson.no}차시 ${lesson.title} · ${course.title}`;
+  if (track.length) watchBadgeVideos(unit, lesson);
+  bindNotes(unit, lesson);
+  const picked = pick ? document.getElementById(`video-${pick}`) : null;
+  if (picked) picked.scrollIntoView({ block: "start" });
+  else window.scrollTo(0, 0);
+}
+
+function badgeNote(unit, lesson) {
+  if (!isStudent || !lesson.badge || !isEarned(cid, unit, lesson)) return "";
+  return `<p class="badge-note is-done">배지를 모았어요. <a href="#/badges">내 배지 보기</a></p>`;
+}
+
+// YouTube IFrame API를 한 번만 불러옴
+let ytReady = null;
+function loadYT() {
+  if (window.YT?.Player) return Promise.resolve(window.YT);
+  if (!ytReady) {
+    ytReady = new Promise((resolve, reject) => {
+      const prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => { prev?.(); resolve(window.YT); };
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      tag.onerror = () => { ytReady = null; reject(new Error("YouTube API")); };
+      document.head.appendChild(tag);
+    });
+  }
+  return ytReady;
+}
+
+// 실제로 본 구간만 1초 단위로 셈. 건너뛰기(앞으로 감기)한 구간은 세지 않음.
+// 배지 영상 하나를 실제로 70% 이상 보면 바로 배지를 줌.
+const WATCH_NEED = 0.7;
+function watchBadgeVideos(unit, lesson) {
+  const frames = [...document.querySelectorAll("iframe[data-badge-video]")];
+  if (!frames.length || isEarned(cid, unit, lesson)) return;
+  const courseId = cid;
+  let done = false;
+  const award = () => {
+    if (done) return;
+    const map = readEarned();
+    const key = badgeKey(courseId, unit, lesson);
+    if (map[key]) { done = true; return; }
+    map[key] = new Date().toISOString().slice(0, 10);
+    if (!writeEarned(map)) return;
+    done = true;
+    celebrate(lesson);
+    const head = document.querySelector(".lesson-title");
+    head?.classList.remove("not-earned");
+    if (head && !head.querySelector(".badge-note")) {
+      head.querySelector("div")?.insertAdjacentHTML("beforeend", `<p class="badge-note is-done">배지를 모았어요. <a href="#/badges">내 배지 보기</a></p>`);
+    }
+    updateBadgeLink();
+  };
+
+  loadYT().then((YT) => frames.forEach((frame) => {
+    if (!frame.isConnected) return;
+    const seen = new Set();
+    let last = null, timer = null, player = null;
+    const tick = () => {
+      if (!frame.isConnected || done) { clearInterval(timer); return; }
+      const t = player.getCurrentTime?.();
+      if (typeof t !== "number") return;
+      // 0.5초마다 확인: 그 사이 1.25초 넘게 앞으로 갔으면 건너뛰기로 보고 세지 않음 (2배속까지는 셈)
+      if (last !== null && t > last && t - last <= 1.25) {
+        for (let k = Math.floor(last); k <= Math.floor(t); k++) seen.add(k);
+      }
+      last = t;
+      const dur = player.getDuration?.() || 0;
+      if (dur > 0 && seen.size / Math.max(1, Math.floor(dur)) >= WATCH_NEED) award();
+    };
+    player = new YT.Player(frame, {
+      events: {
+        onStateChange: (e) => {
+          if (e.data === YT.PlayerState.PLAYING) {
+            last = player.getCurrentTime?.() ?? null;
+            clearInterval(timer); timer = setInterval(tick, 500);
+          } else { clearInterval(timer); tick(); last = null; }
+        },
+      },
+    });
+  })).catch(() => {});
+}
+
+function celebrate(lesson) {
+  document.querySelector(".badge-toast")?.remove();
+  const t = document.createElement("div");
+  t.className = "badge-toast";
+  t.setAttribute("role", "status");
+  t.innerHTML = `${badgeImg(lesson, "toast-badge")}<p><b>${lesson.no}차시 배지를 받았어요!</b><a href="#/badges">내 배지 보기</a></p>
+    <button type="button" aria-label="닫기">${icon.close}</button>`;
+  t.querySelector("button").addEventListener("click", () => t.remove());
+  document.body.appendChild(t);
+  setTimeout(() => t.classList.add("is-in"), 20);
+  setTimeout(() => t.remove(), 8000);
+}
+
+function earnedCount() { return Object.keys(readEarned()).length; }
+function updateBadgeLink() {
+  const a = document.getElementById("badge-link");
+  if (a) a.innerHTML = `내 배지 <b>${earnedCount()}</b>`;
+}
+
+/* ---------- 생각해 볼 질문에 내 생각 쓰기 (학생용) ----------
+   쓴 답은 이 기기 브라우저에만 저장. 그림으로 저장해 선생님께 낼 수 있음. */
+const NOTES_KEY = "hsa-notes-v1";
+const readNotes = () => { try { return JSON.parse(localStorage.getItem(NOTES_KEY) || "{}") || {}; } catch { return {}; } };
+const writeNotes = (m) => { try { localStorage.setItem(NOTES_KEY, JSON.stringify(m)); return true; } catch { return false; } };
+
+function notesSection(unit, lesson) {
+  if (!isStudent || !lesson.questions?.length) return "";
+  const saved = readNotes()[badgeKey(cid, unit, lesson)] ?? [];
+  return `
+    <section class="notes" aria-labelledby="notes-h">
+      <h2 id="notes-h">생각해 볼 질문</h2>
+      <ol>
+        ${lesson.questions.map((q, k) => `<li>
+          <label for="note-${k}">${esc(q)}</label>
+          <textarea id="note-${k}" data-k="${k}" rows="3" placeholder="내 생각을 써 보세요.">${esc(saved[k] ?? "")}</textarea>
+        </li>`).join("")}
+      </ol>
+      <div class="notes-tools">
+        <button class="btn-primary" type="button" id="notes-save">내 생각 그림으로 저장</button>
+        <span class="notes-status" id="notes-status" aria-live="polite"></span>
+      </div>
+      <p class="notes-help">쓴 내용은 이 기기에만 자동으로 저장돼요. 그림으로 저장해 선생님께 보여 주세요.</p>
+    </section>`;
+}
+
+function bindNotes(unit, lesson) {
+  const box = document.querySelector(".notes");
+  if (!box) return;
+  const key = badgeKey(cid, unit, lesson);
+  const status = document.getElementById("notes-status");
+  let t = null;
+  box.querySelectorAll("textarea").forEach((ta) => ta.addEventListener("input", () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      const all = readNotes();
+      all[key] = [...box.querySelectorAll("textarea")].map((x) => x.value);
+      status.textContent = writeNotes(all) ? "저장했어요" : "이 기기에 저장할 수 없어요. 그림으로 저장해 두세요.";
+    }, 400);
+  }));
+  document.getElementById("notes-save").addEventListener("click", () => saveNotesImage(lesson,
+    lesson.questions.map((q, k) => ({ q, a: box.querySelector(`#note-${k}`).value.trim() }))));
+}
+
+// 띄어쓰기 단위로 폭에 맞춰 줄바꿈 (한 낱말이 너무 길면 글자 단위)
+function wrapLines(x, text, maxW) {
+  const out = [];
+  for (const para of String(text).split("\n")) {
+    let line = "";
+    for (const word of para.split(" ")) {
+      const tryLine = line ? `${line} ${word}` : word;
+      if (x.measureText(tryLine).width <= maxW) { line = tryLine; continue; }
+      if (line) out.push(line);
+      line = "";
+      for (const ch of word) {
+        if (x.measureText(line + ch).width > maxW && line) { out.push(line); line = ch; } else line += ch;
+      }
+    }
+    out.push(line);
+  }
+  return out;
+}
+
+async function saveNotesImage(lesson, items) {
+  await document.fonts?.ready;
+  const W = 1200, pad = 72, maxW = W - pad * 2;
+  const disp = '"Gaegu", "Nanum Pen Script", cursive', body = '"Gothic A1", "Malgun Gothic", sans-serif';
+  const ink = "#0b0b45", sub = "#4a4a6a", accent = "#3a9bfa";
+  const c = document.createElement("canvas"); const x = c.getContext("2d");
+  // 1) 높이 계산
+  const plan = [];
+  x.font = `700 30px ${body}`;
+  items.forEach(({ q, a }, k) => {
+    x.font = `700 30px ${body}`; const ql = wrapLines(x, `${k + 1}. ${q}`, maxW);
+    x.font = `400 30px ${body}`; const al = wrapLines(x, a || "(아직 쓰지 않았어요)", maxW - 24);
+    plan.push({ ql, al, empty: !a });
+  });
+  let H = pad + 40 + 80 + 50;
+  plan.forEach(({ ql, al }) => { H += ql.length * 44 + 16 + al.length * 46 + 56; });
+  H += 40 + pad;
+  c.width = W; c.height = H;
+  // 2) 그리기
+  x.fillStyle = "#fffdf8"; x.fillRect(0, 0, W, H);
+  x.strokeStyle = ink; x.lineWidth = 4; x.strokeRect(20, 20, W - 40, H - 40);
+  let y = pad + 20;
+  x.fillStyle = sub; x.font = `500 26px ${body}`; x.fillText(`${course.title} · ${lesson.no}차시`, pad, y);
+  y += 70; x.fillStyle = ink; x.font = `700 60px ${disp}`; x.fillText(`${lesson.title} — 내 생각`, pad, y);
+  y += 30; x.fillStyle = accent; x.fillRect(pad, y, 120, 5); y += 60;
+  plan.forEach(({ ql, al, empty }) => {
+    x.fillStyle = ink; x.font = `700 30px ${body}`;
+    ql.forEach((l) => { x.fillText(l, pad, y); y += 44; });
+    y += 16;
+    x.fillStyle = empty ? "#a0a0b4" : "#222240"; x.font = `400 30px ${body}`;
+    const top = y - 34;
+    al.forEach((l) => { x.fillText(l, pad + 24, y); y += 46; });
+    x.fillStyle = accent; x.fillRect(pad, top, 5, y - top - 20);
+    y += 56;
+  });
+  x.fillStyle = sub; x.font = `400 24px ${body}`;
+  const d = new Date(); x.fillText(`${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 · ${siteTitle}`, pad, H - pad + 10);
+  const a = document.createElement("a");
+  a.download = `${course.title}_${lesson.no}차시_내 생각.png`;
+  a.href = c.toDataURL("image/png");
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* ---------- 내 배지 (학생용) ---------- */
+
+async function loadAllCourses() {
+  for (const c of courses) {
+    if (!loaded[c.id]) {
+      try {
+        const data = await (await fetch(c.file, { cache: "no-cache" })).json();
+        loaded[c.id] = { course: data.course, units: data.units ?? [] };
+      } catch { /* 못 불러온 교재는 건너뜀 */ }
+    }
+  }
+}
+
+async function renderBadges() {
+  app.innerHTML = `<p class="status">불러오는 중…</p>`;
+  await loadAllCourses();
+  const map = readEarned();
+  const blocks = courses.filter((c) => loaded[c.id]).map((c) => {
+    const { course: co, units: us } = loaded[c.id];
+    const items = us.flatMap((u) => u.lessons.filter((l) => l.badge).map((l) => ({ u, l })));
+    if (!items.length) return "";
+    const got = items.filter(({ u, l }) => map[`${c.id}/${u.id}/${l.no}`]).length;
+    return `
+      <section class="shelf">
+        <h2><a href="${homeHref(c.id)}">${c.grade ? `<span class="tab-grade">${c.grade}</span>` : ""}${esc(co.title)}</a><span class="shelf-count">${got} / ${items.length}</span></h2>
+        ${got === items.length ? `<p class="shelf-done">배지를 모두 모았어요! <a class="btn-primary" href="#/cert/${encodeURIComponent(c.id)}">인증서 받기</a></p>` : ""}
+        <ul class="shelf-badges">
+          ${items.map(({ u, l }) => {
+            const when = map[`${c.id}/${u.id}/${l.no}`];
+            return `<li class="${when ? "is-earned" : "not-earned"}">
+              <a href="${homeHref(c.id)}/lesson/${encodeURIComponent(u.id)}/${l.no}">
+                ${badgeImg(l, "shelf-badge")}
+                <span>${l.no}차시</span>
+                <span class="sr-only">${when ? "받음" : "아직"}</span>
+              </a></li>`;
+          }).join("")}
+        </ul>
+      </section>`;
+  }).join("");
+  const total = Object.keys(map).length;
+  app.innerHTML = `
+    <section class="intro badges-intro">
+      <h1>내 배지</h1>
+      <p class="intro-note">수업 영상을 보며 모은 배지예요. 지금까지 ${total}개를 모았어요.
+        배지 기록은 이 기기에만 남아요.</p>
+    </section>
+    ${blocks}
+    <div class="badges-reset">
+      <button class="btn-ghost" type="button" id="reset-1">처음부터 다시 모으기</button>
+      <span id="reset-2" hidden>이 기기의 배지가 모두 지워져요.
+        <button class="btn-ghost" type="button" id="reset-yes">지우기</button>
+        <button class="btn-ghost" type="button" id="reset-no">그만두기</button></span>
+    </div>`;
+  const r1 = document.getElementById("reset-1"), r2 = document.getElementById("reset-2");
+  r1.addEventListener("click", () => { r1.hidden = true; r2.hidden = false; });
+  document.getElementById("reset-no").addEventListener("click", () => { r1.hidden = false; r2.hidden = true; });
+  document.getElementById("reset-yes").addEventListener("click", () => { writeEarned({}); updateBadgeLink(); renderBadges(); });
+  document.querySelectorAll('#tabs [aria-current]').forEach((a) => a.removeAttribute("aria-current"));
+  document.title = `내 배지 · ${siteTitle}`;
+  window.scrollTo(0, 0);
+}
+
+/* ---------- 예술가 배지 완성 인증서 (학생용) ---------- */
+
+const NAME_KEY = "hsa-name";
+const readName = () => { try { return localStorage.getItem(NAME_KEY) || ""; } catch { return ""; } };
+const writeName = (v) => { try { localStorage.setItem(NAME_KEY, v); } catch { /* 저장 못 해도 인증서는 됨 */ } };
+const fmtDate = (iso) => { const [y, m, d] = String(iso).split("-").map(Number); return y ? `${y}년 ${m}월 ${d}일` : ""; };
+
+async function renderCert(courseId) {
+  app.innerHTML = `<p class="status">불러오는 중…</p>`;
+  await loadAllCourses();
+  const entry = courses.find((x) => x.id === courseId);
+  const data = entry && loaded[courseId];
+  if (!data) { app.innerHTML = `<p class="status">교재를 찾을 수 없어요. <a href="#/badges">내 배지로</a></p>`; return; }
+  const { course: co, units: us } = data;
+  const map = readEarned();
+  const items = us.flatMap((u) => u.lessons.filter((l) => l.badge).map((l) => ({ u, l, when: map[`${courseId}/${u.id}/${l.no}`] })));
+  if (!items.length || items.some((x) => !x.when)) {
+    const got = items.filter((x) => x.when).length;
+    app.innerHTML = `<p class="status">아직 배지를 모두 모으지 않았어요 (${got} / ${items.length}). <a href="#/badges">내 배지로</a></p>`;
+    return;
+  }
+  const done = items.map((x) => x.when).sort().at(-1);
+  const issuer = `${siteTitle}${co.author ? ` · 교재 개발 ${co.author}` : ""}`;
+  app.innerHTML = `
+    <nav class="crumb"><a href="#/badges">내 배지</a></nav>
+    <div class="cert-tools">
+      <label for="cert-name">이름</label>
+      <input id="cert-name" type="text" maxlength="12" autocomplete="off" placeholder="이름을 써 주세요" value="${esc(readName())}">
+      <button class="btn-primary" type="button" id="cert-print">인쇄하기</button>
+      <button class="btn-ghost" type="button" id="cert-save">그림으로 저장</button>
+    </div>
+    <p class="cert-help">이름은 이 화면에만 쓰이고 어디로도 보내지 않아요.</p>
+    <article class="cert" id="cert">
+      <p class="cert-org">${esc(siteTitle)}</p>
+      <h1 class="cert-title">예술가 배지 완성 인증서</h1>
+      <p class="cert-name"><span id="cert-name-out"></span></p>
+      <p class="cert-body">위 학생은 「${esc(co.title)}」 ${items.length}차시 수업 영상을 보며
+        배지를 모두 모았기에 이 인증서를 드립니다.</p>
+      <ul class="cert-badges">${items.map(({ l }) => `<li>${badgeImg(l, "cert-badge").replace(' loading="lazy"', "")}</li>`).join("")}</ul>
+      <p class="cert-date">${fmtDate(done)}</p>
+      <p class="cert-issuer">${esc(issuer)}</p>
+    </article>`;
+  const input = document.getElementById("cert-name");
+  const out = document.getElementById("cert-name-out");
+  const sync = () => { const v = input.value.trim(); out.textContent = v || "이름"; out.classList.toggle("is-blank", !v); };
+  input.addEventListener("input", () => { sync(); writeName(input.value.trim()); });
+  sync();
+  document.getElementById("cert-print").addEventListener("click", () => window.print());
+  document.getElementById("cert-save").addEventListener("click", () =>
+    saveCertImage({ name: input.value.trim(), course: co.title, count: items.length, date: fmtDate(done), issuer, badges: [...document.querySelectorAll("#cert .cert-badge")] }));
+  document.querySelectorAll('#tabs [aria-current]').forEach((a) => a.removeAttribute("aria-current"));
+  document.title = `인증서 · ${co.title}`;
+  window.scrollTo(0, 0);
+}
+
+// 인증서를 PNG로 그려서 내려받기 (화면 모양과 같게)
+async function saveCertImage({ name, course: title, count, date, issuer, badges }) {
+  await document.fonts?.ready;
+  const W = 1754, H = 1240;                 // A4 가로, 150dpi
+  const c = document.createElement("canvas"); c.width = W; c.height = H;
+  const x = c.getContext("2d");
+  const ink = "#0b0b45", sub = "#4a4a6a", accent = "#3a9bfa";
+  const disp = '"Gaegu", "Nanum Pen Script", cursive', body = '"Gothic A1", "Malgun Gothic", sans-serif';
+  x.fillStyle = "#fffdf8"; x.fillRect(0, 0, W, H);
+  x.strokeStyle = ink; x.lineWidth = 6; x.strokeRect(48, 48, W - 96, H - 96);
+  x.lineWidth = 2; x.strokeRect(68, 68, W - 136, H - 136);
+  x.textAlign = "center"; x.textBaseline = "alphabetic";
+  x.fillStyle = sub; x.font = `500 34px ${body}`; x.fillText(siteTitle, W / 2, 170);
+  x.fillStyle = ink; x.font = `700 104px ${disp}`; x.fillText("예술가 배지 완성 인증서", W / 2, 290);
+  x.font = `700 84px ${disp}`; x.fillText(name || "", W / 2, 440);
+  x.strokeStyle = accent; x.lineWidth = 3; x.beginPath(); x.moveTo(W / 2 - 260, 466); x.lineTo(W / 2 + 260, 466); x.stroke();
+  x.fillStyle = sub; x.font = `400 36px ${body}`;
+  x.fillText(`위 학생은 「${title}」 ${count}차시 수업 영상을 보며`, W / 2, 556);
+  x.fillText("배지를 모두 모았기에 이 인증서를 드립니다.", W / 2, 608);
+  const bh = 170, gap = 28;
+  const ws = badges.map((im) => (im.naturalWidth && im.naturalHeight ? im.naturalWidth / im.naturalHeight : 0.85) * bh);
+  let bx = (W - (ws.reduce((a, b) => a + b, 0) + gap * (ws.length - 1))) / 2;
+  badges.forEach((im, i) => { try { x.drawImage(im, bx, 680, ws[i], bh); } catch { /* 그림 못 그리면 건너뜀 */ } bx += ws[i] + gap; });
+  x.fillStyle = ink; x.font = `500 38px ${body}`; x.fillText(date, W / 2, 980);
+  x.font = `700 40px ${body}`; x.fillText(issuer, W / 2, 1060);
+  const a = document.createElement("a");
+  a.download = `예술가 배지 완성 인증서_${title}${name ? `_${name}` : ""}.png`;
+  a.href = c.toDataURL("image/png");
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* ---------- 수업 모드 (교실 TV) ---------- */
+
+function openClassMode(lesson) {
+  const steps = lesson.steps ?? [];
+  const videos = (lesson.videos ?? []).filter((v) => String(v.youtubeId ?? "").trim());
+  const video = videos[0];
+  const embedSrc = (v) => `https://www.youtube-nocookie.com/embed/${encodeURIComponent(String(v.youtubeId).trim())}?rel=0`;
+  let current = 0;
+
+  const overlay = document.createElement("div");
+  overlay.className = "classmode";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-label", `${lesson.title} 수업 모드`);
+  overlay.innerHTML = `
+    <div class="cm-top">
+      <p>${badgeImg(lesson, "cm-badge")}<span>${lesson.no}차시</span> ${esc(lesson.title)}</p>
+      <button class="cm-close" type="button" aria-label="수업 모드 닫기">${icon.close}</button>
+    </div>
+    <div class="cm-body${video ? "" : " no-video"}">
+      ${video ? `<div class="cm-media">
+        <div class="cm-player"><iframe src="${embedSrc(video)}"
+          title="${esc(video.title || "수업 영상")}" allowfullscreen
+          allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe></div>
+        ${videos.length > 1 ? `<div class="cm-videos" role="group" aria-label="영상 고르기">
+          ${videos.map((v, k) => `<button type="button" data-v="${k}" aria-pressed="${k === 0}"><span>${k + 1}</span>${esc(v.title || `영상 ${k + 1}`)}</button>`).join("")}
+        </div>` : ""}
+      </div>` : ""}
+      <div class="cm-steps">
+        ${lesson.goal ? `<p class="cm-goal">${esc(lesson.goal)}</p>` : ""}
+        ${steps.length ? `<ol>${steps.map((s, k) => `<li data-k="${k}">${esc(s)}</li>`).join("")}</ol>` : ""}
+      </div>
+    </div>
+    ${steps.length ? `
+    <div class="cm-nav">
+      <button type="button" data-move="-1" aria-label="이전 단계">${icon.left}</button>
+      <span class="cm-count" aria-live="polite"></span>
+      <button type="button" data-move="1" aria-label="다음 단계">${icon.right}</button>
+    </div>` : ""}`;
+
+  const update = () => {
+    overlay.querySelectorAll(".cm-steps li").forEach((li, k) => {
+      li.classList.toggle("is-current", k === current);
+      li.classList.toggle("is-done", k < current);
+      if (k === current) li.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    });
+    const count = overlay.querySelector(".cm-count");
+    if (count) count.textContent = `${current + 1} / ${steps.length}`;
+  };
+
+  const move = (d) => {
+    if (!steps.length) return;
+    current = Math.min(steps.length - 1, Math.max(0, current + d));
+    update();
+  };
+
+  const close = () => {
+    document.removeEventListener("keydown", onKey);
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    overlay.remove();
+    document.body.classList.remove("no-scroll");
+    document.getElementById("class-mode")?.focus();
+  };
+
+  const onKey = (e) => {
+    if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); move(1); }
+    else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); move(-1); }
+    else if (e.key === "Escape") close();
+    else if (/^[1-9]$/.test(e.key)) overlay.querySelector(`.cm-videos [data-v="${Number(e.key) - 1}"]`)?.click();
+  };
+
+  overlay.querySelector(".cm-close").addEventListener("click", close);
+  overlay.querySelectorAll("[data-move]").forEach((b) =>
+    b.addEventListener("click", () => move(Number(b.dataset.move))));
+  overlay.querySelectorAll(".cm-steps li").forEach((li) =>
+    li.addEventListener("click", () => { current = Number(li.dataset.k); update(); }));
+  overlay.querySelectorAll(".cm-videos button").forEach((b) =>
+    b.addEventListener("click", () => {
+      const v = videos[Number(b.dataset.v)];
+      const frame = overlay.querySelector(".cm-player iframe");
+      frame.src = embedSrc(v);
+      frame.title = v.title || "수업 영상";
+      overlay.querySelectorAll(".cm-videos button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    }));
+  document.addEventListener("keydown", onKey);
+
+  document.body.appendChild(overlay);
+  document.body.classList.add("no-scroll");
+  overlay.requestFullscreen?.().catch(() => {});
+  update();
+  overlay.querySelector(".cm-close").focus();
+}
+
+/* ---------- QR 코드 화면 ---------- */
+
+function renderQR() {
+  // 기본 교재는 짧은 주소, 나머지는 교재 주소까지 담음
+  const studentUrl = `${location.origin}${location.pathname}?view=student${cid === defaultId ? "" : homeHref()}`;
+  const shortText = studentUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
+  let qrSvg = `<p class="status">QR 코드를 만들 수 없어요. 아래 주소를 알려 주세요.</p>`;
+  if (typeof window.qrcode === "function") {
+    const qr = window.qrcode(0, "M");
+    qr.addData(studentUrl);
+    qr.make();
+    qrSvg = qr.createSvgTag({ cellSize: 8, margin: 2, scalable: true, alt: "학생용 화면 QR 코드" });
+  }
+
+  app.innerHTML = `
+    <nav class="crumb"><a href="${homeHref()}">${esc(course.title)}</a></nav>
+    <section class="qr-page">
+      <div class="qr-box">${qrSvg}</div>
+      <div class="qr-text">
+        <h1>학생용 화면</h1>
+        <p class="qr-course">${esc(course.title)}</p>
+        <p>휴대폰 카메라로 찍으면 영상만 보이는 학생용 화면이 열립니다. 교실 화면에 띄우거나 인쇄해 알림장에 붙여 쓰세요.</p>
+        <p class="qr-url">${esc(shortText)}</p>
+        <div class="qr-actions">
+          <button class="btn-primary" type="button" id="qr-print">인쇄하기</button>
+          <a class="btn-ghost" href="${esc(studentUrl)}" target="_blank" rel="noopener">학생용 화면 열기</a>
+        </div>
+      </div>
+    </section>`;
+  document.getElementById("qr-print").addEventListener("click", () => window.print());
+  document.title = `QR 코드 · ${course.title}`;
+}
+
+/* ---------- 시작 ---------- */
+
+// 주소 모양
+//   #/c/{교재}                     교재 첫 화면
+//   #/c/{교재}/lesson/{단원}/{차시}[/v{영상}]
+//   #/c/{교재}/qr
+//   예전 주소(#/, #/lesson/…, #/qr)는 site.json의 default 교재(휴먼스킬아트)로 엽니다.
+async function route() {
+  let hash = location.hash || "#/";
+  const certM = hash.match(/^#\/cert\/([^/]+)$/);
+  if ((hash === "#/badges" || certM) && isStudent) {
+    if (!cid) { const d = courses.find((x) => x.id === defaultId); /* 머리말을 그리려면 교재 하나는 필요 */
+      const data = await (await fetch(d.file, { cache: "no-cache" })).json();
+      loaded[d.id] = loaded[d.id] || { course: data.course, units: data.units ?? [] };
+      cid = d.id; ({ course, units } = loaded[d.id]); renderChrome(); }
+    return certM ? renderCert(decodeURIComponent(certM[1])) : renderBadges();
+  }
+  let id = defaultId;
+  const c = hash.match(/^#\/c\/([^/]+)(.*)$/);
+  if (c) { id = decodeURIComponent(c[1]); hash = `#${c[2] || "/"}`; }
+  if (!courses.some((x) => x.id === id)) id = defaultId;
+
+  if (id !== cid || !loaded[id]) {
+    if (!loaded[id]) {
+      app.innerHTML = `<p class="status">불러오는 중…</p>`;
+      const entry = courses.find((x) => x.id === id);
+      const res = await fetch(entry.file, { cache: "no-cache" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      loaded[id] = { course: data.course, units: data.units ?? [] };
+    }
+  }
+  cid = id;
+  ({ course, units } = loaded[id]);
+  renderChrome();
+
+  const m = hash.match(/^#\/lesson\/([^/]+)\/(\d+)(?:\/v(\d+))?$/);
+  if (m) return renderLesson(decodeURIComponent(m[1]), m[2], m[3] ? Number(m[3]) : 0);
+  if (hash === "#/qr" && !isStudent) return renderQR();
+  renderHome();
+}
+
+function renderChrome() {
+  const label = document.getElementById("view-label");
+  if (isStudent) { label.innerHTML = `<a id="badge-link" href="#/badges"></a>`; updateBadgeLink(); }
+  else label.textContent = "선생님 자료실";
+  const brand = document.getElementById("brand");
+  brand.textContent = siteTitle;
+  // 연도: 지금 교재의 연도. 연구회 이름은 기본 교재 연도의 첫 탭으로
+  const yearOf = (id) => courses.find((x) => x.id === id)?.year;
+  const curYear = yearOf(cid) ?? yearOf(defaultId);
+  const firstOf = (y) => courses.find((x) => x.year === y)?.id ?? courses[0].id;
+  brand.setAttribute("href", homeHref(firstOf(yearOf(defaultId))));
+  const years = [...new Set(courses.map((x) => x.year).filter(Boolean))].sort();
+  document.getElementById("years").innerHTML = years.length > 1
+    ? years.map((y) => `<a href="${homeHref(firstOf(y))}"${y === curYear ? ` aria-current="true"` : ""}>${y}</a>`).join("")
+    : "";
+  // 교재 탭: 지금 연도의 교재만, data/site.json의 courses 순서대로
+  document.getElementById("tabs").innerHTML = courses.filter((x) => !curYear || x.year === curYear).map((x) =>
+    `<a href="${homeHref(x.id)}"${x.id === cid ? ` aria-current="page"` : ""}${x.tab ? ` title="${esc(x.title)}"` : ""}>${x.grade ? `<span class="tab-grade" title="${x.grade}학년"><span class="sr-only">${x.grade}학년 </span><span aria-hidden="true">${x.grade}</span></span>` : ""}${esc(x.tab || x.title)}</a>`).join("");
+  // 고른 탭이 화면 밖이면 탭 줄만 옆으로 밀어 보이게 함 (페이지는 그대로)
+  const tabs = document.getElementById("tabs");
+  const on = tabs.querySelector('[aria-current="page"]');
+  if (on && (on.offsetLeft + on.offsetWidth > tabs.scrollLeft + tabs.clientWidth || on.offsetLeft < tabs.scrollLeft)) {
+    tabs.scrollLeft = on.offsetLeft - 16;
+  }
+  const lic = course.license;
+  document.getElementById("footer").innerHTML = `
+    <p>${esc(course.title)}${course.author ? `, 개발 ${esc(course.author)}` : ""} · ${esc(siteTitle)}</p>
+    ${(course.credits ?? []).length ? `<p>${course.credits.map(esc).join(" / ")}</p>` : ""}
+    ${lic ? `<p>이 교재의 글과 활동지는 <a href="${esc(lic.url)}" target="_blank" rel="noopener">${esc(lic.name)}</a> 조건으로 무료 공개합니다. 교육청 로고와 작가 작품의 권리는 각 권리자에게 있습니다.</p>` : ""}`;
+}
+
+async function init() {
+  try {
+    const res = await fetch("data/site.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    siteTitle = data.site?.title ?? "";
+    // 학생용 화면에서는 선생님 전용 자료(teacherOnly)를 아예 빼고 시작
+    courses = (data.courses ?? []).filter((x) => !(isStudent && x.teacherOnly));
+    if (!courses.length) throw new Error("교재 목록이 비어 있음");
+    defaultId = courses.some((x) => x.id === data.site?.default) ? data.site.default : courses[0].id;
+    window.addEventListener("hashchange", () => route().catch(fail));
+    await route();
+  } catch (e) { fail(e); }
+}
+
+function fail(e) {
+  console.error(e);
+  app.innerHTML = `<p class="status">수업 목록을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</p>`;
+}
+
+init();

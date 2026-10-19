@@ -1,0 +1,59 @@
+{
+  "site": {
+    "title": "공공미술교육연구회",
+    "default": "humanskill"
+  },
+  "courses": [
+    {
+      "id": "gongmitalk",
+      "year": 2025,
+      "teacherOnly": true,
+      "title": "공미톡",
+      "file": "data/courses/gongmitalk.json"
+    },
+    {
+      "id": "publicart",
+      "year": 2026,
+      "grade": 3,
+      "title": "지역 미술 여행(공공미술)",
+      "tab": "지역 미술 여행",
+      "file": "data/courses/publicart.json"
+    },
+    {
+      "id": "lens",
+      "year": 2026,
+      "grade": 4,
+      "title": "같은 세상, 다른 눈 렌즈로 담아내는 나의 세상",
+      "tab": "렌즈로 담아내는 나의 세상",
+      "file": "data/courses/lens.json"
+    },
+    {
+      "id": "color",
+      "year": 2026,
+      "grade": 4,
+      "title": "색, 이런 느낌 저런 느낌",
+      "file": "data/courses/color.json"
+    },
+    {
+      "id": "oldpainting",
+      "year": 2026,
+      "grade": 5,
+      "title": "우리 옛 그림 산책",
+      "file": "data/courses/oldpainting.json"
+    },
+    {
+      "id": "spacedesign",
+      "year": 2026,
+      "grade": 6,
+      "title": "우리가 만드는 공간 디자인",
+      "file": "data/courses/spacedesign.json"
+    },
+    {
+      "id": "humanskill",
+      "year": 2026,
+      "grade": 6,
+      "title": "휴먼스킬아트",
+      "file": "data/course.json"
+    }
+  ]
+}

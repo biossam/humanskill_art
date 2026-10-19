@@ -1,0 +1,83 @@
+{
+  "course": {
+    "title": "우리 옛 그림 산책",
+    "tagline": "",
+    "subject": "미술",
+    "grade": "초등 5학년",
+    "author": "최빛나",
+    "credits": [
+      "차시 배지: Google Gemini로 생성한 이미지"
+    ]
+  },
+  "units": [
+    {
+      "id": "1",
+      "title": "우리 옛 그림 산책",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "<산수화> 색상, 모양, 선 찾기",
+          "badge": "assets/img/badges/oldpainting/1.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 2,
+          "title": "<민화> 보기, 생각하기, 궁금해하기",
+          "badge": "assets/img/badges/oldpainting/2.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 3,
+          "title": "<풍속화> 시작, 중간, 끝 이야기 만들기",
+          "badge": "assets/img/badges/oldpainting/3.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 4,
+          "title": "<인물화> 창의적인 질문 만들기",
+          "badge": "assets/img/badges/oldpainting/4.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 5,
+          "title": "<동물화/식물화> 정교화 놀이",
+          "badge": "assets/img/badges/oldpainting/5.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 6,
+          "title": "<기록화> 연결, 확장, 도전하기",
+          "badge": "assets/img/badges/oldpainting/6.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 7,
+          "title": "우리 옛 그림 이전 생각, 지금 생각",
+          "badge": "assets/img/badges/oldpainting/7.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        }
+      ]
+    }
+  ]
+}

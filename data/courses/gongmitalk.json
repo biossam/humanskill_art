@@ -1,0 +1,37 @@
+{
+  "course": {
+    "title": "공미톡",
+    "tagline": "2025 공공미술교육연구회 수업 자료 개발",
+    "subject": "미술",
+    "grade": "",
+    "author": "",
+    "kind": "선생님 자료",
+    "resources": [
+      {
+        "title": "〈누구나 예술가가 될 수 있다〉 프로젝트 소개",
+        "author": "최빛나",
+        "source": "PDF",
+        "url": "files/gongmitalk/project-intro.pdf"
+      },
+      {
+        "title": "프로젝트 수업 나눔",
+        "author": "장혜림",
+        "source": "Canva",
+        "url": "https://www.canva.com/design/DAGxnJBOT_w/HAC7TTNsm1D2gXV8Yi3BdA/view"
+      },
+      {
+        "title": "예술 작품일까 아닐까",
+        "author": "조혜나",
+        "source": "Canva",
+        "url": "https://canva.link/qvlaxzrprytue0o"
+      },
+      {
+        "title": "기후 위기를 알리는 예술가",
+        "author": "최빛나",
+        "source": "Canva",
+        "url": "https://www.canva.com/design/DAGwZTmGj5s/xQgK8TNJDOquuVvoFVyKVA/view"
+      }
+    ]
+  },
+  "units": []
+}
