@@ -176,7 +176,7 @@ function renderHome() {
       <p class="intro-note">${esc(course.grade)} ${esc(course.subject)}, ${lessonCount}${LW()}${course.author ? ` · ${esc(course.author)}` : ""}.
         ${isStudent
           ? `${LW()}${LW() === "편" ? "을" : "를"} 골라 수업 영상을 다시 볼 수 있어요.`
-          : `${LW()}마다 수업 영상을 보고 활동지를 무료로 받을 수 있습니다.`}</p>
+          : (course.noWorksheet ? `${LW()}마다 수업 영상을 파트별로 보며 활동할 수 있습니다.` : `${LW()}마다 수업 영상을 보고 활동지를 무료로 받을 수 있습니다.`)}</p>
       ${isStudent ? "" : `<a class="text-link" href="${homeHref()}/qr">학생용 QR 코드 보기</a>`}
     </section>
     ${unitBlocks}`;
@@ -232,7 +232,8 @@ function listSection(title, items, ordered = false) {
 function teacherSection(lesson) {
   if (isStudent) return "";
   const t = lesson.teacher ?? {};
-  const files = [
+  // course.noWorksheet: 활동지가 없는 교재는 활동지 칸을 보여 주지 않음
+  const files = course.noWorksheet ? [] : [
     { label: "수업 활동지", url: t.worksheet },
   ];
   const items = files.map((f) => {
@@ -256,6 +257,7 @@ function teacherSection(lesson) {
     ? `<p class="files-note">${esc(m.label || "수업 지도안·PPT")}는 <a href="${esc(mUrl)}" target="_blank" rel="noopener">${esc(m.source || "외부 사이트")}</a>에서 받을 수 있어요.</p>`
     : "";
 
+  if (!items && !platform && !course.license) return "";
   return `
     <section class="teacher">
       <h2>선생님 자료</h2>
