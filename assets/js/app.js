@@ -140,14 +140,16 @@ function renderHome() {
         ${unit.lessons.map((lesson) => {
           const ready = (lesson.videos?.length ?? 0) + (isStudent ? 0 : teacherFileCount(lesson)) > 0;
           const vids = (lesson.videos ?? [])
-            .map((v, k) => ({ id: String(v.youtubeId ?? "").trim(), title: v.title || `영상 ${k + 1}`, k }))
+            .map((v, k) => ({ id: String(v.youtubeId ?? "").trim(), title: v.title || `영상 ${k + 1}`, k, thumb: v.thumb }))
             .filter((v) => v.id);
+          // video.thumb: 유튜브 자동 썸네일 대신 쓸 그림 (교재 안에서 썸네일을 통일할 때)
+          const thumbOf = (v) => (v.thumb && !/^[a-z]+:/i.test(v.thumb) ? esc(v.thumb) : ytThumb(v.id));
           const thumbId = vids[0]?.id;
           // 차시 줄 오른쪽에 영상 썸네일 띠. 누르면 그 차시 화면에서 해당 영상으로 바로 감
           const strip = vids.length ? `
             <ul class="step-videos" aria-label="${lesson.no}${LW()} 영상">
               ${vids.map((v) => `<li><a href="${lessonHref(unit, lesson)}/v${v.k + 1}">
-                <img src="${ytThumb(v.id)}" alt="" loading="lazy" width="320" height="180">
+                <img src="${thumbOf(v)}" alt="" loading="lazy" width="320" height="180">
                 <span><b>${v.k + 1}</b>${esc(v.title)}</span></a></li>`).join("")}
             </ul>` : "";
           const earned = isStudent && isEarned(cid, unit, lesson);
@@ -160,7 +162,7 @@ function renderHome() {
                 ${lesson.topic ? `<span class="step-topic">${esc(lesson.topic)}</span>` : ""}
                 <span class="step-status">${esc(lessonStatus(lesson))}</span>
               </span>
-              ${thumbId ? `<img class="step-thumb" src="${ytThumb(thumbId)}" alt="" loading="lazy">` : ""}
+              ${thumbId ? `<img class="step-thumb" src="${thumbOf(vids[0])}" alt="" loading="lazy">` : ""}
             </a>${strip}
           </li>`;
         }).join("")}
