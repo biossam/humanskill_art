@@ -1,0 +1,83 @@
+{
+  "course": {
+    "title": "색, 이런 느낌 저런 느낌",
+    "tagline": "",
+    "subject": "미술",
+    "grade": "초등 4학년",
+    "author": "김예나",
+    "credits": [
+      "차시 배지: Google Gemini로 생성한 이미지"
+    ]
+  },
+  "units": [
+    {
+      "id": "1",
+      "title": "색, 이런 느낌 저런 느낌",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "색이 주는 느낌 알아보고, 주변에서 색 찾아보기",
+          "badge": "assets/img/badges/color/1.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 2,
+          "title": "비슷한 색과 반대색으로 표현하기",
+          "badge": "assets/img/badges/color/2.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 3,
+          "title": "비슷한 색과 반대색으로 표현하기",
+          "badge": "assets/img/badges/color/3.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 4,
+          "title": "따뜻한 느낌의 색과 차가운 느낌의 색으로 표현하기",
+          "badge": "assets/img/badges/color/4.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 5,
+          "title": "따뜻한 느낌의 색과 차가운 느낌의 색으로 표현하기",
+          "badge": "assets/img/badges/color/5.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 6,
+          "title": "색의 느낌을 살려 작품 제작하기",
+          "badge": "assets/img/badges/color/6.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 7,
+          "title": "내 작품을 전시하고 친구들의 작품 감상하기",
+          "badge": "assets/img/badges/color/7.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        }
+      ]
+    }
+  ]
+}

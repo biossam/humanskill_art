@@ -1,0 +1,83 @@
+{
+  "course": {
+    "title": "우리가 만드는 공간 디자인",
+    "tagline": "",
+    "subject": "미술",
+    "grade": "초등 6학년",
+    "author": "이은찬",
+    "credits": [
+      "차시 배지: Google Gemini로 생성한 이미지"
+    ]
+  },
+  "units": [
+    {
+      "id": "1",
+      "title": "우리가 만드는 공간 디자인",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "공간 디자인의 의미와 좋은 공간 디자인의 조건 알아보기",
+          "badge": "assets/img/badges/spacedesign/1.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 2,
+          "title": "우리 학교 공간에서 개선할 점 찾아보기",
+          "badge": "assets/img/badges/spacedesign/2.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 3,
+          "title": "개선하고 싶은 공간을 정하여 아이디어 모으기",
+          "badge": "assets/img/badges/spacedesign/3.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 4,
+          "title": "공간 디자인 계획 세우기",
+          "badge": "assets/img/badges/spacedesign/4.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 5,
+          "title": "공간 디자인 계획 공유하고 보완하기",
+          "badge": "assets/img/badges/spacedesign/5.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 6,
+          "title": "공간 디자인 실행하기",
+          "badge": "assets/img/badges/spacedesign/6.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 7,
+          "title": "우리가 바꾼 공간을 함께 둘러보며 성찰하기",
+          "badge": "assets/img/badges/spacedesign/7.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        }
+      ]
+    }
+  ]
+}

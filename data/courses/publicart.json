@@ -1,0 +1,74 @@
+{
+  "course": {
+    "title": "지역 미술 여행(공공미술)",
+    "tagline": "",
+    "subject": "미술",
+    "grade": "초등 3학년",
+    "author": "장현주",
+    "credits": [
+      "차시 배지: Google Gemini로 생성한 이미지"
+    ]
+  },
+  "units": [
+    {
+      "id": "1",
+      "title": "지역 미술 여행(공공미술)",
+      "lessons": [
+        {
+          "no": 1,
+          "title": "나무가 예술이네! 우리 동네에는 어떤 나무들이 자라고 있을까요?",
+          "badge": "assets/img/badges/publicart/1.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 2,
+          "title": "동네 식물, 우리에게 어떤 이야기를 들려줄까요?",
+          "badge": "assets/img/badges/publicart/2.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 3,
+          "title": "동물도 감정이 있어요! 슬픈 동물은 어떤 얼굴일까요?",
+          "badge": "assets/img/badges/publicart/3.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 4,
+          "title": "안녕, 우리 동네! 내가 사는 곳을 어떻게 아끼고 사랑할 수 있을까요?",
+          "badge": "assets/img/badges/publicart/4.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 5,
+          "title": "더하기 빼기! 우리 동네에 무엇을 더하고 빼면 좋을지 함께 생각해볼까요?",
+          "badge": "assets/img/badges/publicart/5.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        },
+        {
+          "no": 6,
+          "title": "공공미술과 만나요! 우리 동네에서 공공미술 작품을 찾아볼까요?",
+          "badge": "assets/img/badges/publicart/6.png",
+          "videos": [],
+          "teacher": {
+            "worksheet": ""
+          }
+        }
+      ]
+    }
+  ]
+}
