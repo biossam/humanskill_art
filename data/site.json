@@ -12,6 +12,14 @@
       "file": "data/courses/gongmitalk.json"
     },
     {
+      "id": "artist",
+      "year": 2025,
+      "grade": 6,
+      "title": "어느 날 눈떠보니 예술가가 되었다",
+      "tab": "어느 날 눈떠보니 예술가",
+      "file": "data/courses/artist.json"
+    },
+    {
       "id": "publicart",
       "year": 2026,
       "grade": 3,
