@@ -10,7 +10,13 @@
       "사이트용 편집본은 얼굴이 나오는 장면을 수업 자료 화면으로 바꾸고 목소리와 자막은 그대로 두었습니다."
     ],
     "lessonWord": "편",
-    "noWorksheet": true
+    "noWorksheet": true,
+    "teacherLinks": [
+      {
+        "title": "🖼️ 우리 반 전시회 만들기 (선생님용)",
+        "url": "https://biossam.github.io/public_art/?teacher=1#gallery"
+      }
+    ]
   },
   "units": [
     {
