@@ -580,3 +580,7 @@ a.file .icon { color: var(--accent); }
 .part-nav .btn-primary { margin: 0; }
 @media (max-width: 599px) { .part-nav > * { width: 100%; justify-content: center; } .part-panel { padding: var(--s4); } }
 
+
+/* 선생님용 바로가기 (교재 첫 화면, 선생님 화면에만) */
+.intro .teacher-link { margin-left: var(--s5); }
+@media (max-width: 599px) { .intro .teacher-link { display: inline-block; margin: var(--s3) 0 0; } }
