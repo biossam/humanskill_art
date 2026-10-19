@@ -94,7 +94,9 @@ function lessonStatus(lesson) {
   const v = lesson.videos?.length ?? 0;
   const f = teacherFileCount(lesson);
   const parts = [];
-  if (v) parts.push(`영상 ${v}개`);
+  const np = (lesson.videos ?? []).reduce((n, x) => n + (x.parts?.length ?? 0), 0);
+  if (np) parts.push(`파트 ${np}개`);
+  else if (v) parts.push(`영상 ${v}개`);
   if (f && !isStudent) parts.push(`자료 ${f}개`);
   return parts.length ? parts.join(", ") : "준비 중";
 }
@@ -277,7 +279,9 @@ function renderLesson(unitId, no, pick = 0) {
   // 학생용 화면에서 아직 못 얻은 배지면 배지 영상을 지켜봄
   const track = isStudent && lesson.badge && !isEarned(cid, unit, lesson) ? badgeVideoIndexes(lesson) : [];
   const videos = lesson.videos?.length
-    ? lesson.videos.map((v, k) => videoBlock(v, k, lesson.videos.length, k + 1 === pick, track.includes(k))).join("")
+    ? lesson.videos.map((v, k) => v.parts?.length
+        ? partsBlock(v, k)
+        : videoBlock(v, k, lesson.videos.length, k + 1 === pick, track.includes(k))).join("")
     : "";
 
   const details = [
@@ -323,9 +327,154 @@ function renderLesson(unitId, no, pick = 0) {
   document.title = `${lesson.no}차시 ${lesson.title} · ${course.title}`;
   if (track.length) watchBadgeVideos(unit, lesson);
   bindNotes(unit, lesson);
+  (lesson.videos ?? []).forEach((v, k) => { if (v.parts?.length) bindParts(unit, lesson, v, k); });
   const picked = pick ? document.getElementById(`video-${pick}`) : null;
   if (picked) picked.scrollIntoView({ block: "start" });
   else window.scrollTo(0, 0);
+}
+
+/* ---------- 파트별로 보고 활동하기 ----------
+   영상 하나를 파트(start~end 초)로 나눠, 파트를 누르면 그 구간만 재생하고 끝나면 멈춘 뒤 활동을 보여 줌.
+   video.parts: [{ title, start, end, summary, links: [{title, channel, url}], activity: [...] }]
+   activity 종류: { type: "write", prompts: [] } · { type: "quiz", q, options: [], answer, explain } · { type: "check", items: [] }
+   학생이 쓴 내용·체크·본 파트는 이 기기 브라우저에만 저장됨. */
+const PARTS_KEY = "hsa-parts-v1";
+const readParts = () => { try { return JSON.parse(localStorage.getItem(PARTS_KEY) || "{}") || {}; } catch { return {}; } };
+const writeParts = (m) => { try { localStorage.setItem(PARTS_KEY, JSON.stringify(m)); } catch { /* 저장 못 해도 활동은 됨 */ } };
+const fmtTime = (s) => { s = Math.max(0, Math.round(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+
+function partsBlock(video, k) {
+  const id = String(video.youtubeId ?? "").trim();
+  const file = String(video.file ?? "").trim();
+  const player = id || file ? `<div class="player" data-part-player></div>` : `<div class="player"><div class="player-empty">영상 준비 중 · 아래 파트 활동은 지금 할 수 있어요</div></div>`;
+  return `
+    <section class="parts" id="video-${k + 1}" data-v="${k}">
+      <div class="parts-stage">
+        <figure class="video">${player}
+          ${video.title ? `<p class="video-title">${esc(video.title)}</p>` : ""}</figure>
+        <ol class="part-list" aria-label="영상 파트">
+          ${video.parts.map((p, i) => `<li><button type="button" class="part-btn" data-p="${i}">
+            <span class="part-no">${i + 1}</span>
+            <span class="part-name">${esc(p.title)}</span>
+            <span class="part-time">${fmtTime(p.end - p.start)}</span>
+            <span class="part-done" aria-hidden="true">✓</span></button></li>`).join("")}
+        </ol>
+      </div>
+      <div class="part-panel" aria-live="polite"></div>
+    </section>`;
+}
+
+function activityHtml(a, j, st) {
+  if (a.type === "write") {
+    return `<div class="act act-write">${a.prompts.map((q, n) => `
+      <label class="act-q" for="w-${j}-${n}">${esc(q)}</label>
+      <textarea id="w-${j}-${n}" data-w="${j}-${n}" rows="2" placeholder="내 생각을 써 보세요.">${esc(st.w?.[`${j}-${n}`] ?? "")}</textarea>`).join("")}</div>`;
+  }
+  if (a.type === "quiz") {
+    const picked = st.q?.[j];
+    return `<fieldset class="act act-quiz"><legend class="act-q">${esc(a.q)}</legend>
+      ${a.options.map((o, n) => `<button type="button" class="quiz-opt${picked === n ? (n === a.answer ? " is-right" : " is-wrong") : ""}" data-q="${j}" data-o="${n}">${esc(o)}</button>`).join("")}
+      <p class="quiz-explain"${picked === undefined ? " hidden" : ""}>${picked === a.answer ? "정답이에요! " : picked === undefined ? "" : "다시 생각해 봐요. "}${picked === a.answer ? esc(a.explain || "") : ""}</p></fieldset>`;
+  }
+  if (a.type === "check") {
+    return `<ul class="act act-check">${a.items.map((t, n) => `<li><label>
+      <input type="checkbox" data-c="${j}-${n}"${st.c?.[`${j}-${n}`] ? " checked" : ""}><span>${esc(t)}</span></label></li>`).join("")}</ul>`;
+  }
+  return "";
+}
+
+function bindParts(unit, lesson, video, k) {
+  const root = document.querySelector(`.parts[data-v="${k}"]`);
+  if (!root) return;
+  const key = `${badgeKey(cid, unit, lesson)}/v${k}`;
+  const parts = video.parts;
+  const state = () => readParts()[key] ?? {};
+  const save = (fn) => { const all = readParts(); all[key] = all[key] ?? {}; fn(all[key]); writeParts(all); };
+  let cur = -1, stopAt = null, ctl = null;
+
+  // 재생기: 유튜브(youtubeId) 또는 mp4 파일(file)
+  const mount = root.querySelector("[data-part-player]");
+  const id = String(video.youtubeId ?? "").trim();
+  let ready = Promise.resolve(null);
+  if (mount && id) {
+    const el = document.createElement("div"); mount.appendChild(el);
+    ready = loadYT().then((YT) => new Promise((resolve) => {
+      const p = new YT.Player(el, { videoId: id, host: "https://www.youtube-nocookie.com",
+        playerVars: { rel: 0, playsinline: 1 }, events: { onReady: () => resolve({
+          seek: (t) => p.seekTo(t, true), play: () => p.playVideo(), pause: () => p.pauseVideo(),
+          time: () => p.getCurrentTime?.() ?? 0 }) } });
+    })).catch(() => null);
+  } else if (mount && video.file) {
+    const v = document.createElement("video");
+    v.src = video.file; v.controls = true; v.playsInline = true; v.preload = "metadata";
+    mount.appendChild(v);
+    ready = Promise.resolve({ seek: (t) => { v.currentTime = t; }, play: () => v.play().catch(() => {}), pause: () => v.pause(), time: () => v.currentTime });
+  }
+  ready.then((c) => { ctl = c; });
+
+  const timer = setInterval(() => {
+    if (!root.isConnected) { clearInterval(timer); ctl?.pause(); return; }
+    if (!ctl || stopAt === null) return;
+    if (ctl.time() >= stopAt - 0.15) {
+      ctl.pause(); stopAt = null;
+      save((s) => { s.done = s.done ?? {}; s.done[cur] = true; });
+      paintList();
+      root.querySelector(".part-panel")?.classList.add("is-flash");
+      setTimeout(() => root.querySelector(".part-panel")?.classList.remove("is-flash"), 1200);
+    }
+  }, 250);
+
+  function paintList() {
+    const done = state().done ?? {};
+    root.querySelectorAll(".part-btn").forEach((b) => {
+      const i = Number(b.dataset.p);
+      b.setAttribute("aria-current", String(i === cur));
+      b.classList.toggle("is-done", Boolean(done[i]));
+    });
+  }
+
+  function show(i, play) {
+    cur = i;
+    const p = parts[i];
+    const st = state();
+    const links = (p.links ?? []).map((l) => {
+      const u = safeUrl(l.url);
+      return u ? `<li><a class="part-link" href="${esc(u)}" target="_blank" rel="noopener">${icon.external}<span><b>${esc(l.title)}</b>${l.channel ? `<small>${esc(l.channel)}</small>` : ""}</span></a></li>` : "";
+    }).join("");
+    const acts = (p.activity ?? []).map((a, j) => activityHtml(a, j, st)).join("");
+    root.querySelector(".part-panel").innerHTML = `
+      <p class="part-kicker">파트 ${i + 1} · ${fmtTime(p.start)}~${fmtTime(p.end)}</p>
+      <h2 class="part-title">${esc(p.title)}</h2>
+      ${p.summary ? `<p class="part-summary">${esc(p.summary)}</p>` : ""}
+      ${links ? `<div class="part-links"><h3>영상 속 자료 보기</h3><ul>${links}</ul></div>` : ""}
+      ${acts ? `<div class="part-acts"><h3>활동</h3>${acts}</div>` : ""}
+      <div class="part-nav">
+        <button type="button" class="btn-ghost" data-replay>${icon.screen}이 파트 다시 보기</button>
+        ${i + 1 < parts.length ? `<button type="button" class="btn-primary" data-next>다음 파트: ${esc(parts[i + 1].title)} ${icon.arrow}</button>` : ""}
+      </div>`;
+    paintList();
+    if (play && ctl) { ctl.seek(p.start); ctl.play(); stopAt = p.end; }
+    else if (play) ready.then((c) => { if (c && cur === i) { c.seek(p.start); c.play(); stopAt = p.end; } });
+  }
+
+  root.querySelector(".part-list").addEventListener("click", (e) => {
+    const b = e.target.closest(".part-btn"); if (!b) return;
+    show(Number(b.dataset.p), true);
+    root.querySelector(".parts-stage")?.scrollIntoView({ block: "start", behavior: "smooth" });
+  });
+  const panel = root.querySelector(".part-panel");
+  panel.addEventListener("click", (e) => {
+    if (e.target.closest("[data-next]")) { show(cur + 1, true); root.querySelector(".parts-stage")?.scrollIntoView({ block: "start", behavior: "smooth" }); return; }
+    if (e.target.closest("[data-replay]")) { show(cur, true); root.querySelector(".parts-stage")?.scrollIntoView({ block: "start", behavior: "smooth" }); return; }
+    const o = e.target.closest(".quiz-opt");
+    if (o) { save((s) => { s.q = s.q ?? {}; s.q[o.dataset.q] = Number(o.dataset.o); }); show(cur, false); }
+  });
+  panel.addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.dataset.w) save((s) => { s.w = s.w ?? {}; s.w[t.dataset.w] = t.value; });
+    if (t.dataset.c) save((s) => { s.c = s.c ?? {}; s.c[t.dataset.c] = t.checked; });
+  });
+  show(0, false);
 }
 
 function badgeNote(unit, lesson) {
