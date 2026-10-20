@@ -113,7 +113,7 @@ function renderResources() {
     <section class="intro">
       <h1 class="course-title">${esc(course.title)}</h1>
       ${course.tagline ? `<p class="lede">${esc(course.tagline)}</p>` : ""}
-      <p class="intro-note">${(() => { const ready = list.filter((r) => safeUrl(r.url)).length; return ready ? `선생님 자료 ${ready}개${ready < list.length ? ` (준비 중 ${list.length - ready}개)` : ""}. 누르면 원본이 새 창으로 열려요.` : `자료 ${list.length}개를 준비하고 있어요.`; })()}</p>
+      <p class="intro-note">${(() => { const ready = list.filter((r) => safeUrl(r.url)).length; return ready ? `선생님 자료 ${ready}개${ready < list.length ? ` (준비 중 ${list.length - ready}개)` : ""}. ${list.some((r) => r.ppt) ? "누르면 사이트 안에서 바로 열려요." : "누르면 원본이 새 창으로 열려요."}` : `자료 ${list.length}개를 준비하고 있어요.`; })()}</p>
     </section>
     <ul class="resources">
       ${list.map((r) => {
@@ -122,15 +122,47 @@ function renderResources() {
         const extra = (r.links ?? (r.download ? [{ label: r.downloadLabel || "원본 받기", url: r.download, download: true }] : []))
           .map((x) => ({ ...x, url: safeUrl(x.url) })).filter((x) => x.url);
         const dl = extra.length;
-        return `<li${dl ? ` class="has-dl"` : ""}>${url ? `<a class="resource" href="${esc(url)}" target="_blank" rel="noopener">` : `<span class="resource is-empty">`}
+        // r.ppt: 누르면 사이트 안에서 PPT 그대로 보기 (새 창 X)
+        const pdf = safeUrl(r.ppt);
+        const open = pdf ? `<a class="resource" href="${esc(pdf)}" data-ppt="${esc(pdf)}" data-title="${esc(r.title)}">`
+          : url ? `<a class="resource" href="${esc(url)}" target="_blank" rel="noopener">` : `<span class="resource is-empty">`;
+        return `<li${dl ? ` class="has-dl"` : ""}>${open}
           <span class="resource-title">${esc(r.title)}</span>
           <span class="resource-meta">${[r.author, r.source].filter(Boolean).map(esc).join(" · ")}</span>
-          ${url ? `${icon.external}</a>` : `</span>`}${extra.map((x) => `<a class="resource-dl" href="${esc(x.url)}" ${x.download ? "download" : `target="_blank" rel="noopener"`}>${esc(x.label)}</a>`).join("")}</li>`;
+          ${pdf ? `${icon.screen}</a>` : url ? `${icon.external}</a>` : `</span>`}${extra.map((x) => `<a class="resource-dl" href="${esc(x.url)}" ${x.download ? "download" : `target="_blank" rel="noopener"`}>${esc(x.label)}</a>`).join("")}</li>`;
       }).join("")}
     </ul>`;
+  app.querySelectorAll("[data-ppt]").forEach((a) => a.addEventListener("click", (e) => {
+    e.preventDefault(); openDeck(a.dataset.ppt, a.dataset.title, a.dataset.ppt);
+  }));
   document.title = `${course.title} · ${siteTitle}`;
   fitTitle();
   window.scrollTo(0, 0);
+}
+
+// ── 사이트 안 PPT 보기: Microsoft Office 온라인 뷰어(무료, 로그인 없음)를 화면 안에 띄움 ──
+function openDeck(src, title, dl) {
+  const abs = new URL(src, location.href).href;
+  const box = document.createElement("div");
+  box.className = "pdfv";
+  box.innerHTML = `
+    <div class="pdfv-bar">
+      <b class="pdfv-title">${esc(title || "")}</b>
+      ${dl ? `<a class="pdfv-btn" href="${esc(dl)}" download>PPT 받기</a>` : ""}
+      <button class="pdfv-btn" data-act="full">전체 화면</button>
+      <button class="pdfv-btn" data-act="close">닫기 ✕</button>
+    </div>
+    <iframe class="pdfv-frame" src="https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(abs)}" allowfullscreen title="${esc(title || "PPT")}"></iframe>`;
+  document.body.appendChild(box);
+  document.body.style.overflow = "hidden";
+  const close = () => { document.removeEventListener("keydown", key); if (document.fullscreenElement) document.exitFullscreen?.(); box.remove(); document.body.style.overflow = ""; };
+  const key = (e) => { if (e.key === "Escape") close(); };
+  document.addEventListener("keydown", key);
+  box.addEventListener("click", (e) => {
+    const act = e.target.closest("[data-act]")?.dataset.act;
+    if (act === "close") close();
+    else if (act === "full") (document.fullscreenElement ? document.exitFullscreen() : box.requestFullscreen?.())?.catch?.(() => {});
+  });
 }
 
 function renderHome() {

@@ -1,7 +1,7 @@
 {
   "course": {
     "title": "수업 시연",
-    "tagline": "1~40차시 수업 시연 자료 (PPT 바로 보기 · PDF · PPT 받기)",
+    "tagline": "1~40차시 수업 시연 자료 (누르면 PPT 바로 보기 · PDF · PPT 받기)",
     "subject": "미술",
     "grade": "",
     "author": "",
@@ -10,8 +10,8 @@
       {
         "title": "1차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 1차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F1.pptx",
+        "source": "휴먼스킬아트 1차시 · 바로 보기",
+        "url": "files/demo/1.pptx",
         "links": [
           {
             "label": "PDF",
@@ -22,13 +22,14 @@
             "url": "files/demo/1.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/1.pptx"
       },
       {
         "title": "2차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 2차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F2.pptx",
+        "source": "휴먼스킬아트 2차시 · 바로 보기",
+        "url": "files/demo/2.pptx",
         "links": [
           {
             "label": "PDF",
@@ -39,13 +40,14 @@
             "url": "files/demo/2.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/2.pptx"
       },
       {
         "title": "3차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 3차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F3.pptx",
+        "source": "휴먼스킬아트 3차시 · 바로 보기",
+        "url": "files/demo/3.pptx",
         "links": [
           {
             "label": "PDF",
@@ -56,13 +58,14 @@
             "url": "files/demo/3.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/3.pptx"
       },
       {
         "title": "4차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 4차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F4.pptx",
+        "source": "휴먼스킬아트 4차시 · 바로 보기",
+        "url": "files/demo/4.pptx",
         "links": [
           {
             "label": "PDF",
@@ -73,13 +76,14 @@
             "url": "files/demo/4.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/4.pptx"
       },
       {
         "title": "5차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 5차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F5.pptx",
+        "source": "휴먼스킬아트 5차시 · 바로 보기",
+        "url": "files/demo/5.pptx",
         "links": [
           {
             "label": "PDF",
@@ -90,13 +94,14 @@
             "url": "files/demo/5.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/5.pptx"
       },
       {
         "title": "6차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 6차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F6.pptx",
+        "source": "휴먼스킬아트 6차시 · 바로 보기",
+        "url": "files/demo/6.pptx",
         "links": [
           {
             "label": "PDF",
@@ -107,7 +112,8 @@
             "url": "files/demo/6.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/6.pptx"
       },
       {
         "title": "7차시 수업 시연",
@@ -154,8 +160,8 @@
       {
         "title": "14차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 1차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F14.pptx",
+        "source": "지역 미술 여행 1차시 · 바로 보기",
+        "url": "files/demo/14.pptx",
         "links": [
           {
             "label": "PDF",
@@ -166,13 +172,14 @@
             "url": "files/demo/14.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/14.pptx"
       },
       {
         "title": "15차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 2차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F15.pptx",
+        "source": "지역 미술 여행 2차시 · 바로 보기",
+        "url": "files/demo/15.pptx",
         "links": [
           {
             "label": "PDF",
@@ -183,13 +190,14 @@
             "url": "files/demo/15.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/15.pptx"
       },
       {
         "title": "16차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 3차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F16.pptx",
+        "source": "지역 미술 여행 3차시 · 바로 보기",
+        "url": "files/demo/16.pptx",
         "links": [
           {
             "label": "PDF",
@@ -200,13 +208,14 @@
             "url": "files/demo/16.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/16.pptx"
       },
       {
         "title": "17차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 4차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F17.pptx",
+        "source": "지역 미술 여행 4차시 · 바로 보기",
+        "url": "files/demo/17.pptx",
         "links": [
           {
             "label": "PDF",
@@ -217,13 +226,14 @@
             "url": "files/demo/17.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/17.pptx"
       },
       {
         "title": "18차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 5차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F18.pptx",
+        "source": "지역 미술 여행 5차시 · 바로 보기",
+        "url": "files/demo/18.pptx",
         "links": [
           {
             "label": "PDF",
@@ -234,13 +244,14 @@
             "url": "files/demo/18.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/18.pptx"
       },
       {
         "title": "19차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 6차시 · PPT 바로 보기",
-        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F19.pptx",
+        "source": "지역 미술 여행 6차시 · 바로 보기",
+        "url": "files/demo/19.pptx",
         "links": [
           {
             "label": "PDF",
@@ -251,7 +262,8 @@
             "url": "files/demo/19.pptx",
             "download": true
           }
-        ]
+        ],
+        "ppt": "files/demo/19.pptx"
       },
       {
         "title": "20차시 수업 시연",
