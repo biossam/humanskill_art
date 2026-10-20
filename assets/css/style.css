@@ -626,3 +626,15 @@ a.file .icon { color: var(--accent); }
 .artist-work span { display: inline-block; margin-right: var(--s2); padding: 0 var(--s2); border-radius: 4px; background: var(--accent); color: var(--accent-ink); font-size: 0.8125rem; font-weight: 700; }
 .artist-ask { padding: var(--s3) var(--s4); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); border-radius: var(--radius); color: var(--ink) !important; font-weight: 700; }
 .artist-links { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s4); }
+
+/* 사이트 안 PDF 보기 */
+.pdfv { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column; background: #111; color: #fff; }
+.pdfv-bar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #000; }
+.pdfv-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.0625rem; }
+.pdfv-count { font-size: 0.9375rem; color: #ccc; white-space: nowrap; }
+.pdfv-count a { color: #9cf; }
+.pdfv-btn { flex: none; padding: 8px 14px; border: 1px solid #555; border-radius: 999px; background: transparent; color: #fff; font: inherit; font-size: 0.875rem; cursor: pointer; }
+.pdfv-btn:hover { background: #333; }
+.pdfv-frame { flex: 1; width: 100%; border: 0; background: #fff; }
+a.pdfv-btn { text-decoration: none; }
+@media (max-width: 599px) { .pdfv-btn[data-act="full"] { display: none; } }
