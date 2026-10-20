@@ -60,7 +60,12 @@
           "no": 4,
           "title": "안녕, 우리 동네! 내가 사는 곳을 어떻게 아끼고 사랑할 수 있을까요?",
           "badge": "assets/img/badges/publicart/4.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "1xriTD9GFOY",
+              "title": "4차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
@@ -69,7 +74,12 @@
           "no": 5,
           "title": "더하기 빼기! 우리 동네에 무엇을 더하고 빼면 좋을지 함께 생각해볼까요?",
           "badge": "assets/img/badges/publicart/5.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "KG6B-rHDHJQ",
+              "title": "5차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
@@ -78,7 +88,12 @@
           "no": 6,
           "title": "공공미술과 만나요! 우리 동네에서 공공미술 작품을 찾아볼까요?",
           "badge": "assets/img/badges/publicart/6.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "UGTvCk4vytU",
+              "title": "6차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
