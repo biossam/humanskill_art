@@ -862,7 +862,16 @@ function openClassMode(lesson) {
   overlay.innerHTML = `
     <div class="cm-top">
       <p>${badgeImg(lesson, "cm-badge")}<span>${lesson.no}${LW()}</span> ${esc(lesson.title)}</p>
-      <button class="cm-close" type="button" aria-label="수업 모드 닫기">${icon.close}</button>
+      <span class="cm-top-tools">
+        ${lesson.artist ? `<button class="cm-artist-btn" type="button">작가 소개</button>` : ""}
+        <button class="cm-close" type="button" aria-label="수업 모드 닫기">${icon.close}</button>
+      </span>
+    </div>
+    <div class="cm-viewer" hidden>
+      <div class="cm-viewer-bar"><b class="cm-viewer-title"></b>
+        <a class="cm-viewer-out" target="_blank" rel="noopener">새 창으로 ${icon.external}</a>
+        <button type="button" class="cm-viewer-close" aria-label="자료 닫기">${icon.close}</button></div>
+      <div class="cm-viewer-body"></div>
     </div>
     <div class="cm-body${video ? "" : " no-video"}">
       ${video ? `<div class="cm-media">
@@ -872,6 +881,7 @@ function openClassMode(lesson) {
         ${videos.length > 1 ? `<div class="cm-videos" role="group" aria-label="영상 고르기">
           ${videos.map((v, k) => `<button type="button" data-v="${k}" aria-pressed="${k === 0}"><span>${k + 1}</span>${esc(v.title || `영상 ${k + 1}`)}</button>`).join("")}
         </div>` : ""}
+        <div class="cm-links" aria-label="이 단계 자료"></div>
       </div>` : ""}
       <div class="cm-steps">
         ${lesson.goal ? `<p class="cm-goal">${esc(lesson.goal)}</p>` : ""}
@@ -904,7 +914,50 @@ function openClassMode(lesson) {
     yt.seekTo(parts[k].start, true); yt.playVideo(); stopAt = parts[k].end;
   };
 
+  // 단계 자료 링크: 유튜브와 이 사이트들은 수업 모드 안에서 바로 열고, 나머지는 새 창으로
+  const ytId = (u) => { try { const x = new URL(u); if (x.hostname === "youtu.be") return [x.pathname.slice(1), x.searchParams.get("t")]; if (/youtube\.com$/.test(x.hostname)) return [x.searchParams.get("v"), x.searchParams.get("t")]; } catch {} return [null, null]; };
+  const viewer = overlay.querySelector(".cm-viewer");
+  const openLink = (title, url) => {
+    const [id, t] = ytId(url);
+    const inSite = /^https:\/\/biossam\.github\.io\//.test(url);
+    if (!id && !inSite) { window.open(url, "_blank", "noopener"); return; }
+    yt?.pauseVideo?.();
+    const src = id ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?rel=0&autoplay=1${t ? `&start=${parseInt(t, 10) || 0}` : ""}` : url;
+    viewer.querySelector(".cm-viewer-title").textContent = title;
+    viewer.querySelector(".cm-viewer-out").href = url;
+    viewer.querySelector(".cm-viewer-body").innerHTML = `<iframe src="${esc(src)}" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; camera" allowfullscreen></iframe>`;
+    viewer.hidden = false;
+  };
+  const openArtist = () => {
+    const a = lesson.artist;
+    viewer.querySelector(".cm-viewer-title").textContent = `작가 소개 · ${a.name}`;
+    const first = (a.links ?? []).map((l) => safeUrl(l.url)).find(Boolean) || "";
+    const out = viewer.querySelector(".cm-viewer-out");
+    out.hidden = !first; if (first) out.href = first;
+    viewer.querySelector(".cm-viewer-body").innerHTML = `<article class="cm-artist">
+      <p class="cm-artist-kicker">${lesson.no}${LW()} 작가</p>
+      <h2>${esc(a.name)}${a.life ? ` <small>${esc(a.life)}</small>` : ""}</h2>
+      ${(a.intro ?? []).map((t) => `<p>${esc(t)}</p>`).join("")}
+      ${a.work ? `<p class="cm-artist-work"><span>대표 작업</span>${esc(a.work)}</p>` : ""}
+      ${a.ask ? `<p class="cm-artist-ask">${esc(a.ask)}</p>` : ""}
+      ${(a.links ?? []).length ? `<ul>${a.links.map((l) => safeUrl(l.url) ? `<li><a href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.title)} ${icon.external}</a></li>` : "").join("")}</ul>` : ""}
+    </article>`;
+    viewer.hidden = false;
+  };
+  const closeViewer = () => { viewer.hidden = true; viewer.querySelector(".cm-viewer-body").innerHTML = ""; viewer.querySelector(".cm-viewer-out").hidden = false; };
+  viewer.querySelector(".cm-viewer-close").addEventListener("click", closeViewer);
+  overlay.querySelector(".cm-artist-btn")?.addEventListener("click", openArtist);
+  const paintLinks = () => {
+    const box = overlay.querySelector(".cm-links");
+    if (!box) return;
+    const p = parts?.[current];
+    const links = (p?.links ?? []).map((l) => ({ title: (!isStudent && l.teacherTitle) || l.title, url: safeUrl((!isStudent && l.teacherUrl) || l.url) })).filter((l) => l.url);
+    box.innerHTML = links.map((l, k) => `<button type="button" data-l="${k}">${icon.external}<span>${esc(l.title)}</span></button>`).join("");
+    box.querySelectorAll("[data-l]").forEach((b) => b.addEventListener("click", () => { const l = links[Number(b.dataset.l)]; openLink(l.title, l.url); }));
+  };
+
   const update = () => {
+    paintLinks();
     overlay.querySelectorAll(".cm-steps li").forEach((li, k) => {
       li.classList.toggle("is-current", k === current);
       li.classList.toggle("is-done", k < current);
@@ -930,9 +983,10 @@ function openClassMode(lesson) {
   };
 
   const onKey = (e) => {
+    if (!viewer.hidden && e.key !== "Escape") return;   // 자료를 보는 중에는 단계가 넘어가지 않음
     if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); move(1); }
     else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); move(-1); }
-    else if (e.key === "Escape") close();
+    else if (e.key === "Escape") { if (!viewer.hidden) closeViewer(); else close(); }
     else if (/^[1-9]$/.test(e.key)) overlay.querySelector(`.cm-videos [data-v="${Number(e.key) - 1}"]`)?.click();
   };
 
