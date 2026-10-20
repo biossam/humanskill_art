@@ -1,7 +1,7 @@
 {
   "course": {
     "title": "수업 시연",
-    "tagline": "1~40차시 수업 시연 자료 (PDF로 보기 · PPT 원본 받기)",
+    "tagline": "1~40차시 수업 시연 자료 (PPT 바로 보기 · PDF · PPT 받기)",
     "subject": "미술",
     "grade": "",
     "author": "",
@@ -10,50 +10,104 @@
       {
         "title": "1차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 1차시 · PDF로 보기",
-        "url": "files/demo/1.pdf",
-        "download": "files/demo/1.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "휴먼스킬아트 1차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F1.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/1.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/1.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "2차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 2차시 · PDF로 보기",
-        "url": "files/demo/2.pdf",
-        "download": "files/demo/2.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "휴먼스킬아트 2차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F2.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/2.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/2.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "3차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 3차시 · PDF로 보기",
-        "url": "files/demo/3.pdf",
-        "download": "files/demo/3.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "휴먼스킬아트 3차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F3.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/3.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/3.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "4차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 4차시 · PDF로 보기",
-        "url": "files/demo/4.pdf",
-        "download": "files/demo/4.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "휴먼스킬아트 4차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F4.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/4.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/4.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "5차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 5차시 · PDF로 보기",
-        "url": "files/demo/5.pdf",
-        "download": "files/demo/5.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "휴먼스킬아트 5차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F5.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/5.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/5.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "6차시 수업 시연",
         "author": "",
-        "source": "휴먼스킬아트 6차시 · PDF로 보기",
-        "url": "files/demo/6.pdf",
-        "download": "files/demo/6.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "휴먼스킬아트 6차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F6.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/6.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/6.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "7차시 수업 시연",
@@ -100,50 +154,104 @@
       {
         "title": "14차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 1차시 · PDF로 보기",
-        "url": "files/demo/14.pdf",
-        "download": "files/demo/14.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "지역 미술 여행 1차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F14.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/14.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/14.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "15차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 2차시 · PDF로 보기",
-        "url": "files/demo/15.pdf",
-        "download": "files/demo/15.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "지역 미술 여행 2차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F15.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/15.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/15.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "16차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 3차시 · PDF로 보기",
-        "url": "files/demo/16.pdf",
-        "download": "files/demo/16.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "지역 미술 여행 3차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F16.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/16.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/16.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "17차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 4차시 · PDF로 보기",
-        "url": "files/demo/17.pdf",
-        "download": "files/demo/17.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "지역 미술 여행 4차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F17.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/17.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/17.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "18차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 5차시 · PDF로 보기",
-        "url": "files/demo/18.pdf",
-        "download": "files/demo/18.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "지역 미술 여행 5차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F18.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/18.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/18.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "19차시 수업 시연",
         "author": "장현주",
-        "source": "지역 미술 여행 6차시 · PDF로 보기",
-        "url": "files/demo/19.pdf",
-        "download": "files/demo/19.pptx",
-        "downloadLabel": "PPT 받기"
+        "source": "지역 미술 여행 6차시 · PPT 바로 보기",
+        "url": "https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbiossam.github.io%2Fhumanskill_art%2Ffiles%2Fdemo%2F19.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/19.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/19.pptx",
+            "download": true
+          }
+        ]
       },
       {
         "title": "20차시 수업 시연",
