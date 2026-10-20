@@ -445,9 +445,12 @@ function bindParts(unit, lesson, video, k) {
     cur = i;
     const p = parts[i];
     const st = state();
+    // 선생님 화면에서는 teacherUrl(선생님용 주소)이 있으면 그쪽으로 보냄
     const links = (p.links ?? []).map((l) => {
-      const u = safeUrl(l.url);
-      return u ? `<li><a class="part-link" href="${esc(u)}" target="_blank" rel="noopener">${icon.external}<span><b>${esc(l.title)}</b>${l.channel ? `<small>${esc(l.channel)}</small>` : ""}</span></a></li>` : "";
+      const t = !isStudent && l.teacherUrl;
+      const u = safeUrl(t ? l.teacherUrl : l.url);
+      const title = t ? (l.teacherTitle || l.title) : l.title;
+      return u ? `<li><a class="part-link" href="${esc(u)}" target="_blank" rel="noopener">${icon.external}<span><b>${esc(title)}</b>${!t && l.channel ? `<small>${esc(l.channel)}</small>` : ""}</span></a></li>` : "";
     }).join("");
     const acts = (p.activity ?? []).map((a, j) => activityHtml(a, j, st)).join("");
     root.querySelector(".part-panel").innerHTML = `

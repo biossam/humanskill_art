@@ -128,15 +128,17 @@
                         "미션 1. 작품을 전시할 공간을 찾아보세요.",
                         "미션 2. 공간과 어울리는 메시지를 찾아보세요.",
                         "미션 3. 테이프 등을 활용해 작품을 만들어 보세요.",
-                        "미션 4. 작품 사진과 이야기를 갤러리에 올리고, 친구 작품을 감상해 보세요."
+                        "미션 4. 작품 사진을 찍어 올려 보세요. (작품 이야기는 수업 마무리 때 써요)"
                       ]
                     }
                   ],
                   "links": [
                     {
-                      "title": "친구 작품 갤러리: 내 작품 올리고 친구 작품 보기",
-                      "channel": "예술가 퀘스트 갤러리",
-                      "url": "https://biossam.github.io/public_art/?m=1#gallery"
+                      "title": "내 작품 사진 올리기",
+                      "channel": "예술가 퀘스트 · 사진을 올리면 친구들도 갤러리에서 볼 수 있어요",
+                      "url": "https://biossam.github.io/public_art/?m=1&step=photo",
+                      "teacherTitle": "우리 반 작품 모아 보기 · 전시회 만들기 (선생님용)",
+                      "teacherUrl": "https://biossam.github.io/public_art/?m=1&teacher=1#gallery"
                     }
                   ]
                 },
@@ -155,9 +157,11 @@
                   ],
                   "links": [
                     {
-                      "title": "예술가 퀘스트: '공공미술가' 미션 완료하기",
-                      "channel": "작가 이름과 작품 아이디어를 남기고 증서를 받아요",
-                      "url": "https://biossam.github.io/public_art/?m=1"
+                      "title": "작품 이야기 쓰고 미션 완료하기",
+                      "channel": "예술가 퀘스트 · 사진과 이야기를 모두 올리면 배지를 받아요",
+                      "url": "https://biossam.github.io/public_art/?m=1",
+                      "teacherTitle": "우리 반 작품 모아 보기 · 전시회 만들기 (선생님용)",
+                      "teacherUrl": "https://biossam.github.io/public_art/?m=1&teacher=1#gallery"
                     }
                   ]
                 }
@@ -277,15 +281,17 @@
                         "미션 1. 내가 살려 내고 싶은 멸종위기 동물을 떠올려 보세요.",
                         "미션 2. 인물화처럼 동물의 정면 모습을 떠올려 보세요.",
                         "미션 3. 스케치북 앱 등으로 멸종위기 동물의 정면화를 그려 보세요.",
-                        "미션 4. 작품 사진과 이야기를 갤러리에 올리고, 친구 작품을 감상해 보세요."
+                        "미션 4. 작품 사진을 찍어 올려 보세요. (작품 이야기는 수업 마무리 때 써요)"
                       ]
                     }
                   ],
                   "links": [
                     {
-                      "title": "친구 작품 갤러리: 내 작품 올리고 친구 작품 보기",
-                      "channel": "예술가 퀘스트 갤러리",
-                      "url": "https://biossam.github.io/public_art/?m=2#gallery"
+                      "title": "내 작품 사진 올리기",
+                      "channel": "예술가 퀘스트 · 사진을 올리면 친구들도 갤러리에서 볼 수 있어요",
+                      "url": "https://biossam.github.io/public_art/?m=2&step=photo",
+                      "teacherTitle": "우리 반 작품 모아 보기 · 전시회 만들기 (선생님용)",
+                      "teacherUrl": "https://biossam.github.io/public_art/?m=2&teacher=1#gallery"
                     }
                   ]
                 },
@@ -305,9 +311,11 @@
                   ],
                   "links": [
                     {
-                      "title": "예술가 퀘스트: '동시대 공공미술가' 미션 완료하기",
-                      "channel": "작가 이름과 작품 아이디어를 남기고 증서를 받아요",
-                      "url": "https://biossam.github.io/public_art/?m=2"
+                      "title": "작품 이야기 쓰고 미션 완료하기",
+                      "channel": "예술가 퀘스트 · 사진과 이야기를 모두 올리면 배지를 받아요",
+                      "url": "https://biossam.github.io/public_art/?m=2",
+                      "teacherTitle": "우리 반 작품 모아 보기 · 전시회 만들기 (선생님용)",
+                      "teacherUrl": "https://biossam.github.io/public_art/?m=2&teacher=1#gallery"
                     }
                   ]
                 }
@@ -434,15 +442,17 @@
                         "미션 1. 주변에 알리고 싶은 사회 문제를 떠올려 보세요.",
                         "미션 2. 사회 문제를 예술로 표현할 방법을 떠올려 보세요.",
                         "미션 3. 클레이, 병뚜껑 등을 활용해 작품을 만들어 보세요.",
-                        "미션 4. 작품 사진과 이야기를 갤러리에 올리고, 친구 작품을 감상해 보세요."
+                        "미션 4. 작품 사진을 찍어 올려 보세요. (작품 이야기는 수업 마무리 때 써요)"
                       ]
                     }
                   ],
                   "links": [
                     {
-                      "title": "친구 작품 갤러리: 내 작품 올리고 친구 작품 보기",
-                      "channel": "예술가 퀘스트 갤러리",
-                      "url": "https://biossam.github.io/public_art/?m=3#gallery"
+                      "title": "내 작품 사진 올리기",
+                      "channel": "예술가 퀘스트 · 사진을 올리면 친구들도 갤러리에서 볼 수 있어요",
+                      "url": "https://biossam.github.io/public_art/?m=3&step=photo",
+                      "teacherTitle": "우리 반 작품 모아 보기 · 전시회 만들기 (선생님용)",
+                      "teacherUrl": "https://biossam.github.io/public_art/?m=3&teacher=1#gallery"
                     }
                   ]
                 },
@@ -462,9 +472,11 @@
                   ],
                   "links": [
                     {
-                      "title": "예술가 퀘스트: '사회참여 공공미술가' 미션 완료하기",
-                      "channel": "작가 이름과 작품 아이디어를 남기고 증서를 받아요",
-                      "url": "https://biossam.github.io/public_art/?m=3"
+                      "title": "작품 이야기 쓰고 미션 완료하기",
+                      "channel": "예술가 퀘스트 · 사진과 이야기를 모두 올리면 배지를 받아요",
+                      "url": "https://biossam.github.io/public_art/?m=3",
+                      "teacherTitle": "우리 반 작품 모아 보기 · 전시회 만들기 (선생님용)",
+                      "teacherUrl": "https://biossam.github.io/public_art/?m=3&teacher=1#gallery"
                     }
                   ]
                 }
@@ -584,15 +596,17 @@
                         "미션 1. 주변에서 쉽게 버려지는 것들을 떠올려 보세요.",
                         "미션 2. 버려진 것에서 새로운 가치를 찾아보세요.",
                         "미션 3. 양말목 등 주변의 재료를 활용해 작품을 만들어 보세요.",
-                        "미션 4. 작품 사진과 이야기를 갤러리에 올리고, 친구 작품을 감상해 보세요."
+                        "미션 4. 작품 사진을 찍어 올려 보세요. (작품 이야기는 수업 마무리 때 써요)"
                       ]
                     }
                   ],
                   "links": [
                     {
-                      "title": "친구 작품 갤러리: 내 작품 올리고 친구 작품 보기",
-                      "channel": "예술가 퀘스트 갤러리",
-                      "url": "https://biossam.github.io/public_art/?m=4#gallery"
+                      "title": "내 작품 사진 올리기",
+                      "channel": "예술가 퀘스트 · 사진을 올리면 친구들도 갤러리에서 볼 수 있어요",
+                      "url": "https://biossam.github.io/public_art/?m=4&step=photo",
+                      "teacherTitle": "우리 반 작품 모아 보기 · 전시회 만들기 (선생님용)",
+                      "teacherUrl": "https://biossam.github.io/public_art/?m=4&teacher=1#gallery"
                     }
                   ]
                 },
@@ -612,9 +626,11 @@
                   ],
                   "links": [
                     {
-                      "title": "예술가 퀘스트: '재사용 공공미술가' 미션 완료하기",
-                      "channel": "작가 이름과 작품 아이디어를 남기고 증서를 받아요",
-                      "url": "https://biossam.github.io/public_art/?m=4"
+                      "title": "작품 이야기 쓰고 미션 완료하기",
+                      "channel": "예술가 퀘스트 · 사진과 이야기를 모두 올리면 배지를 받아요",
+                      "url": "https://biossam.github.io/public_art/?m=4",
+                      "teacherTitle": "우리 반 작품 모아 보기 · 전시회 만들기 (선생님용)",
+                      "teacherUrl": "https://biossam.github.io/public_art/?m=4&teacher=1#gallery"
                     }
                   ]
                 }
