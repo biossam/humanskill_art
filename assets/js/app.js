@@ -118,12 +118,14 @@ function renderResources() {
     <ul class="resources">
       ${list.map((r) => {
         const url = safeUrl(r.url);
-        // r.download: 원본 파일(예: PPT) 내려받기 링크를 따로 붙임
-        const dl = safeUrl(r.download);
+        // r.links: 오른쪽에 붙는 작은 버튼들 [{label, url, download}] (예: PDF, PPT 받기)
+        const extra = (r.links ?? (r.download ? [{ label: r.downloadLabel || "원본 받기", url: r.download, download: true }] : []))
+          .map((x) => ({ ...x, url: safeUrl(x.url) })).filter((x) => x.url);
+        const dl = extra.length;
         return `<li${dl ? ` class="has-dl"` : ""}>${url ? `<a class="resource" href="${esc(url)}" target="_blank" rel="noopener">` : `<span class="resource is-empty">`}
           <span class="resource-title">${esc(r.title)}</span>
           <span class="resource-meta">${[r.author, r.source].filter(Boolean).map(esc).join(" · ")}</span>
-          ${url ? `${icon.external}</a>` : `</span>`}${dl ? `<a class="resource-dl" href="${esc(dl)}" download>${esc(r.downloadLabel || "원본 받기")}</a>` : ""}</li>`;
+          ${url ? `${icon.external}</a>` : `</span>`}${extra.map((x) => `<a class="resource-dl" href="${esc(x.url)}" ${x.download ? "download" : `target="_blank" rel="noopener"`}>${esc(x.label)}</a>`).join("")}</li>`;
       }).join("")}
     </ul>`;
   document.title = `${course.title} · ${siteTitle}`;
