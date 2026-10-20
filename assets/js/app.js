@@ -89,7 +89,7 @@ function badgeVideoIndexes(lesson) {
 function badgeImg(lesson, cls) {
   const src = String(lesson.badge ?? "").trim();
   if (!src || /^[a-z]+:/i.test(src)) return "";
-  return `<img class="${cls}" src="${esc(src)}" alt="${lesson.no}차시 ${esc(lesson.title)} 배지 (Google Gemini로 생성한 이미지)" title="Google Gemini로 생성한 이미지" width="120" height="136" loading="lazy">`;
+  return `<img class="${cls}" src="${esc(src)}" alt="${lesson.no}${LW()} ${esc(lesson.title)} 배지 (Google Gemini로 생성한 이미지)" title="Google Gemini로 생성한 이미지" width="120" height="136" loading="lazy">`;
 }
 
 function lessonStatus(lesson) {
@@ -566,7 +566,7 @@ function celebrate(lesson) {
   const t = document.createElement("div");
   t.className = "badge-toast";
   t.setAttribute("role", "status");
-  t.innerHTML = `${badgeImg(lesson, "toast-badge")}<p><b>${lesson.no}차시 배지를 받았어요!</b><a href="#/badges">내 배지 보기</a></p>
+  t.innerHTML = `${badgeImg(lesson, "toast-badge")}<p><b>${lesson.no}${LW()} 배지를 받았어요!</b><a href="#/badges">내 배지 보기</a></p>
     <button type="button" aria-label="닫기">${icon.close}</button>`;
   t.querySelector("button").addEventListener("click", () => t.remove());
   document.body.appendChild(t);
@@ -718,7 +718,7 @@ async function renderBadges() {
             return `<li class="${when ? "is-earned" : "not-earned"}">
               <a href="${homeHref(c.id)}/lesson/${encodeURIComponent(u.id)}/${l.no}">
                 ${badgeImg(l, "shelf-badge")}
-                <span>${l.no}차시</span>
+                <span>${l.no}${co.lessonWord || "차시"}</span>
                 <span class="sr-only">${when ? "받음" : "아직"}</span>
               </a></li>`;
           }).join("")}
