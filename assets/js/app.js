@@ -227,6 +227,22 @@ function videoBlock(video, index, total, play = false, track = false) {
   return `<figure class="video${video.short ? " is-short" : ""}${play ? " is-picked" : ""}" id="video-${index + 1}"><div class="player">${player}</div>${caption}${credit}</figure>`;
 }
 
+// 차시 작가 소개 (lesson.artist): 학생·선생님 화면 모두
+function artistSection(lesson) {
+  const a = lesson.artist;
+  if (!a) return "";
+  const links = (a.links ?? []).map((l) => safeUrl(l.url) ? `<a class="part-link" href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${icon.external}<span><b>${esc(l.title)}</b></span></a>` : "").join("");
+  return `
+    <section class="artist-card" aria-labelledby="artist-h">
+      <p class="artist-kicker">이 ${LW()}의 작가</p>
+      <h2 id="artist-h">${esc(a.name)}${a.life ? ` <small>${esc(a.life)}</small>` : ""}</h2>
+      ${(a.intro ?? []).map((t) => `<p>${esc(t)}</p>`).join("")}
+      ${a.work ? `<p class="artist-work"><span>대표 작업</span>${esc(a.work)}</p>` : ""}
+      ${a.ask ? `<p class="artist-ask">${esc(a.ask)}</p>` : ""}
+      ${links ? `<div class="artist-links">${links}</div>` : ""}
+    </section>`;
+}
+
 function listSection(title, items, ordered = false) {
   if (!items?.length) return "";
   const tag = ordered ? "ol" : "ul";
@@ -317,6 +333,8 @@ function renderLesson(unitId, no, pick = 0) {
     </header>
 
     ${videos ? `<div class="videos">${videos}</div>` : `<p class="empty-note">수업 영상은 준비 중입니다.</p>`}
+
+    ${artistSection(lesson)}
 
     ${details
       ? `<div class="details">${details}</div>`

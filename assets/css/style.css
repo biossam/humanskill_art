@@ -612,3 +612,13 @@ a.file .icon { color: var(--accent); }
 .cm-artist-ask { margin-top: var(--s5) !important; padding: var(--s4); border-left: 4px solid var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); color: var(--ink) !important; font-weight: 700; }
 .cm-artist ul { list-style: none; margin: var(--s4) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s3); font-size: 0.8em; }
 .cm-artist a { display: inline-flex; align-items: center; gap: var(--s1); }
+
+/* 차시 작가 소개 카드 */
+.artist-card { margin-top: var(--s7); padding: var(--s5); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: var(--radius); background: var(--surface); }
+.artist-kicker { margin: 0; color: var(--accent); font-weight: 700; font-size: 0.875rem; }
+.artist-card h2 { margin: var(--s1) 0 var(--s3); font-family: var(--font-display); font-weight: 700; font-size: 2rem; line-height: 1.2; }
+.artist-card h2 small { font-family: var(--font-body); font-weight: 400; font-size: 0.9rem; color: var(--muted); }
+.artist-card p { margin: 0 0 var(--s3); color: var(--ink-2); max-width: 44rem; }
+.artist-work span { display: inline-block; margin-right: var(--s2); padding: 0 var(--s2); border-radius: 4px; background: var(--accent); color: var(--accent-ink); font-size: 0.8125rem; font-weight: 700; }
+.artist-ask { padding: var(--s3) var(--s4); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); border-radius: var(--radius); color: var(--ink) !important; font-weight: 700; }
+.artist-links { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s4); }
