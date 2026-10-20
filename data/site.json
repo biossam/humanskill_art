@@ -62,6 +62,13 @@
       "grade": 6,
       "title": "휴먼스킬아트",
       "file": "data/course.json"
+    },
+    {
+      "id": "demo",
+      "year": "수업 시연",
+      "teacherOnly": true,
+      "title": "수업 시연",
+      "file": "data/courses/demo.json"
     }
   ]
 }
