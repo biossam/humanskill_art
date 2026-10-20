@@ -46,7 +46,12 @@
           "no": 3,
           "title": "동물도 감정이 있어요! 슬픈 동물은 어떤 얼굴일까요?",
           "badge": "assets/img/badges/publicart/3.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "mHkjmj31_78",
+              "title": "3차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
