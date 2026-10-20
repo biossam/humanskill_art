@@ -18,7 +18,12 @@
           "no": 1,
           "title": "나무가 예술이네! 우리 동네에는 어떤 나무들이 자라고 있을까요?",
           "badge": "assets/img/badges/publicart/1.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "jKGc7pMauUg",
+              "title": "1차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
@@ -27,7 +32,12 @@
           "no": 2,
           "title": "동네 식물, 우리에게 어떤 이야기를 들려줄까요?",
           "badge": "assets/img/badges/publicart/2.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "Mon-iR-lsAo",
+              "title": "2차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
