@@ -25,7 +25,8 @@
             }
           ],
           "teacher": {
-            "worksheet": ""
+            "worksheet": "files/color/1/worksheet.pdf",
+            "plan": "files/color/1/plan.hwp"
           }
         },
         {
