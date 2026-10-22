@@ -59,6 +59,10 @@ const LW = () => course?.lessonWord || "차시";
 const homeHref = (id = cid) => `#/c/${encodeURIComponent(id)}`;
 const lessonHref = (unit, lesson) => `${homeHref()}/lesson/${encodeURIComponent(unit.id)}/${lesson.no}`;
 const ytThumb = (id) => `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg`;
+// 영상은 유튜브(youtubeId) 또는 사이트에 올린 mp4 파일(file, 사이트 안 경로만)
+const vidFile = (v) => { const f = String(v?.file ?? "").trim(); return f && !/^[a-z]+:/i.test(f) ? f : ""; };
+const hasMedia = (v) => Boolean(String(v?.youtubeId ?? "").trim() || vidFile(v));
+const fileVideo = (v, attrs = "") => `<video${attrs} src="${esc(vidFile(v))}"${v.thumb && !/^[a-z]+:/i.test(v.thumb) ? ` poster="${esc(v.thumb)}"` : ""} controls playsinline preload="metadata" title="${esc(v.title || "수업 영상")}"></video>`;
 
 function teacherFileCount(lesson) {
   const t = lesson.teacher ?? {};
@@ -80,7 +84,7 @@ const badgeKey = (courseId, unit, lesson) => `${courseId}/${unit.id}/${lesson.no
 const isEarned = (courseId, unit, lesson) => Boolean(readEarned()[badgeKey(courseId, unit, lesson)]);
 function badgeVideoIndexes(lesson) {
   const vids = lesson.videos ?? [];
-  const ok = vids.map((v, k) => (String(v?.youtubeId ?? "").trim() ? k : -1)).filter((k) => k >= 0);
+  const ok = vids.map((v, k) => (hasMedia(v) ? k : -1)).filter((k) => k >= 0);
   const shorts = ok.filter((k) => vids[k].short);
   return shorts.length ? shorts : ok;
 }
@@ -176,11 +180,11 @@ function renderHome() {
         ${unit.lessons.map((lesson) => {
           const ready = (lesson.videos?.length ?? 0) + (isStudent ? 0 : teacherFileCount(lesson)) > 0;
           const vids = (lesson.videos ?? [])
-            .map((v, k) => ({ id: String(v.youtubeId ?? "").trim(), title: v.title || `영상 ${k + 1}`, k, thumb: v.thumb }))
-            .filter((v) => v.id);
-          // video.thumb: 유튜브 자동 썸네일 대신 쓸 그림 (교재 안에서 썸네일을 통일할 때)
+            .map((v, k) => ({ id: String(v.youtubeId ?? "").trim(), file: vidFile(v), title: v.title || `영상 ${k + 1}`, k, thumb: v.thumb }))
+            .filter((v) => v.id || (v.file && v.thumb));
+          // video.thumb: 유튜브 자동 썸네일 대신 쓸 그림 (교재 안에서 썸네일을 통일할 때, mp4 파일 영상은 꼭 적기)
           const thumbOf = (v) => (v.thumb && !/^[a-z]+:/i.test(v.thumb) ? esc(v.thumb) : ytThumb(v.id));
-          const thumbId = vids[0]?.id;
+          const thumbId = vids[0]?.id || vids[0]?.file;
           // 차시 줄 오른쪽에 영상 썸네일 띠. 누르면 그 차시 화면에서 해당 영상으로 바로 감
           const strip = vids.length ? `
             <ul class="step-videos" aria-label="${lesson.no}${LW()} 영상">
@@ -248,7 +252,9 @@ function videoBlock(video, index, total, play = false, track = false) {
     ? `<iframe${track ? ` data-badge-video` : ""} src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?rel=0${play ? "&autoplay=1" : ""}${track ? `&enablejsapi=1&origin=${encodeURIComponent(location.origin)}` : ""}"
          title="${esc(video.title || "수업 영상")}"${play ? "" : ` loading="lazy"`} allowfullscreen
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>`
-    : `<div class="player-empty">영상 준비 중</div>`;
+    : vidFile(video)
+      ? fileVideo(video, `${track ? " data-badge-video" : ""}${play ? " autoplay" : ""}`)
+      : `<div class="player-empty">영상 준비 중</div>`;
 
   const sourceUrl = safeUrl(video.url);
   const credit = video.external
@@ -569,7 +575,8 @@ function loadYT() {
 const WATCH_NEED = 0.7;
 function watchBadgeVideos(unit, lesson) {
   const frames = [...document.querySelectorAll("iframe[data-badge-video]")];
-  if (!frames.length || isEarned(cid, unit, lesson)) return;
+  const files = [...document.querySelectorAll("video[data-badge-video]")];
+  if ((!frames.length && !files.length) || isEarned(cid, unit, lesson)) return;
   const courseId = cid;
   let done = false;
   const award = () => {
@@ -588,6 +595,26 @@ function watchBadgeVideos(unit, lesson) {
     }
     updateBadgeLink();
   };
+
+  // mp4 파일 영상: 유튜브와 같은 기준 (건너뛴 구간은 세지 않음)
+  files.forEach((el) => {
+    const seen = new Set();
+    let last = null;
+    el.addEventListener("play", () => { last = el.currentTime; });
+    el.addEventListener("seeking", () => { last = null; });
+    el.addEventListener("seeked", () => { last = el.currentTime; });
+    el.addEventListener("timeupdate", () => {
+      if (done || el.seeking) return;
+      const t = el.currentTime;
+      if (last !== null && t > last && t - last <= 1.25) {
+        for (let k = Math.floor(last); k <= Math.floor(t); k++) seen.add(k);
+      }
+      last = t;
+      const dur = el.duration || 0;
+      if (dur > 0 && seen.size / Math.max(1, Math.floor(dur)) >= WATCH_NEED) award();
+    });
+  });
+  if (!frames.length) return;
 
   loadYT().then((YT) => frames.forEach((frame) => {
     if (!frame.isConnected) return;
@@ -894,10 +921,10 @@ async function saveCertImage({ name, course: title, count, date, issuer, badges 
 /* ---------- 수업 모드 (교실 TV) ---------- */
 
 function openClassMode(lesson) {
-  const videos = (lesson.videos ?? []).filter((v) => String(v.youtubeId ?? "").trim());
+  const videos = (lesson.videos ?? []).filter(hasMedia);
   const video = videos[0];
-  // 파트가 있는 영상은 파트가 곧 수업 단계: 단계를 고르면 그 구간만 재생하고 끝나면 멈춤
-  const parts = video?.parts?.length ? video.parts : null;
+  // 파트가 있는 영상은 파트가 곧 수업 단계: 단계를 고르면 그 구간만 재생하고 끝나면 멈춤 (유튜브 영상만)
+  const parts = video?.parts?.length && String(video.youtubeId ?? "").trim() ? video.parts : null;
   const steps = parts
     ? parts.map((p) => {
         const acts = [...new Set((p.activity ?? []).map((a) => ({ write: "생각 쓰기", quiz: "개념 퀴즈", check: "미션 체크" })[a.type]).filter(Boolean))];
@@ -906,6 +933,10 @@ function openClassMode(lesson) {
       })
     : lesson.steps ?? [];
   const embedSrc = (v) => `https://www.youtube-nocookie.com/embed/${encodeURIComponent(String(v.youtubeId).trim())}?rel=0`;
+  const cmPlayer = (v) => String(v.youtubeId ?? "").trim()
+    ? `<iframe src="${embedSrc(v)}" title="${esc(v.title || "수업 영상")}" allowfullscreen
+          allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe>`
+    : fileVideo(v);
   let current = 0;
 
   const overlay = document.createElement("div");
@@ -929,9 +960,7 @@ function openClassMode(lesson) {
     </div>
     <div class="cm-body${video ? "" : " no-video"}">
       ${video ? `<div class="cm-media">
-        <div class="cm-player">${parts ? `<div data-cm-yt></div>` : `<iframe src="${embedSrc(video)}"
-          title="${esc(video.title || "수업 영상")}" allowfullscreen
-          allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe>`}</div>
+        <div class="cm-player">${parts ? `<div data-cm-yt></div>` : cmPlayer(video)}</div>
         ${videos.length > 1 ? `<div class="cm-videos" role="group" aria-label="영상 고르기">
           ${videos.map((v, k) => `<button type="button" data-v="${k}" aria-pressed="${k === 0}"><span>${k + 1}</span>${esc(v.title || `영상 ${k + 1}`)}</button>`).join("")}
         </div>` : ""}
@@ -1052,9 +1081,7 @@ function openClassMode(lesson) {
   overlay.querySelectorAll(".cm-videos button").forEach((b) =>
     b.addEventListener("click", () => {
       const v = videos[Number(b.dataset.v)];
-      const frame = overlay.querySelector(".cm-player iframe");
-      frame.src = embedSrc(v);
-      frame.title = v.title || "수업 영상";
+      overlay.querySelector(".cm-player").innerHTML = cmPlayer(v);
       overlay.querySelectorAll(".cm-videos button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
     }));
   document.addEventListener("keydown", onKey);
