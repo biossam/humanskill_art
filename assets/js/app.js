@@ -113,14 +113,31 @@ function lessonStatus(lesson) {
 // 선생님 자료 목록 ("누구나 예술가가 될 수 있다"처럼 차시가 없는 교재)
 function renderResources() {
   const list = course.resources ?? [];
+  const groups = course.groups ?? [];
   app.innerHTML = `
     <section class="intro">
       <h1 class="course-title">${esc(course.title)}</h1>
       ${course.tagline ? `<p class="lede">${esc(course.tagline)}</p>` : ""}
       <p class="intro-note">${(() => { const ready = list.filter((r) => safeUrl(r.url)).length; return ready ? `선생님 자료 ${ready}개${ready < list.length ? ` (준비 중 ${list.length - ready}개)` : ""}. ${list.some((r) => r.ppt) ? "누르면 사이트 안에서 바로 열려요." : "누르면 원본이 새 창으로 열려요."}` : `자료 ${list.length}개를 준비하고 있어요.`; })()}</p>
     </section>
-    <ul class="resources">
-      ${list.map((r) => {
+    ${groups.length ? groupedResources(list, groups) : `<ul class="resources">${list.map((r) => resourceItem(r)).join("")}</ul>`}`;
+  app.querySelectorAll(".group-chips button").forEach((b) => b.addEventListener("click", () => {
+    const g = b.dataset.g;
+    app.querySelectorAll(".group-chips button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    app.querySelectorAll(".res-group").forEach((sec) => { sec.hidden = g !== "all" && sec.dataset.g !== g; });
+  }));
+  app.querySelectorAll("[data-ppt]").forEach((a) => a.addEventListener("click", (e) => {
+    e.preventDefault(); openDeck(a.dataset.ppt, a.dataset.title, a.dataset.ppt);
+  }));
+  document.title = `${course.title} · ${siteTitle}`;
+  fitTitle();
+  window.scrollTo(0, 0);
+}
+
+// 자료 한 줄 (수업 시연 등)
+function resourceItem(r, prefixes = []) {
+  const src = String(r.source ?? "");
+  const pre = prefixes.filter(Boolean).find((x) => src.startsWith(x));
         const url = safeUrl(r.url);
         // r.links: 오른쪽에 붙는 작은 버튼들 [{label, url, download}] (예: PDF, PPT 받기)
         const extra = (r.links ?? (r.download ? [{ label: r.downloadLabel || "원본 받기", url: r.download, download: true }] : []))
@@ -132,16 +149,28 @@ function renderResources() {
           : url ? `<a class="resource" href="${esc(url)}" target="_blank" rel="noopener">` : `<span class="resource is-empty">`;
         return `<li${dl ? ` class="has-dl"` : ""}>${open}
           <span class="resource-title">${esc(r.title)}</span>
-          <span class="resource-meta">${[r.author, r.source].filter(Boolean).map(esc).join(" · ")}</span>
+          <span class="resource-meta">${[r.author, pre ? src.slice(pre.length).trim() : r.source].filter(Boolean).map(esc).join(" · ")}</span>
           ${pdf ? `${icon.screen}</a>` : url ? `${icon.external}</a>` : `</span>`}${extra.map((x) => `<a class="resource-dl" href="${esc(x.url)}" ${x.download ? "download" : `target="_blank" rel="noopener"`}>${esc(x.label)}</a>`).join("")}</li>`;
-      }).join("")}
-    </ul>`;
-  app.querySelectorAll("[data-ppt]").forEach((a) => a.addEventListener("click", (e) => {
-    e.preventDefault(); openDeck(a.dataset.ppt, a.dataset.title, a.dataset.ppt);
-  }));
-  document.title = `${course.title} · ${siteTitle}`;
-  fitTitle();
-  window.scrollTo(0, 0);
+      }
+
+// course.groups: 교재별로 묶어 연한 색으로 구분하고, 위 버튼으로 한 교재만 골라 봄
+// [{ title, short, course, author, from, to, tone }]  (from~to: 자료 번호, 1부터)
+function groupedResources(list, groups) {
+  const ready = (g) => list.slice(g.from - 1, g.to).filter((r) => safeUrl(r.url)).length;
+  const chips = `<div class="group-chips" role="group" aria-label="교재 고르기">
+      <button type="button" data-g="all" aria-pressed="true">전체</button>
+      ${groups.map((g, i) => `<button type="button" class="tone-${esc(g.tone || "")}" data-g="${i}" aria-pressed="false">${esc(g.short || g.title)}</button>`).join("")}
+    </div>`;
+  const sections = groups.map((g, i) => `
+    <section class="res-group tone-${esc(g.tone || "")}" data-g="${i}" aria-labelledby="rg-${i}">
+      <header class="res-group-head">
+        <h2 id="rg-${i}">${esc(g.title)}</h2>
+        <p>${g.from}~${g.to}${LW()}${g.author ? ` · ${esc(g.author)}` : ""} · 준비 ${ready(g)}/${g.to - g.from + 1}
+          ${g.course ? ` · <a href="${homeHref(g.course)}">교재 보기</a>` : ""}</p>
+      </header>
+      <ul class="resources">${list.slice(g.from - 1, g.to).map((r) => resourceItem(r, [g.title, g.short])).join("")}</ul>
+    </section>`).join("");
+  return chips + sections;
 }
 
 // ── 사이트 안 PPT 보기: Microsoft Office 온라인 뷰어(무료, 로그인 없음)를 화면 안에 띄움 ──

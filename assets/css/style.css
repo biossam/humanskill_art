@@ -640,3 +640,42 @@ a.file .icon { color: var(--accent); }
 .pdfv-frame { flex: 1; width: 100%; border: 0; background: #fff; }
 a.pdfv-btn { text-decoration: none; }
 @media (max-width: 599px) { .pdfv-btn[data-act="full"] { display: none; } }
+
+/* 수업 시연: 교재별 묶음 — 연한 파스텔 색 (course.groups의 tone) */
+.tone-lavender { --tone-bg: #f4f0fd; --tone-line: #cfc2f2; --tone-ink: #4a3d7a; }
+.tone-peach    { --tone-bg: #fdf1e8; --tone-line: #f3c9a8; --tone-ink: #7a4a2a; }
+.tone-mint     { --tone-bg: #eaf7ef; --tone-line: #a9dcbd; --tone-ink: #2f6446; }
+.tone-sky      { --tone-bg: #eaf3fc; --tone-line: #b0d1f0; --tone-ink: #2f527a; }
+.tone-lemon    { --tone-bg: #fcf8e3; --tone-line: #e6d891; --tone-ink: #6b5b1c; }
+.tone-pink     { --tone-bg: #fdeef3; --tone-line: #f1bccd; --tone-ink: #7a3550; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tone-lavender { --tone-bg: #1d1a2e; --tone-line: #6f5fb0; --tone-ink: #d9cffb; }
+  :root:not([data-theme="light"]) .tone-peach    { --tone-bg: #2a1f19; --tone-line: #b07a52; --tone-ink: #f6d6bf; }
+  :root:not([data-theme="light"]) .tone-mint     { --tone-bg: #16251d; --tone-line: #5a9d76; --tone-ink: #c6ecd5; }
+  :root:not([data-theme="light"]) .tone-sky      { --tone-bg: #16202c; --tone-line: #5b88b8; --tone-ink: #cde2f7; }
+  :root:not([data-theme="light"]) .tone-lemon    { --tone-bg: #25220f; --tone-line: #a69545; --tone-ink: #efe4b3; }
+  :root:not([data-theme="light"]) .tone-pink     { --tone-bg: #2a1820; --tone-line: #b0657f; --tone-ink: #f7cfdc; }
+}
+:root[data-theme="dark"] .tone-lavender { --tone-bg: #1d1a2e; --tone-line: #6f5fb0; --tone-ink: #d9cffb; }
+:root[data-theme="dark"] .tone-peach    { --tone-bg: #2a1f19; --tone-line: #b07a52; --tone-ink: #f6d6bf; }
+:root[data-theme="dark"] .tone-mint     { --tone-bg: #16251d; --tone-line: #5a9d76; --tone-ink: #c6ecd5; }
+:root[data-theme="dark"] .tone-sky      { --tone-bg: #16202c; --tone-line: #5b88b8; --tone-ink: #cde2f7; }
+:root[data-theme="dark"] .tone-lemon    { --tone-bg: #25220f; --tone-line: #a69545; --tone-ink: #efe4b3; }
+:root[data-theme="dark"] .tone-pink     { --tone-bg: #2a1820; --tone-line: #b0657f; --tone-ink: #f7cfdc; }
+
+.group-chips { display: flex; flex-wrap: wrap; gap: var(--s2); margin: 0 0 var(--s6); }
+.group-chips button { font: inherit; font-size: 0.9375rem; font-weight: 700; padding: 8px 16px; border-radius: 999px; cursor: pointer;
+  color: var(--tone-ink, var(--ink)); background: var(--tone-bg, var(--surface)); border: 2px solid var(--tone-line, var(--line)); }
+.group-chips button[aria-pressed="true"] { border-color: var(--tone-ink, var(--ink)); box-shadow: inset 0 0 0 1px var(--tone-ink, var(--ink)); }
+.group-chips button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.res-group { background: var(--tone-bg); border-left: 6px solid var(--tone-line); border-radius: var(--radius); padding: var(--s5) var(--s5) var(--s2); margin: 0 0 var(--s6); }
+.res-group-head h2 { margin: 0; font-family: var(--font-display); font-size: clamp(1.5rem, 3.4vw, 2.125rem); line-height: 1.2; color: var(--tone-ink); }
+.res-group-head p { margin: var(--s1) 0 var(--s4); font-size: 0.875rem; color: var(--tone-ink); }
+.res-group-head a { color: inherit; text-decoration-color: var(--tone-line); text-underline-offset: 3px; }
+.res-group .resources { margin: 0; border-top: 2px solid var(--tone-line); }
+.res-group .resources li, .res-group .resource { border-bottom-color: var(--tone-line); }
+.res-group .resource-dl { background: var(--surface); }
+.res-group .resource.is-empty .resource-title { opacity: 0.55; }
+@media (max-width: 599px) { .res-group { padding: var(--s4) var(--s3) var(--s1); border-left-width: 4px; } }
+@media print { .group-chips { display: none; } .res-group { break-inside: avoid-page; } }
