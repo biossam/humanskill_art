@@ -18,7 +18,12 @@
           "no": 1,
           "title": "색이 주는 느낌 알아보고, 주변에서 색 찾아보기",
           "badge": "assets/img/badges/color/1.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "goPbUFW-qaY",
+              "title": "1차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
@@ -27,7 +32,12 @@
           "no": 2,
           "title": "비슷한 색과 반대색으로 표현하기",
           "badge": "assets/img/badges/color/2.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "RKqNPEocXWQ",
+              "title": "2차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
@@ -36,7 +46,12 @@
           "no": 3,
           "title": "비슷한 색과 반대색으로 표현하기",
           "badge": "assets/img/badges/color/3.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "wsEruz7WZoI",
+              "title": "3차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
@@ -45,7 +60,12 @@
           "no": 4,
           "title": "따뜻한 느낌의 색과 차가운 느낌의 색으로 표현하기",
           "badge": "assets/img/badges/color/4.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "BHX7BEl2Hr4",
+              "title": "4차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
@@ -54,7 +74,12 @@
           "no": 5,
           "title": "따뜻한 느낌의 색과 차가운 느낌의 색으로 표현하기",
           "badge": "assets/img/badges/color/5.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "D6CqPjm-rBQ",
+              "title": "5차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
@@ -63,7 +88,12 @@
           "no": 6,
           "title": "색의 느낌을 살려 작품 제작하기",
           "badge": "assets/img/badges/color/6.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "6Ar_e3fO8b8",
+              "title": "6차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
@@ -72,7 +102,12 @@
           "no": 7,
           "title": "내 작품을 전시하고 친구들의 작품 감상하기",
           "badge": "assets/img/badges/color/7.png",
-          "videos": [],
+          "videos": [
+            {
+              "youtubeId": "S4PPp7WZIPY",
+              "title": "7차시 수업 영상"
+            }
+          ],
           "teacher": {
             "worksheet": ""
           }
