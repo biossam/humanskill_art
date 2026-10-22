@@ -352,8 +352,20 @@
       {
         "title": "34차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "색, 이런 느낌 저런 느낌 1차시 · 바로 보기",
+        "url": "files/demo/34.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/34.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/34.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/34.pptx"
       },
       {
         "title": "35차시 수업 시연",
