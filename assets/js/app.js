@@ -66,7 +66,7 @@ const fileVideo = (v, attrs = "") => `<video${attrs} src="${esc(vidFile(v))}"${v
 
 function teacherFileCount(lesson) {
   const t = lesson.teacher ?? {};
-  return [t.worksheet, t.plan].filter(Boolean).length;
+  return [t.worksheet].filter(Boolean).length;
 }
 
 /* ---------- 배지 모으기 (학생용 화면만) ----------
@@ -298,8 +298,6 @@ function teacherSection(lesson) {
   const files = course.noWorksheet ? [] : [
     { label: "수업 활동지", url: t.worksheet },
   ];
-  // teacher.plan: 사이트에 올린 수업 지도안(있는 차시만 보임)
-  if (t.plan) files.push({ label: "수업 지도안", url: t.plan });
   const items = files.map((f) => {
     const url = safeUrl(f.url);
     // 사이트 안에 올린 파일은 "휴먼스킬아트_1차시_수업 활동지.hwpx" 같은 이름으로 내려받게 함
