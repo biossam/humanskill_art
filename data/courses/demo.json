@@ -370,26 +370,74 @@
       {
         "title": "35차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "색, 이런 느낌 저런 느낌 2차시 · 바로 보기",
+        "url": "files/demo/35.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/35.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/35.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/35.pptx"
       },
       {
         "title": "36차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "색, 이런 느낌 저런 느낌 3차시 · 바로 보기",
+        "url": "files/demo/36.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/36.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/36.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/36.pptx"
       },
       {
         "title": "37차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "색, 이런 느낌 저런 느낌 4차시 · 바로 보기",
+        "url": "files/demo/37.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/37.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/37.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/37.pptx"
       },
       {
         "title": "38차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "색, 이런 느낌 저런 느낌 5차시 · 바로 보기",
+        "url": "files/demo/38.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/38.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/38.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/38.pptx"
       },
       {
         "title": "39차시 수업 시연",
@@ -400,8 +448,20 @@
       {
         "title": "40차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "색, 이런 느낌 저런 느낌 7차시 · 바로 보기",
+        "url": "files/demo/40.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/40.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/40.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/40.pptx"
       }
     ]
   },
