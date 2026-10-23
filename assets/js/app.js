@@ -114,12 +114,16 @@ function lessonStatus(lesson) {
 function renderResources() {
   const list = course.resources ?? [];
   const groups = course.groups ?? [];
-  app.innerHTML = `
+  const intro = `
     <section class="intro">
       <h1 class="course-title">${esc(course.title)}</h1>
       ${course.tagline ? `<p class="lede">${esc(course.tagline)}</p>` : ""}
-    </section>
-    ${groups.length ? groupedResources(list, groups) : `<ul class="resources">${list.map((r) => resourceItem(r)).join("")}</ul>`}`;
+    </section>`;
+  // 교재 묶음이 있으면: 왼쪽(제목·교재 탭) | 오른쪽(차시 목록) 두 칸
+  app.innerHTML = groups.length
+    ? (() => { const [chips, sections] = groupedResources(list, groups);
+        return `<div class="demo-layout"><aside class="demo-side">${intro}${chips}</aside><div class="demo-main">${sections}</div></div>`; })()
+    : `${intro}<ul class="resources">${list.map((r) => resourceItem(r)).join("")}</ul>`;
   app.querySelectorAll(".group-chips button").forEach((b) => b.addEventListener("click", () => {
     const g = b.dataset.g;
     app.querySelectorAll(".group-chips button").forEach((x) => { x.setAttribute("aria-pressed", String(x === b)); x.setAttribute("aria-selected", String(x === b)); });
@@ -203,7 +207,7 @@ function groupedResources(list, groups) {
       </header>
       <ul class="ri-list">${list.slice(g.from - 1, g.to).map((r, k) => row(r, k, i)).join("")}</ul>
     </section>`).join("");
-  return chips + sections;
+  return [chips, sections];
 }
 
 // ── 사이트 안 PPT 보기: Microsoft Office 온라인 뷰어(무료, 로그인 없음)를 화면 안에 띄움 ──
