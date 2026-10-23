@@ -740,7 +740,10 @@ a.ri-head:focus-visible, .ri-btn:focus-visible { outline: 3px solid var(--accent
   .home-side .intro h1.is-long { font-size: 1.875rem; }
   /* 영상이 하나뿐이면 카드 자체가 그 영상으로 가므로 썸네일 줄을 뺌 */
   .home-main .sequence > li.one-video .step-videos { display: none; }
-  .home-main .step-topic { font-size: 0.875rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .home-main .step-topic { font-size: 0.875rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  /* 차시가 4개 이하면 한 줄에 하나씩 넓게: 제목·설명이 잘리지 않게 */
+  .home-main.is-few .sequence { grid-template-columns: 1fr; }
+  .home-main.is-few .step-title, .home-main.is-few .step-topic { display: block; -webkit-line-clamp: unset; overflow: visible; }
   .home-main .step-status { font-size: 0.8125rem; }
   .home-main .step-thumb { display: none; }
   .home-main .resources { margin: 0; }

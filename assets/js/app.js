@@ -290,7 +290,7 @@ function renderHome() {
       ${isStudent ? "" : (course.teacherLinks ?? []).map((l) => safeUrl(l.url)
         ? `<a class="text-link teacher-link" href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.title)}</a>` : "").join("")}
     </section></aside>
-    <div class="home-main">${unitBlocks}</div></div>`;
+    <div class="home-main${lessonCount <= 4 ? " is-few" : ""}">${unitBlocks}</div></div>`;
   document.title = `${course.title} · ${siteTitle}`;
   fitTitle();
   document.fonts?.ready.then(fitTitle);
