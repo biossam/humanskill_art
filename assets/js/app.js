@@ -122,8 +122,14 @@ function renderResources() {
     ${groups.length ? groupedResources(list, groups) : `<ul class="resources">${list.map((r) => resourceItem(r)).join("")}</ul>`}`;
   app.querySelectorAll(".group-chips button").forEach((b) => b.addEventListener("click", () => {
     const g = b.dataset.g;
-    app.querySelectorAll(".group-chips button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-    app.querySelectorAll(".res-group").forEach((sec) => { sec.hidden = g !== "all" && sec.dataset.g !== g; });
+    app.querySelectorAll(".group-chips button").forEach((x) => { x.setAttribute("aria-pressed", String(x === b)); x.setAttribute("aria-selected", String(x === b)); });
+    app.querySelectorAll(".res-group").forEach((sec) => { sec.hidden = sec.dataset.g !== g; });
+    try { localStorage.setItem("demoGroup", g); } catch {}
+  }));
+  // 한 탭 안에서는 한 차시만 펼침 (details name을 모르는 브라우저용)
+  app.querySelectorAll(".ri details").forEach((d) => d.addEventListener("toggle", () => {
+    if (!d.open) return;
+    d.closest(".ri-list").querySelectorAll("details[open]").forEach((o) => { if (o !== d) o.open = false; });
   }));
   app.querySelectorAll("[data-ppt]").forEach((a) => a.addEventListener("click", (e) => {
     e.preventDefault(); openDeck(a.dataset.ppt, a.dataset.title, a.dataset.ppt);
@@ -131,6 +137,27 @@ function renderResources() {
   document.title = `${course.title} · ${siteTitle}`;
   fitTitle();
   window.scrollTo(0, 0);
+  if (groups.length) fillLessonTitles(groups);
+}
+
+// 수업 시연 줄 이름을 각 교재의 차시 제목으로 채움 (못 불러오면 원래 이름 그대로)
+async function fillLessonTitles(groups) {
+  await Promise.all(groups.map(async (g, i) => {
+    const entry = courses.find((x) => x.id === g.course);
+    if (!entry) return;
+    try {
+      if (!loaded[entry.id]) {
+        const data = await (await fetch(entry.file, { cache: "no-cache" })).json();
+        loaded[entry.id] = { course: data.course, units: data.units ?? [] };
+      }
+      const lessons = loaded[entry.id].units.flatMap((u) => u.lessons ?? []);
+      app.querySelectorAll(`.res-group[data-g="${i}"] .ri`).forEach((li, k) => {
+        const l = lessons.find((x) => Number(x.no) === k + 1) ?? lessons[k];
+        const t = li.querySelector(".ri-title");
+        if (l?.title && t) { t.title = t.textContent; t.textContent = l.title; }
+      });
+    } catch { /* 이름은 원래대로 둠 */ }
+  }));
 }
 
 // 자료 한 줄 (수업 시연 등)
@@ -152,22 +179,35 @@ function resourceItem(r, prefixes = []) {
           ${pdf ? `${icon.screen}</a>` : url ? `${icon.external}</a>` : `</span>`}${extra.map((x) => `<a class="resource-dl" href="${esc(x.url)}" ${x.download ? "download" : `target="_blank" rel="noopener"`}>${esc(x.label)}</a>`).join("")}</li>`;
       }
 
-// course.groups: 교재별로 묶어 연한 색으로 구분하고, 위 버튼으로 한 교재만 골라 봄
+// course.groups: 교재별 탭(연한 색)으로 나누고, 탭 안에서는 차시를 한 줄씩 접었다 펼침
 // [{ title, short, course, author, from, to, tone }]  (from~to: 자료 번호, 1부터)
 function groupedResources(list, groups) {
   const ready = (g) => list.slice(g.from - 1, g.to).filter((r) => safeUrl(r.url)).length;
-  const chips = `<div class="group-chips" role="group" aria-label="교재 고르기">
-      <button type="button" data-g="all" aria-pressed="true">전체</button>
-      ${groups.map((g, i) => `<button type="button" class="tone-${esc(g.tone || "")}" data-g="${i}" aria-pressed="false">${esc(g.short || g.title)}</button>`).join("")}
+  let cur = 0;
+  try { const v = Number(localStorage.getItem("demoGroup")); if (v >= 0 && v < groups.length) cur = v; } catch {}
+  const chips = `<div class="group-chips" role="tablist" aria-label="교재 고르기">
+      ${groups.map((g, i) => `<button type="button" role="tab" class="tone-${esc(g.tone || "")}" data-g="${i}" aria-selected="${i === cur}" aria-pressed="${i === cur}">${esc(g.short || g.title)}</button>`).join("")}
     </div>`;
+  const row = (r, k, g) => {
+    const pdf = safeUrl(r.ppt), url = safeUrl(r.url);
+    const extra = (r.links ?? []).map((x) => ({ ...x, url: safeUrl(x.url) })).filter((x) => x.url);
+    const no = `<span class="ri-no">${k + 1}${LW()}</span>`;
+    if (!pdf && !url) return `<li class="ri is-empty"><div class="ri-head">${no}<span class="ri-title">${esc(r.title)}</span><span class="ri-soon">준비 중</span></div></li>`;
+    const view = pdf ? `<a class="ri-btn is-main" href="${esc(pdf)}" data-ppt="${esc(pdf)}" data-title="${esc(r.title)}">${icon.screen}<span>PPT 바로 보기</span></a>`
+      : `<a class="ri-btn is-main" href="${esc(url)}" target="_blank" rel="noopener">${icon.external}<span>열기</span></a>`;
+    return `<li class="ri"><details name="ri-${esc(String(g))}">
+        <summary class="ri-head">${no}<span class="ri-title">${esc(r.title)}</span><span class="ri-caret" aria-hidden="true"></span></summary>
+        <div class="ri-body">${view}${extra.map((x) => `<a class="ri-btn" href="${esc(x.url)}" ${x.download ? "download" : `target="_blank" rel="noopener"`}>${esc(x.label)}</a>`).join("")}</div>
+      </details></li>`;
+  };
   const sections = groups.map((g, i) => `
-    <section class="res-group tone-${esc(g.tone || "")}" data-g="${i}" aria-labelledby="rg-${i}">
+    <section class="res-group tone-${esc(g.tone || "")}" data-g="${i}" role="tabpanel" aria-labelledby="rg-${i}"${i === cur ? "" : " hidden"}>
       <header class="res-group-head">
         <h2 id="rg-${i}">${esc(g.title)}</h2>
         <p>${g.from}~${g.to}${LW()}${g.author ? ` · ${esc(g.author)}` : ""} · 준비 ${ready(g)}/${g.to - g.from + 1}
           ${g.course ? ` · <a href="${homeHref(g.course)}">교재 보기</a>` : ""}</p>
       </header>
-      <ul class="resources">${list.slice(g.from - 1, g.to).map((r) => resourceItem(r, [g.title, g.short])).join("")}</ul>
+      <ul class="ri-list">${list.slice(g.from - 1, g.to).map((r, k) => row(r, k, i)).join("")}</ul>
     </section>`).join("");
   return chips + sections;
 }
