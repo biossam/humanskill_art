@@ -126,11 +126,6 @@ function renderResources() {
     app.querySelectorAll(".res-group").forEach((sec) => { sec.hidden = sec.dataset.g !== g; });
     try { localStorage.setItem("demoGroup", g); } catch {}
   }));
-  // 한 탭 안에서는 한 차시만 펼침 (details name을 모르는 브라우저용)
-  app.querySelectorAll(".ri details").forEach((d) => d.addEventListener("toggle", () => {
-    if (!d.open) return;
-    d.closest(".ri-list").querySelectorAll("details[open]").forEach((o) => { if (o !== d) o.open = false; });
-  }));
   app.querySelectorAll("[data-ppt]").forEach((a) => a.addEventListener("click", (e) => {
     e.preventDefault(); openDeck(a.dataset.ppt, a.dataset.title, a.dataset.ppt);
   }));
@@ -179,7 +174,7 @@ function resourceItem(r, prefixes = []) {
           ${pdf ? `${icon.screen}</a>` : url ? `${icon.external}</a>` : `</span>`}${extra.map((x) => `<a class="resource-dl" href="${esc(x.url)}" ${x.download ? "download" : `target="_blank" rel="noopener"`}>${esc(x.label)}</a>`).join("")}</li>`;
       }
 
-// course.groups: 교재별 탭(연한 색)으로 나누고, 탭 안에서는 차시를 한 줄씩 접었다 펼침
+// course.groups: 교재별 탭(연한 색)으로 나누고, 차시 줄을 누르면 바로 PPT 보기
 // [{ title, short, course, author, from, to, tone }]  (from~to: 자료 번호, 1부터)
 function groupedResources(list, groups) {
   const ready = (g) => list.slice(g.from - 1, g.to).filter((r) => safeUrl(r.url)).length;
@@ -193,12 +188,11 @@ function groupedResources(list, groups) {
     const extra = (r.links ?? []).map((x) => ({ ...x, url: safeUrl(x.url) })).filter((x) => x.url);
     const no = `<span class="ri-no">${k + 1}${LW()}</span>`;
     if (!pdf && !url) return `<li class="ri is-empty"><div class="ri-head">${no}<span class="ri-title">${esc(r.title)}</span><span class="ri-soon">준비 중</span></div></li>`;
-    const view = pdf ? `<a class="ri-btn is-main" href="${esc(pdf)}" data-ppt="${esc(pdf)}" data-title="${esc(r.title)}">${icon.screen}<span>PPT 바로 보기</span></a>`
-      : `<a class="ri-btn is-main" href="${esc(url)}" target="_blank" rel="noopener">${icon.external}<span>열기</span></a>`;
-    return `<li class="ri"><details name="ri-${esc(String(g))}">
-        <summary class="ri-head">${no}<span class="ri-title">${esc(r.title)}</span><span class="ri-caret" aria-hidden="true"></span></summary>
-        <div class="ri-body">${view}${extra.map((x) => `<a class="ri-btn" href="${esc(x.url)}" ${x.download ? "download" : `target="_blank" rel="noopener"`}>${esc(x.label)}</a>`).join("")}</div>
-      </details></li>`;
+    // 줄(제목)을 누르면 바로 PPT 보기, 오른쪽 작은 버튼은 PDF·PPT 받기
+    const open = pdf ? `<a class="ri-head" href="${esc(pdf)}" data-ppt="${esc(pdf)}" data-title="${esc(r.title)}">`
+      : `<a class="ri-head" href="${esc(url)}" target="_blank" rel="noopener">`;
+    return `<li class="ri">${open}${no}<span class="ri-title">${esc(r.title)}</span><span class="ri-go">${pdf ? icon.screen : icon.external}</span></a>
+      ${extra.map((x) => `<a class="ri-btn" href="${esc(x.url)}" ${x.download ? "download" : `target="_blank" rel="noopener"`}>${esc(x.label)}</a>`).join("")}</li>`;
   };
   const sections = groups.map((g, i) => `
     <section class="res-group tone-${esc(g.tone || "")}" data-g="${i}" role="tabpanel" aria-labelledby="rg-${i}"${i === cur ? "" : " hidden"}>

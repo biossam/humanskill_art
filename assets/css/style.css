@@ -677,26 +677,26 @@ a.pdfv-btn { text-decoration: none; }
 .res-group .resources li, .res-group .resource { border-bottom-color: var(--tone-line); }
 .res-group .resource-dl { background: var(--surface); }
 .res-group .resource.is-empty .resource-title { opacity: 0.55; }
-/* 수업 시연: 차시 한 줄씩 접고 펼치기 */
+/* 수업 시연: 차시 한 줄 = 누르면 PPT 바로 보기, 오른쪽에 PDF·PPT 받기 */
 .ri-list { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--tone-line); }
-.ri { border-bottom: 1px solid var(--tone-line); }
-.ri-head { display: flex; align-items: center; gap: var(--s3); padding: 12px 4px; cursor: pointer; list-style: none; color: var(--ink); }
-.ri-head::-webkit-details-marker { display: none; }
+.ri { display: flex; align-items: center; gap: var(--s2); border-bottom: 1px solid var(--tone-line); }
+.ri-head { flex: 1; min-width: 0; display: flex; align-items: center; gap: var(--s3); padding: 12px 4px; color: var(--ink); text-decoration: none; border-radius: 8px; }
 .ri-no { flex: none; min-width: 4.2em; padding: 3px 10px; border-radius: 999px; background: var(--surface); color: var(--tone-ink); font-size: 0.8125rem; font-weight: 700; text-align: center; }
 .ri-title { flex: 1; font-weight: 700; font-size: 1.0625rem; line-height: 1.35; }
-.ri-caret { flex: none; width: 10px; height: 10px; border-right: 2px solid var(--tone-ink); border-bottom: 2px solid var(--tone-ink); transform: rotate(45deg); margin: 0 8px 4px; transition: transform .15s; }
-details[open] > .ri-head .ri-caret { transform: rotate(-135deg); margin-bottom: -4px; }
-summary.ri-head:hover .ri-title { text-decoration: underline; text-decoration-color: var(--tone-line); text-underline-offset: 4px; }
-summary.ri-head:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-.ri-body { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); padding: 0 4px 14px calc(4.2em + 24px); }
-.ri-meta { font-size: 0.875rem; color: var(--ink-2); margin-right: auto; }
-.ri-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border: 2px solid var(--tone-ink, var(--ink)); border-radius: 999px; background: var(--surface); color: var(--ink); font-size: 0.875rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
-.ri-btn .icon { width: 18px; height: 18px; }
-.ri-btn.is-main { background: var(--tone-ink, var(--ink)); border-color: var(--tone-ink, var(--ink)); color: var(--bg); }
-.ri-btn:hover { filter: brightness(1.1); text-decoration: underline; }
-.ri.is-empty .ri-head { cursor: default; opacity: 0.55; }
+.ri-go { flex: none; display: inline-flex; color: var(--tone-ink); }
+a.ri-head:hover { background: color-mix(in srgb, var(--tone-line) 35%, transparent); }
+a.ri-head:hover .ri-title { text-decoration: underline; text-decoration-color: var(--tone-ink); text-underline-offset: 4px; }
+a.ri-head:focus-visible, .ri-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+.ri-btn { flex: none; padding: 5px 12px; border: 1.5px solid var(--tone-ink, var(--ink)); border-radius: 999px; background: var(--surface); color: var(--ink); font-size: 0.8125rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.ri-btn:last-child { margin-right: 4px; }
+.ri-btn:hover { background: var(--tone-ink); color: var(--bg); }
+.ri.is-empty .ri-head { opacity: 0.55; }
 .ri-soon { flex: none; font-size: 0.8125rem; color: var(--ink-2); margin-right: 8px; }
-@media (max-width: 599px) { .ri-body { padding-left: 4px; } .ri-title { font-size: 1rem; } }
-@media print { .res-group[hidden] { display: block; } .ri details > .ri-body { display: flex; } }
+@media (max-width: 599px) {
+  .ri { flex-wrap: wrap; row-gap: 0; padding-bottom: 8px; }
+  .ri-head { flex-basis: 100%; padding-bottom: 6px; }
+  .ri-title { font-size: 1rem; }
+  .ri-head + .ri-btn { margin-left: calc(4.2em + 16px); }
+}
 @media (max-width: 599px) { .res-group { padding: var(--s4) var(--s3) var(--s1); border-left-width: 4px; } }
 @media print { .group-chips { display: none; } .res-group { break-inside: avoid-page; } }
