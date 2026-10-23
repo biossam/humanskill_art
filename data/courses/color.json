@@ -21,7 +21,7 @@
       "lessons": [
         {
           "no": 1,
-          "title": "색이 주는 느낌 알아보고, 주변에서 색 찾아보기",
+          "title": "색이 주는 느낌 알아보기",
           "topic": "10 색상환과 나만의 색상환 사진첩",
           "badge": "assets/img/badges/color/1.png",
           "videos": [
@@ -52,7 +52,7 @@
         },
         {
           "no": 2,
-          "title": "비슷한 색과 반대색으로 표현하기",
+          "title": "비슷한 색으로 표현하기",
           "topic": "꼭꼭 숨어라! 놀이",
           "badge": "assets/img/badges/color/2.png",
           "videos": [
@@ -85,7 +85,7 @@
         },
         {
           "no": 3,
-          "title": "비슷한 색과 반대색으로 표현하기",
+          "title": "반대색으로 표현하기",
           "topic": "반대색으로 꽃밭 그리기",
           "badge": "assets/img/badges/color/3.png",
           "videos": [
@@ -117,7 +117,7 @@
         },
         {
           "no": 4,
-          "title": "따뜻한 느낌의 색과 차가운 느낌의 색으로 표현하기",
+          "title": "따뜻한 느낌의 색, 차가운 느낌의 색으로 표현하기 (1)",
           "topic": "따뜻한 방, 차가운 방 꾸미기",
           "badge": "assets/img/badges/color/4.png",
           "videos": [
@@ -149,7 +149,7 @@
         },
         {
           "no": 5,
-          "title": "따뜻한 느낌의 색과 차가운 느낌의 색으로 표현하기",
+          "title": "따뜻한 느낌의 색, 차가운 느낌의 색으로 표현하기 (2)",
           "topic": "감정 색칠하기",
           "badge": "assets/img/badges/color/5.png",
           "videos": [
@@ -180,7 +180,7 @@
         },
         {
           "no": 6,
-          "title": "색의 느낌을 살려 작품 제작하기",
+          "title": "색을 활용해서 나의 마음 표현하기",
           "badge": "assets/img/badges/color/6.png",
           "videos": [
             {
@@ -194,8 +194,7 @@
         },
         {
           "no": 7,
-          "title": "내 작품을 전시하고 친구들의 작품 감상하기",
-          "topic": "우리 반 마음 정원 감상하기",
+          "title": "우리 반 마음 정원 감상하기",
           "badge": "assets/img/badges/color/7.png",
           "videos": [
             {
