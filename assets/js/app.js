@@ -260,7 +260,7 @@ function renderHome() {
             </ul>` : "";
           const earned = isStudent && isEarned(cid, unit, lesson);
           return `
-          <li class="${ready ? "is-ready" : "is-empty"}${vids.length ? " has-videos" : ""}${isStudent ? (earned ? " is-earned" : " not-earned") : ""}">
+          <li class="${ready ? "is-ready" : "is-empty"}${vids.length ? " has-videos" : ""}${vids.length === 1 ? " one-video" : ""}${isStudent ? (earned ? " is-earned" : " not-earned") : ""}">
             <a class="step" href="${lessonHref(unit, lesson)}">
               ${badgeImg(lesson, "step-badge") || `<span class="step-no">${lesson.no}</span>`}
               <span class="step-text">
@@ -304,7 +304,8 @@ function fitTitle() {
   h.classList.remove("is-wrap");
   // PC 두 칸 화면의 왼쪽 제목은 CSS가 크기·줄바꿈을 맡음
   if (h.closest(".home-side") && matchMedia("(min-width: 1024px)").matches) {
-    // 낱말 중간에서 끊지 않고, 가장 긴 낱말이 칸에 들어갈 때까지 줄임
+    // 긴 제목은 작게 시작하고, 낱말 중간에서 끊지 않게 가장 긴 낱말이 칸에 들어갈 때까지 줄임
+    h.classList.toggle("is-long", h.textContent.trim().length > 14);
     let size = parseFloat(getComputedStyle(h).fontSize);
     while (h.scrollWidth > h.clientWidth + 1 && size > 20) { size -= 2; h.style.fontSize = `${size}px`; }
     return;
