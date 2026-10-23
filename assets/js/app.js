@@ -118,7 +118,6 @@ function renderResources() {
     <section class="intro">
       <h1 class="course-title">${esc(course.title)}</h1>
       ${course.tagline ? `<p class="lede">${esc(course.tagline)}</p>` : ""}
-      <p class="intro-note">${(() => { const ready = list.filter((r) => safeUrl(r.url)).length; return ready ? `선생님 자료 ${ready}개${ready < list.length ? ` (준비 중 ${list.length - ready}개)` : ""}. ${list.some((r) => r.ppt) ? "누르면 사이트 안에서 바로 열려요." : "누르면 원본이 새 창으로 열려요."}` : `자료 ${list.length}개를 준비하고 있어요.`; })()}</p>
     </section>
     ${groups.length ? groupedResources(list, groups) : `<ul class="resources">${list.map((r) => resourceItem(r)).join("")}</ul>`}`;
   app.querySelectorAll(".group-chips button").forEach((b) => b.addEventListener("click", () => {
