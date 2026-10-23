@@ -123,7 +123,7 @@ function renderResources() {
   app.innerHTML = groups.length
     ? (() => { const [chips, sections] = groupedResources(list, groups);
         return `<div class="demo-layout"><aside class="demo-side">${intro}${chips}</aside><div class="demo-main">${sections}</div></div>`; })()
-    : `${intro}<ul class="resources">${list.map((r) => resourceItem(r)).join("")}</ul>`;
+    : `<div class="home-layout"><aside class="home-side">${intro}</aside><div class="home-main"><ul class="resources">${list.map((r) => resourceItem(r)).join("")}</ul></div></div>`;
   app.querySelectorAll(".group-chips button").forEach((b) => b.addEventListener("click", () => {
     const g = b.dataset.g;
     app.querySelectorAll(".group-chips button").forEach((x) => { x.setAttribute("aria-pressed", String(x === b)); x.setAttribute("aria-selected", String(x === b)); });
@@ -264,7 +264,7 @@ function renderHome() {
             <a class="step" href="${lessonHref(unit, lesson)}">
               ${badgeImg(lesson, "step-badge") || `<span class="step-no">${lesson.no}</span>`}
               <span class="step-text">
-                <span class="step-title">${esc(lesson.title)}</span>
+                <span class="step-title" title="${esc(lesson.title)}">${esc(lesson.title)}</span>
                 ${lesson.topic ? `<span class="step-topic">${esc(lesson.topic)}</span>` : ""}
                 <span class="step-status">${esc(lessonStatus(lesson))}</span>
               </span>
@@ -277,7 +277,8 @@ function renderHome() {
 
   const lessonCount = allLessons().length;
 
-  app.innerHTML = `
+  // PC: 왼쪽(교재 제목·안내) | 오른쪽(차시 카드 여러 칸) — 스크롤 없이 한 화면에
+  app.innerHTML = `<div class="home-layout"><aside class="home-side">
     <section class="intro">
       <h1 class="course-title">${esc(course.title)}</h1>
       ${course.tagline ? `<p class="lede">${esc(course.tagline)}</p>` : ""}
@@ -288,8 +289,8 @@ function renderHome() {
       ${isStudent ? "" : `<a class="text-link" href="${homeHref()}/qr">학생용 QR 코드 보기</a>`}
       ${isStudent ? "" : (course.teacherLinks ?? []).map((l) => safeUrl(l.url)
         ? `<a class="text-link teacher-link" href="${esc(safeUrl(l.url))}" target="_blank" rel="noopener">${esc(l.title)}</a>` : "").join("")}
-    </section>
-    ${unitBlocks}`;
+    </section></aside>
+    <div class="home-main">${unitBlocks}</div></div>`;
   document.title = `${course.title} · ${siteTitle}`;
   fitTitle();
   document.fonts?.ready.then(fitTitle);
@@ -301,6 +302,13 @@ function fitTitle() {
   if (!h) return;
   h.style.fontSize = "";
   h.classList.remove("is-wrap");
+  // PC 두 칸 화면의 왼쪽 제목은 CSS가 크기·줄바꿈을 맡음
+  if (h.closest(".home-side") && matchMedia("(min-width: 1024px)").matches) {
+    // 낱말 중간에서 끊지 않고, 가장 긴 낱말이 칸에 들어갈 때까지 줄임
+    let size = parseFloat(getComputedStyle(h).fontSize);
+    while (h.scrollWidth > h.clientWidth + 1 && size > 20) { size -= 2; h.style.fontSize = `${size}px`; }
+    return;
+  }
   const base = parseFloat(getComputedStyle(h).fontSize);
   const room = h.clientWidth;
   if (h.scrollWidth <= room) return;
