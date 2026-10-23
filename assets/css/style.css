@@ -700,3 +700,15 @@ a.ri-head:focus-visible, .ri-btn:focus-visible { outline: 3px solid var(--accent
 }
 @media (max-width: 599px) { .res-group { padding: var(--s4) var(--s3) var(--s1); border-left-width: 4px; } }
 @media print { .group-chips { display: none; } .res-group { break-inside: avoid-page; } }
+
+/* 수업 시연: 넓은 화면에서 왼쪽 제목·교재 탭, 오른쪽 차시 목록 */
+@media (min-width: 880px) {
+  .demo-layout { display: grid; grid-template-columns: minmax(240px, 300px) 1fr; gap: var(--s7); align-items: start; padding-top: var(--s7); }
+  .demo-side { position: sticky; top: var(--s5); }
+  .demo-side .intro { padding: 0 0 var(--s5); }
+  .demo-side .intro h1 { font-size: clamp(2.75rem, 5vw, 3.75rem); }
+  .demo-side .lede { font-size: 1rem; }
+  .demo-side .group-chips { flex-direction: column; flex-wrap: nowrap; align-items: stretch; margin: 0; }
+  .demo-side .group-chips button { text-align: left; }
+  .demo-main .res-group { margin-bottom: var(--s7); }
+}
