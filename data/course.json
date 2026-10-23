@@ -56,7 +56,8 @@
           "videos": [
             {
               "youtubeId": "GrTE3pBSp38",
-              "title": "1차시 학습 안내"
+              "title": "1차시 학습 안내",
+              "thumb": "assets/img/thumbs/humanskill/1.jpg"
             },
             {
               "youtubeId": "ZOWcQH3vgkg",
@@ -123,7 +124,8 @@
           "videos": [
             {
               "youtubeId": "mtkem9lSt-s",
-              "title": "2차시 학습 안내"
+              "title": "2차시 학습 안내",
+              "thumb": "assets/img/thumbs/humanskill/2.jpg"
             },
             {
               "youtubeId": "PRmxaZz5Nng",
@@ -186,7 +188,8 @@
           "videos": [
             {
               "youtubeId": "3S6SBun7P10",
-              "title": "3차시 학습 안내"
+              "title": "3차시 학습 안내",
+              "thumb": "assets/img/thumbs/humanskill/3.jpg"
             },
             {
               "youtubeId": "nA3SXjh32C8",
@@ -252,7 +255,8 @@
           "videos": [
             {
               "youtubeId": "-JcYCYISoaw",
-              "title": "4차시 학습 안내"
+              "title": "4차시 학습 안내",
+              "thumb": "assets/img/thumbs/humanskill/4.jpg"
             },
             {
               "youtubeId": "YxNTvRJvAn8",
@@ -315,7 +319,8 @@
           "videos": [
             {
               "youtubeId": "4VdUyc31O-M",
-              "title": "5차시 학습 안내"
+              "title": "5차시 학습 안내",
+              "thumb": "assets/img/thumbs/humanskill/5.jpg"
             },
             {
               "youtubeId": "NZhRI4OWqjo",
@@ -379,7 +384,8 @@
           "videos": [
             {
               "youtubeId": "RSVp2u4sOQk",
-              "title": "6차시 학습 안내"
+              "title": "6차시 학습 안내",
+              "thumb": "assets/img/thumbs/humanskill/6.jpg"
             },
             {
               "youtubeId": "5bMmYA60Xi8",
