@@ -118,44 +118,128 @@
       {
         "title": "7차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리 옛 그림 산책 1차시 · 바로 보기",
+        "url": "files/demo/7.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/7.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/7.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/7.pptx"
       },
       {
         "title": "8차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리 옛 그림 산책 2차시 · 바로 보기",
+        "url": "files/demo/8.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/8.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/8.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/8.pptx"
       },
       {
         "title": "9차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리 옛 그림 산책 3차시 · 바로 보기",
+        "url": "files/demo/9.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/9.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/9.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/9.pptx"
       },
       {
         "title": "10차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리 옛 그림 산책 4차시 · 바로 보기",
+        "url": "files/demo/10.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/10.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/10.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/10.pptx"
       },
       {
         "title": "11차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리 옛 그림 산책 5차시 · 바로 보기",
+        "url": "files/demo/11.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/11.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/11.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/11.pptx"
       },
       {
         "title": "12차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리 옛 그림 산책 6차시 · 바로 보기",
+        "url": "files/demo/12.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/12.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/12.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/12.pptx"
       },
       {
         "title": "13차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리 옛 그림 산책 7차시 · 바로 보기",
+        "url": "files/demo/13.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/13.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/13.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/13.pptx"
       },
       {
         "title": "14차시 수업 시연",
