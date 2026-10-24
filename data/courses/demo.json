@@ -268,44 +268,128 @@
       {
         "title": "20차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리가 만드는 공간 디자인 1차시 · 바로 보기",
+        "url": "files/demo/20.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/20.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/20.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/20.pptx"
       },
       {
         "title": "21차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리가 만드는 공간 디자인 2차시 · 바로 보기",
+        "url": "files/demo/21.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/21.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/21.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/21.pptx"
       },
       {
         "title": "22차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리가 만드는 공간 디자인 3차시 · 바로 보기",
+        "url": "files/demo/22.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/22.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/22.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/22.pptx"
       },
       {
         "title": "23차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리가 만드는 공간 디자인 4차시 · 바로 보기",
+        "url": "files/demo/23.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/23.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/23.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/23.pptx"
       },
       {
         "title": "24차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리가 만드는 공간 디자인 5차시 · 바로 보기",
+        "url": "files/demo/24.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/24.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/24.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/24.pptx"
       },
       {
         "title": "25차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리가 만드는 공간 디자인 6차시 · 바로 보기",
+        "url": "files/demo/25.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/25.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/25.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/25.pptx"
       },
       {
         "title": "26차시 수업 시연",
         "author": "",
-        "source": "준비 중",
-        "url": ""
+        "source": "우리가 만드는 공간 디자인 7차시 · 바로 보기",
+        "url": "files/demo/26.pptx",
+        "links": [
+          {
+            "label": "PDF",
+            "url": "files/demo/26.pdf"
+          },
+          {
+            "label": "PPT 받기",
+            "url": "files/demo/26.pptx",
+            "download": true
+          }
+        ],
+        "ppt": "files/demo/26.pptx"
       },
       {
         "title": "27차시 수업 시연",
