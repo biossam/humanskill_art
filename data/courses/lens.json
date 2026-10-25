@@ -21,8 +21,8 @@
       "lessons": [
         {
           "no": 1,
-          "title": "오감을 활용해 자연물과 인공물을 호기심 있게 탐색하기",
-          "topic": "이게 뭘까? 가까이 보면 다른 세상",
+          "title": "이게 뭘까? 가까이 보면 다른 세상",
+          "topic": "오감으로 대상을 호기심 있게 관찰하기",
           "badge": "assets/img/badges/lens/1.png",
           "videos": [
             {
@@ -56,8 +56,8 @@
         },
         {
           "no": 2,
-          "title": "생활 속 사진의 역할을 발견하고 '사진은 관점을 담는다' 이해하기",
-          "topic": "사진은 무엇을 담을까?",
+          "title": "사진은 무엇을 담을까?",
+          "topic": "같은 대상에 담긴 서로 다른 관점 발견하기",
           "badge": "assets/img/badges/lens/2.png",
           "videos": [
             {
@@ -90,8 +90,8 @@
         },
         {
           "no": 3,
-          "title": "사진기의 기능과 촬영 자세를 익혀 조형 요소 담을 준비하기",
-          "topic": "사진가의 첫걸음",
+          "title": "사진가의 첫걸음",
+          "topic": "카메라 기능과 바른 촬영 자세 익히기",
           "badge": "assets/img/badges/lens/3.png",
           "videos": [
             {
@@ -125,8 +125,8 @@
         },
         {
           "no": 4,
-          "title": "앵글(하이·수평·로우)과 거리를 바꿔 대상을 다르게 표현하기",
-          "topic": "개미의 눈, 새의 눈",
+          "title": "개미의 눈, 새의 눈",
+          "topic": "앵글과 거리를 바꾸어 대상 표현하기",
           "badge": "assets/img/badges/lens/4.png",
           "videos": [
             {
@@ -161,8 +161,8 @@
         },
         {
           "no": 5,
-          "title": "구도의 원리를 탐색하고 나만의 '관점 상자'로 정리하기",
-          "topic": "화면을 짜는 힘",
+          "title": "화면을 짜는 힘",
+          "topic": "구도를 골라 짜임새 있게 촬영하기",
           "badge": "assets/img/badges/lens/5.png",
           "videos": [
             {
@@ -196,8 +196,8 @@
         },
         {
           "no": 6,
-          "title": "표현 의도를 담아 촬영하고 나의 호기심 사진첩 완성하기",
-          "topic": "의도를 담은 한 장",
+          "title": "의도를 담은 한 장",
+          "topic": "촬영 계획을 세워 나만의 사진 완성하기",
           "badge": "assets/img/badges/lens/6.png",
           "videos": [
             {
@@ -231,8 +231,8 @@
         },
         {
           "no": 7,
-          "title": "작품의 특징과 느낌·생각을 설명하며 온라인 전시 감상하기",
-          "topic": "우리 반 렌즈 미술관 개관",
+          "title": "우리 반 렌즈 미술관 개관",
+          "topic": "친구 작품을 감상하며 소통하기",
           "badge": "assets/img/badges/lens/7.png",
           "videos": [
             {
