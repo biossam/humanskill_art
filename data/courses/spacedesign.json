@@ -21,8 +21,8 @@
       "lessons": [
         {
           "no": 1,
-          "title": "공간 디자인의 의미와 좋은 공간 디자인의 조건 알아보기",
-          "topic": "공간을 디자인하면 무엇이 달라질까?",
+          "title": "공간을 디자인하면 무엇이 달라질까?",
+          "topic": "공간 디자인의 의미와 좋은 공간 디자인의 조건 알아보기",
           "badge": "assets/img/badges/spacedesign/1.png",
           "videos": [
             {
@@ -54,8 +54,8 @@
         },
         {
           "no": 2,
-          "title": "우리 학교 공간에서 개선할 점 찾아보기",
-          "topic": "우리 학교에서 디자인하고 싶은 공간은?",
+          "title": "우리 학교에서 디자인하고 싶은 공간은?",
+          "topic": "우리 학교 공간에서 개선할 점 찾아보기",
           "badge": "assets/img/badges/spacedesign/2.png",
           "videos": [
             {
@@ -87,8 +87,8 @@
         },
         {
           "no": 3,
-          "title": "개선하고 싶은 공간을 정하여 아이디어 모으기",
-          "topic": "이 공간, 어떻게 바꿔 볼까?",
+          "title": "이 공간, 어떻게 바꿔 볼까?",
+          "topic": "디자인하고 싶은 공간에 대한 아이디어 모으기",
           "badge": "assets/img/badges/spacedesign/3.png",
           "videos": [
             {
@@ -119,8 +119,8 @@
         },
         {
           "no": 4,
-          "title": "공간 디자인 계획 세우기",
-          "topic": "우리의 생각을 모아 계획 세우기",
+          "title": "우리의 생각을 모아 계획 세우기",
+          "topic": "공간 디자인 계획 세우기",
           "badge": "assets/img/badges/spacedesign/4.png",
           "videos": [
             {
@@ -153,8 +153,8 @@
         },
         {
           "no": 5,
-          "title": "공간 디자인 계획 공유하고 보완하기",
-          "topic": "만들기 전, 우리의 계획 점검하기",
+          "title": "만들기 전, 우리의 계획 점검하기",
+          "topic": "공간 디자인 계획을 공유하고 보완하기",
           "badge": "assets/img/badges/spacedesign/5.png",
           "videos": [
             {
@@ -186,8 +186,8 @@
         },
         {
           "no": 6,
-          "title": "공간 디자인 실행하기",
-          "topic": "공간을 바꾸는 디자인 시작! (두 차시 연속)",
+          "title": "공간을 바꾸는 디자인 시작!",
+          "topic": "공간 디자인 실행하기 (두 차시 연속)",
           "badge": "assets/img/badges/spacedesign/6.png",
           "videos": [
             {
@@ -221,8 +221,8 @@
         },
         {
           "no": 7,
-          "title": "우리가 바꾼 공간을 함께 둘러보며 성찰하기",
-          "topic": "우리가 디자인한 공간, 함께 둘러볼까?",
+          "title": "우리가 디자인한 공간, 함께 둘러볼까?",
+          "topic": "우리가 바꾼 공간을 함께 둘러보며 성찰하기",
           "badge": "assets/img/badges/spacedesign/7.png",
           "videos": [
             {
