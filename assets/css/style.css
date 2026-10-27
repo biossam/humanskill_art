@@ -766,3 +766,28 @@ a.ri-head:focus-visible, .ri-btn:focus-visible { outline: 3px solid var(--accent
   .tabs { gap: 0 14px; padding: 2px 0 4px; }
   .tabs a { min-height: 34px; }
 }
+
+/* PPT 보기: 이전·다음 차시 넘기기 */
+.pdfv-head { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.pdfv-head .pdfv-title { flex: none; }
+.pdfv-group { font-size: 0.75rem; color: #aaa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pdfv-group:empty { display: none; }
+.pdfv-nav { font-weight: 700; border-color: #8ab; min-height: 40px; }
+.pdfv-nav:disabled { opacity: 0.35; cursor: default; }
+.pdfv-nav:disabled:hover { background: transparent; }
+.pdfv-dl { text-decoration: none; }
+@media (max-width: 720px) {
+  .pdfv-bar { flex-wrap: wrap; gap: 8px; padding: 8px 10px; }
+  .pdfv-head { order: -1; flex-basis: 100%; }
+  .pdfv-nav span, .pdfv-dl, [data-act="full"] { display: none; }
+  .pdfv-nav { padding: 8px 18px; }
+}
+/* 이전 · 몇 번째 · 다음을 왼쪽에 한 덩어리로 */
+.pdfv-bar > [data-act="prev"] { order: 0; }
+.pdfv-bar > .pdfv-count { order: 1; }
+.pdfv-bar > [data-act="next"] { order: 2; }
+.pdfv-bar > .pdfv-head { order: 3; margin-left: 8px; }
+.pdfv-bar > .pdfv-dl { order: 4; }
+.pdfv-bar > [data-act="full"] { order: 5; }
+.pdfv-bar > [data-act="close"] { order: 6; }
+@media (max-width: 720px) { .pdfv-bar > .pdfv-head { order: -1; margin-left: 0; } }

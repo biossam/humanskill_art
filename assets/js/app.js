@@ -131,7 +131,17 @@ function renderResources() {
     try { localStorage.setItem("demoGroup", g); } catch {}
   }));
   app.querySelectorAll("[data-ppt]").forEach((a) => a.addEventListener("click", (e) => {
-    e.preventDefault(); openDeck(a.dataset.ppt, a.dataset.title, a.dataset.ppt);
+    e.preventDefault();
+    // 수업 시연: 모든 교재의 PPT 줄을 차례대로 묶어서, 보기 화면에서 이전·다음 차시로 바로 넘김
+    const all = [...app.querySelectorAll(".demo-main [data-ppt]")];
+    const list = (all.length ? all : [a]).map((el) => {
+      const row = el.closest(".ri");
+      const no = row?.querySelector(".ri-no")?.textContent.trim() ?? "";
+      const t = row?.querySelector(".ri-title")?.textContent.trim() || el.dataset.title || "";
+      const g = el.closest(".res-group");
+      return { src: el.dataset.ppt, title: no ? `${no} · ${t}` : t, group: g?.querySelector("h2")?.textContent.trim() ?? "", g: g?.dataset.g };
+    });
+    openDeck(list, Math.max(0, all.indexOf(a)));
   }));
   document.title = `${course.title} · ${siteTitle}`;
   fitTitle();
@@ -211,26 +221,61 @@ function groupedResources(list, groups) {
 }
 
 // ── 사이트 안 PPT 보기: Microsoft Office 온라인 뷰어(무료, 로그인 없음)를 화면 안에 띄움 ──
-function openDeck(src, title, dl) {
-  const abs = new URL(src, location.href).href;
+// list: [{ src, title, group, g }] — 보기 화면 위쪽 버튼으로 이전·다음 차시 PPT로 바로 넘어감
+function openDeck(list, start = 0) {
+  if (!Array.isArray(list)) list = [{ src: list, title: arguments[1] }];
+  let i = start;
   const box = document.createElement("div");
   box.className = "pdfv";
   box.innerHTML = `
     <div class="pdfv-bar">
-      <b class="pdfv-title">${esc(title || "")}</b>
-      ${dl ? `<a class="pdfv-btn" href="${esc(dl)}" download>PPT 받기</a>` : ""}
+      <button class="pdfv-btn pdfv-nav" data-act="prev" aria-label="이전 차시">◀<span> 이전</span></button>
+      <div class="pdfv-head"><small class="pdfv-group"></small><b class="pdfv-title"></b></div>
+      <span class="pdfv-count" aria-live="polite"></span>
+      <button class="pdfv-btn pdfv-nav" data-act="next" aria-label="다음 차시"><span>다음 </span>▶</button>
+      <a class="pdfv-btn pdfv-dl" download>PPT 받기</a>
       <button class="pdfv-btn" data-act="full">전체 화면</button>
       <button class="pdfv-btn" data-act="close">닫기 ✕</button>
     </div>
-    <iframe class="pdfv-frame" src="https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(abs)}" allowfullscreen title="${esc(title || "PPT")}"></iframe>`;
+    <iframe class="pdfv-frame" allowfullscreen></iframe>`;
+  const frame = box.querySelector("iframe");
+  const show = () => {
+    const d = list[i];
+    const abs = new URL(d.src, location.href).href;
+    frame.src = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(abs)}`;
+    frame.title = d.title || "PPT";
+    box.querySelector(".pdfv-title").textContent = d.title || "";
+    box.querySelector(".pdfv-group").textContent = d.group || "";
+    box.querySelector(".pdfv-dl").href = d.src;
+    box.querySelector(".pdfv-count").textContent = list.length > 1 ? `${i + 1} / ${list.length}` : "";
+    box.querySelector('[data-act="prev"]').disabled = i === 0;
+    box.querySelector('[data-act="next"]').disabled = i === list.length - 1;
+    box.querySelectorAll(".pdfv-nav").forEach((b) => { b.hidden = list.length < 2; });
+  };
+  const go = (d) => { const n = i + d; if (n < 0 || n >= list.length) return; i = n; show(); };
   document.body.appendChild(box);
   document.body.style.overflow = "hidden";
-  const close = () => { document.removeEventListener("keydown", key); if (document.fullscreenElement) document.exitFullscreen?.(); box.remove(); document.body.style.overflow = ""; };
-  const key = (e) => { if (e.key === "Escape") close(); };
+  show();
+  const close = () => {
+    document.removeEventListener("keydown", key);
+    if (document.fullscreenElement) document.exitFullscreen?.();
+    box.remove(); document.body.style.overflow = "";
+    // 마지막으로 본 차시의 교재 탭을 열어 둠
+    const g = list[i]?.g;
+    if (g != null) app.querySelector(`.group-chips button[data-g="${g}"]`)?.click();
+  };
+  // 키보드: Esc 닫기, PageUp/PageDown 이전·다음 차시 (화살표는 슬라이드 넘기기에 씀)
+  const key = (e) => {
+    if (e.key === "Escape") close();
+    else if (e.key === "PageDown") { e.preventDefault(); go(1); }
+    else if (e.key === "PageUp") { e.preventDefault(); go(-1); }
+  };
   document.addEventListener("keydown", key);
   box.addEventListener("click", (e) => {
     const act = e.target.closest("[data-act]")?.dataset.act;
     if (act === "close") close();
+    else if (act === "prev") go(-1);
+    else if (act === "next") go(1);
     else if (act === "full") (document.fullscreenElement ? document.exitFullscreen() : box.requestFullscreen?.())?.catch?.(() => {});
   });
 }
