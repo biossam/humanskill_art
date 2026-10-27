@@ -791,3 +791,20 @@ a.ri-head:focus-visible, .ri-btn:focus-visible { outline: 3px solid var(--accent
 .pdfv-bar > [data-act="full"] { order: 5; }
 .pdfv-bar > [data-act="close"] { order: 6; }
 @media (max-width: 720px) { .pdfv-bar > .pdfv-head { order: -1; margin-left: 0; } }
+
+/* 수업 시연 PPT 보기: PPT에 나오는 영상 바로 보기 */
+.pdfv-body { position: relative; flex: 1; display: flex; min-height: 0; }
+.pdfv-body .pdfv-frame { flex: 1; height: 100%; }
+.pdfv-vbtn { font-weight: 700; background: #3a9bfa; border-color: #3a9bfa; }
+.pdfv-vbtn:hover { background: #2a86e0; }
+.pdfv-vlist { position: absolute; top: 8px; right: 16px; z-index: 2; display: flex; flex-direction: column; min-width: 260px; max-width: min(420px, calc(100% - 32px));
+  max-height: calc(100% - 16px); overflow: auto; padding: 6px; background: #1b1b2b; border: 1px solid #444; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+.pdfv-vlist button { display: flex; align-items: baseline; gap: 10px; width: 100%; padding: 10px 12px; border: 0; border-radius: 8px; background: transparent; color: #fff; font: inherit; font-size: 0.9375rem; text-align: left; cursor: pointer; }
+.pdfv-vlist button:hover, .pdfv-vlist button:focus-visible { background: #2c2c44; outline: none; }
+.pdfv-vlist small { flex: none; min-width: 2.6em; color: #9cf; font-size: 0.8125rem; }
+.pdfv-player { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; background: #000; }
+.pdfv-pbar { display: flex; align-items: center; gap: 12px; padding: 8px 16px; }
+.pdfv-ptitle { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pdfv-pbox { flex: 1; min-height: 0; display: flex; }
+.pdfv-pbox iframe, .pdfv-pbox video { flex: 1; width: 100%; height: 100%; border: 0; background: #000; }
+.pdfv-player[hidden], .pdfv-vlist[hidden], .pdfv-vbtn[hidden] { display: none; }

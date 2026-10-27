@@ -134,12 +134,15 @@ function renderResources() {
     e.preventDefault();
     // 수업 시연: 모든 교재의 PPT 줄을 차례대로 묶어서, 보기 화면에서 이전·다음 차시로 바로 넘김
     const all = [...app.querySelectorAll(".demo-main [data-ppt]")];
+    // r.videos: PPT 화면에 나오는 영상 [{title, youtubeId | file, start, slide}]
+    const vmap = new Map((course.resources ?? []).filter((r) => r.ppt).map((r) => [safeUrl(r.ppt), r.videos ?? []]));
     const list = (all.length ? all : [a]).map((el) => {
       const row = el.closest(".ri");
       const no = row?.querySelector(".ri-no")?.textContent.trim() ?? "";
       const t = row?.querySelector(".ri-title")?.textContent.trim() || el.dataset.title || "";
       const g = el.closest(".res-group");
-      return { src: el.dataset.ppt, title: no ? `${no} · ${t}` : t, group: g?.querySelector("h2")?.textContent.trim() ?? "", g: g?.dataset.g };
+      return { src: el.dataset.ppt, title: no ? `${no} · ${t}` : t, group: g?.querySelector("h2")?.textContent.trim() ?? "", g: g?.dataset.g,
+        videos: vmap.get(el.dataset.ppt) ?? [] };
     });
     openDeck(list, Math.max(0, all.indexOf(a)));
   }));
@@ -233,12 +236,36 @@ function openDeck(list, start = 0) {
       <div class="pdfv-head"><small class="pdfv-group"></small><b class="pdfv-title"></b></div>
       <span class="pdfv-count" aria-live="polite"></span>
       <button class="pdfv-btn pdfv-nav" data-act="next" aria-label="다음 차시"><span>다음 </span>▶</button>
+      <button class="pdfv-btn pdfv-vbtn" data-act="vids" aria-expanded="false" aria-controls="pdfv-vlist">영상</button>
       <a class="pdfv-btn pdfv-dl" download>PPT 받기</a>
       <button class="pdfv-btn" data-act="full">전체 화면</button>
       <button class="pdfv-btn" data-act="close">닫기 ✕</button>
     </div>
-    <iframe class="pdfv-frame" allowfullscreen></iframe>`;
-  const frame = box.querySelector("iframe");
+    <div class="pdfv-body">
+      <iframe class="pdfv-frame" allowfullscreen></iframe>
+      <div class="pdfv-vlist" id="pdfv-vlist" hidden></div>
+      <div class="pdfv-player" hidden>
+        <div class="pdfv-pbar"><b class="pdfv-ptitle"></b><button class="pdfv-btn" data-act="vclose">PPT로 돌아가기 ✕</button></div>
+        <div class="pdfv-pbox"></div>
+      </div>
+    </div>`;
+  const frame = box.querySelector(".pdfv-frame");
+  const vbtn = box.querySelector(".pdfv-vbtn"), vlist = box.querySelector(".pdfv-vlist");
+  const player = box.querySelector(".pdfv-player"), pbox = box.querySelector(".pdfv-pbox");
+  // PPT에 나오는 영상: 목록을 펼쳐 고르면 PPT 위에 크게 재생, 닫으면 보던 PPT로 돌아감
+  const vids = () => list[i].videos ?? [];
+  const toggleList = (open = vlist.hidden) => { vlist.hidden = !open; vbtn.setAttribute("aria-expanded", String(open)); };
+  const play = (v) => {
+    const id = String(v.youtubeId ?? "").replace(/[^A-Za-z0-9_-]/g, "");
+    const file = v.file && !/^[a-z]+:/i.test(v.file) ? v.file : "";
+    if (!id && !file) return;
+    pbox.innerHTML = id
+      ? `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0${v.start ? `&start=${Number(v.start) || 0}` : ""}" title="${esc(v.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`
+      : `<video src="${esc(file)}" controls autoplay playsinline title="${esc(v.title)}"></video>`;
+    box.querySelector(".pdfv-ptitle").textContent = v.title;
+    player.hidden = false; toggleList(false);
+  };
+  const stop = () => { pbox.innerHTML = ""; player.hidden = true; };
   const show = () => {
     const d = list[i];
     const abs = new URL(d.src, location.href).href;
@@ -251,6 +278,11 @@ function openDeck(list, start = 0) {
     box.querySelector('[data-act="prev"]').disabled = i === 0;
     box.querySelector('[data-act="next"]').disabled = i === list.length - 1;
     box.querySelectorAll(".pdfv-nav").forEach((b) => { b.hidden = list.length < 2; });
+    stop(); toggleList(false);
+    const vs = vids();
+    vbtn.hidden = !vs.length;
+    vbtn.textContent = vs.length > 1 ? `▶ 영상 ${vs.length}` : "▶ 영상";
+    vlist.innerHTML = vs.map((v, k) => `<button type="button" data-v="${k}">${v.slide ? `<small>${Number(v.slide)}쪽</small>` : ""}<span>${esc(v.title)}</span></button>`).join("");
   };
   const go = (d) => { const n = i + d; if (n < 0 || n >= list.length) return; i = n; show(); };
   document.body.appendChild(box);
@@ -266,13 +298,18 @@ function openDeck(list, start = 0) {
   };
   // 키보드: Esc 닫기, PageUp/PageDown 이전·다음 차시 (화살표는 슬라이드 넘기기에 씀)
   const key = (e) => {
-    if (e.key === "Escape") close();
+    if (e.key === "Escape") { if (!player.hidden) stop(); else if (!vlist.hidden) toggleList(false); else close(); }
     else if (e.key === "PageDown") { e.preventDefault(); go(1); }
     else if (e.key === "PageUp") { e.preventDefault(); go(-1); }
   };
   document.addEventListener("keydown", key);
   box.addEventListener("click", (e) => {
     const act = e.target.closest("[data-act]")?.dataset.act;
+    const vb = e.target.closest("[data-v]");
+    if (vb) { play(vids()[Number(vb.dataset.v)]); return; }
+    if (act === "vids") { vids().length === 1 ? play(vids()[0]) : toggleList(); return; }
+    if (act === "vclose") { stop(); return; }
+    if (!e.target.closest(".pdfv-vlist")) toggleList(false);
     if (act === "close") close();
     else if (act === "prev") go(-1);
     else if (act === "next") go(1);
