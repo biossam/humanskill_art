@@ -23,7 +23,23 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/1.pptx"
+        "ppt": "files/demo/1.pptx",
+        "videos": [
+          {
+            "title": "1차시 학습 안내",
+            "youtubeId": "GrTE3pBSp38",
+            "slide": 3
+          },
+          {
+            "title": "AI는? 나는?",
+            "youtubeId": "_t8m-yB_8gc",
+            "slide": 6
+          },
+          {
+            "title": "조형 요소와 원리",
+            "youtubeId": "ZOWcQH3vgkg"
+          }
+        ]
       },
       {
         "title": "2차시 수업 시연",
@@ -41,7 +57,23 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/2.pptx"
+        "ppt": "files/demo/2.pptx",
+        "videos": [
+          {
+            "title": "2차시 학습 안내",
+            "youtubeId": "mtkem9lSt-s",
+            "slide": 3
+          },
+          {
+            "title": "AI는? 나는?",
+            "youtubeId": "SfyDaR6tG6A",
+            "slide": 6
+          },
+          {
+            "title": "조형 요소와 원리",
+            "youtubeId": "PRmxaZz5Nng"
+          }
+        ]
       },
       {
         "title": "3차시 수업 시연",
@@ -59,7 +91,23 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/3.pptx"
+        "ppt": "files/demo/3.pptx",
+        "videos": [
+          {
+            "title": "3차시 학습 안내",
+            "youtubeId": "3S6SBun7P10",
+            "slide": 3
+          },
+          {
+            "title": "AI는? 나는?",
+            "youtubeId": "zPkUK1xM7ZE",
+            "slide": 6
+          },
+          {
+            "title": "조형 요소와 원리",
+            "youtubeId": "nA3SXjh32C8"
+          }
+        ]
       },
       {
         "title": "4차시 수업 시연",
@@ -77,7 +125,34 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/4.pptx"
+        "ppt": "files/demo/4.pptx",
+        "videos": [
+          {
+            "title": "4차시 학습 안내",
+            "youtubeId": "-JcYCYISoaw",
+            "slide": 3
+          },
+          {
+            "title": "AI는? 나는?",
+            "youtubeId": "pSufBQ-n8R4",
+            "slide": 6
+          },
+          {
+            "title": "참고 영상",
+            "youtubeId": "paHca6xc_lo",
+            "slide": 8
+          },
+          {
+            "title": "참고 영상",
+            "youtubeId": "9799LnBeb7o",
+            "slide": 11,
+            "start": 112
+          },
+          {
+            "title": "조형 요소와 원리",
+            "youtubeId": "YxNTvRJvAn8"
+          }
+        ]
       },
       {
         "title": "5차시 수업 시연",
@@ -95,7 +170,23 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/5.pptx"
+        "ppt": "files/demo/5.pptx",
+        "videos": [
+          {
+            "title": "5차시 학습 안내",
+            "youtubeId": "4VdUyc31O-M",
+            "slide": 3
+          },
+          {
+            "title": "AI는? 나는?",
+            "youtubeId": "Qmmcm3PLMkw",
+            "slide": 6
+          },
+          {
+            "title": "조형 요소와 원리",
+            "youtubeId": "NZhRI4OWqjo"
+          }
+        ]
       },
       {
         "title": "6차시 수업 시연",
@@ -113,7 +204,23 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/6.pptx"
+        "ppt": "files/demo/6.pptx",
+        "videos": [
+          {
+            "title": "6차시 학습 안내",
+            "youtubeId": "RSVp2u4sOQk",
+            "slide": 3
+          },
+          {
+            "title": "AI는? 나는?",
+            "youtubeId": "SU_5lnPHdQY",
+            "slide": 6
+          },
+          {
+            "title": "조형 요소와 원리",
+            "youtubeId": "5bMmYA60Xi8"
+          }
+        ]
       },
       {
         "title": "7차시 수업 시연",
@@ -131,7 +238,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/7.pptx"
+        "ppt": "files/demo/7.pptx",
+        "videos": [
+          {
+            "title": "1차시 수업 영상 (산수화)",
+            "file": "files/oldpainting/1/video.mp4",
+            "slide": 6
+          }
+        ]
       },
       {
         "title": "8차시 수업 시연",
@@ -149,7 +263,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/8.pptx"
+        "ppt": "files/demo/8.pptx",
+        "videos": [
+          {
+            "title": "2차시 수업 영상 (민화)",
+            "file": "files/oldpainting/2/video.mp4",
+            "slide": 6
+          }
+        ]
       },
       {
         "title": "9차시 수업 시연",
@@ -167,7 +288,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/9.pptx"
+        "ppt": "files/demo/9.pptx",
+        "videos": [
+          {
+            "title": "3차시 수업 영상 (풍속화)",
+            "file": "files/oldpainting/3/video.mp4",
+            "slide": 6
+          }
+        ]
       },
       {
         "title": "10차시 수업 시연",
@@ -185,7 +313,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/10.pptx"
+        "ppt": "files/demo/10.pptx",
+        "videos": [
+          {
+            "title": "4차시 수업 영상 (인물화)",
+            "file": "files/oldpainting/4/video.mp4",
+            "slide": 6
+          }
+        ]
       },
       {
         "title": "11차시 수업 시연",
@@ -203,7 +338,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/11.pptx"
+        "ppt": "files/demo/11.pptx",
+        "videos": [
+          {
+            "title": "5차시 수업 영상 (동물화/식물화)",
+            "file": "files/oldpainting/5/video.mp4",
+            "slide": 6
+          }
+        ]
       },
       {
         "title": "12차시 수업 시연",
@@ -221,7 +363,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/12.pptx"
+        "ppt": "files/demo/12.pptx",
+        "videos": [
+          {
+            "title": "6차시 수업 영상 (기록화)",
+            "file": "files/oldpainting/6/video.mp4",
+            "slide": 6
+          }
+        ]
       },
       {
         "title": "13차시 수업 시연",
@@ -239,7 +388,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/13.pptx"
+        "ppt": "files/demo/13.pptx",
+        "videos": [
+          {
+            "title": "7차시 수업 영상 (이전 생각, 지금 생각)",
+            "file": "files/oldpainting/7/video.mp4",
+            "slide": 6
+          }
+        ]
       },
       {
         "title": "14차시 수업 시연",
@@ -257,7 +413,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/14.pptx"
+        "ppt": "files/demo/14.pptx",
+        "videos": [
+          {
+            "title": "1차시 수업 영상",
+            "youtubeId": "jKGc7pMauUg",
+            "slide": 14
+          }
+        ]
       },
       {
         "title": "15차시 수업 시연",
@@ -275,7 +438,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/15.pptx"
+        "ppt": "files/demo/15.pptx",
+        "videos": [
+          {
+            "title": "2차시 수업 영상",
+            "youtubeId": "X9hofXd62KQ",
+            "slide": 15
+          }
+        ]
       },
       {
         "title": "16차시 수업 시연",
@@ -293,7 +463,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/16.pptx"
+        "ppt": "files/demo/16.pptx",
+        "videos": [
+          {
+            "title": "3차시 수업 영상",
+            "youtubeId": "mHkjmj31_78",
+            "slide": 16
+          }
+        ]
       },
       {
         "title": "17차시 수업 시연",
@@ -311,7 +488,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/17.pptx"
+        "ppt": "files/demo/17.pptx",
+        "videos": [
+          {
+            "title": "4차시 수업 영상",
+            "youtubeId": "1xriTD9GFOY",
+            "slide": 16
+          }
+        ]
       },
       {
         "title": "18차시 수업 시연",
@@ -329,7 +513,13 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/18.pptx"
+        "ppt": "files/demo/18.pptx",
+        "videos": [
+          {
+            "title": "5차시 수업 영상",
+            "youtubeId": "KG6B-rHDHJQ"
+          }
+        ]
       },
       {
         "title": "19차시 수업 시연",
@@ -347,7 +537,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/19.pptx"
+        "ppt": "files/demo/19.pptx",
+        "videos": [
+          {
+            "title": "6차시 수업 영상",
+            "youtubeId": "UGTvCk4vytU",
+            "slide": 12
+          }
+        ]
       },
       {
         "title": "20차시 수업 시연",
@@ -365,7 +562,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/20.pptx"
+        "ppt": "files/demo/20.pptx",
+        "videos": [
+          {
+            "title": "같은 공간인데 왜 느낌이 다를까?",
+            "file": "files/spacedesign/1/video.mp4",
+            "slide": 6
+          }
+        ]
       },
       {
         "title": "21차시 수업 시연",
@@ -383,7 +587,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/21.pptx"
+        "ppt": "files/demo/21.pptx",
+        "videos": [
+          {
+            "title": "디자이너의 눈으로 살펴볼까요?",
+            "file": "files/spacedesign/2/video.mp4",
+            "slide": 7
+          }
+        ]
       },
       {
         "title": "22차시 수업 시연",
@@ -401,7 +612,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/22.pptx"
+        "ppt": "files/demo/22.pptx",
+        "videos": [
+          {
+            "title": "아이디어가 떠오르지 않을 때는?",
+            "file": "files/spacedesign/3/video.mp4",
+            "slide": 7
+          }
+        ]
       },
       {
         "title": "23차시 수업 시연",
@@ -419,7 +637,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/23.pptx"
+        "ppt": "files/demo/23.pptx",
+        "videos": [
+          {
+            "title": "생각을 실제 디자인으로 바꾸려면?",
+            "file": "files/spacedesign/4/video.mp4",
+            "slide": 7
+          }
+        ]
       },
       {
         "title": "24차시 수업 시연",
@@ -437,7 +662,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/24.pptx"
+        "ppt": "files/demo/24.pptx",
+        "videos": [
+          {
+            "title": "실제 공간에서 우리의 계획은 어떤 모습일까?",
+            "file": "files/spacedesign/5/video.mp4",
+            "slide": 6
+          }
+        ]
       },
       {
         "title": "25차시 수업 시연",
@@ -455,7 +687,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/25.pptx"
+        "ppt": "files/demo/25.pptx",
+        "videos": [
+          {
+            "title": "책상 위에서는 괜찮았는데, 실제 공간에서는?",
+            "file": "files/spacedesign/6/video.mp4",
+            "slide": 7
+          }
+        ]
       },
       {
         "title": "26차시 수업 시연",
@@ -473,7 +712,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/26.pptx"
+        "ppt": "files/demo/26.pptx",
+        "videos": [
+          {
+            "title": "학교 밖에서도 디자이너의 눈으로!",
+            "file": "files/spacedesign/7/video.mp4",
+            "slide": 10
+          }
+        ]
       },
       {
         "title": "27차시 수업 시연",
@@ -491,7 +737,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/27.pptx"
+        "ppt": "files/demo/27.pptx",
+        "videos": [
+          {
+            "title": "같은 세상, 다른 눈",
+            "file": "files/lens/1/video.mp4",
+            "slide": 9
+          }
+        ]
       },
       {
         "title": "28차시 수업 시연",
@@ -509,7 +762,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/28.pptx"
+        "ppt": "files/demo/28.pptx",
+        "videos": [
+          {
+            "title": "우리 학교 사진 산책",
+            "file": "files/lens/2/video.mp4",
+            "slide": 13
+          }
+        ]
       },
       {
         "title": "29차시 수업 시연",
@@ -527,7 +787,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/29.pptx"
+        "ppt": "files/demo/29.pptx",
+        "videos": [
+          {
+            "title": "카메라 기능 탐험",
+            "file": "files/lens/3/video.mp4",
+            "slide": 14
+          }
+        ]
       },
       {
         "title": "30차시 수업 시연",
@@ -545,7 +812,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/30.pptx"
+        "ppt": "files/demo/30.pptx",
+        "videos": [
+          {
+            "title": "같은 물건, 세 개의 눈",
+            "file": "files/lens/4/video.mp4",
+            "slide": 13
+          }
+        ]
       },
       {
         "title": "31차시 수업 시연",
@@ -563,7 +837,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/31.pptx"
+        "ppt": "files/demo/31.pptx",
+        "videos": [
+          {
+            "title": "세 가지 구도",
+            "file": "files/lens/5/video.mp4",
+            "slide": 11
+          }
+        ]
       },
       {
         "title": "32차시 수업 시연",
@@ -581,7 +862,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/32.pptx"
+        "ppt": "files/demo/32.pptx",
+        "videos": [
+          {
+            "title": "선생님의 촬영 계획",
+            "file": "files/lens/6/video.mp4",
+            "slide": 13
+          }
+        ]
       },
       {
         "title": "33차시 수업 시연",
@@ -599,7 +887,14 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/33.pptx"
+        "ppt": "files/demo/33.pptx",
+        "videos": [
+          {
+            "title": "도슨트가 되어 볼까요",
+            "file": "files/lens/7/video.mp4",
+            "slide": 14
+          }
+        ]
       },
       {
         "title": "34차시 수업 시연",
@@ -617,7 +912,13 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/34.pptx"
+        "ppt": "files/demo/34.pptx",
+        "videos": [
+          {
+            "title": "1차시 수업 영상",
+            "youtubeId": "goPbUFW-qaY"
+          }
+        ]
       },
       {
         "title": "35차시 수업 시연",
@@ -635,7 +936,13 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/35.pptx"
+        "ppt": "files/demo/35.pptx",
+        "videos": [
+          {
+            "title": "2차시 수업 영상",
+            "youtubeId": "RKqNPEocXWQ"
+          }
+        ]
       },
       {
         "title": "36차시 수업 시연",
@@ -653,7 +960,13 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/36.pptx"
+        "ppt": "files/demo/36.pptx",
+        "videos": [
+          {
+            "title": "3차시 수업 영상",
+            "youtubeId": "wsEruz7WZoI"
+          }
+        ]
       },
       {
         "title": "37차시 수업 시연",
@@ -671,7 +984,13 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/37.pptx"
+        "ppt": "files/demo/37.pptx",
+        "videos": [
+          {
+            "title": "4차시 수업 영상",
+            "youtubeId": "BHX7BEl2Hr4"
+          }
+        ]
       },
       {
         "title": "38차시 수업 시연",
@@ -689,7 +1008,13 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/38.pptx"
+        "ppt": "files/demo/38.pptx",
+        "videos": [
+          {
+            "title": "5차시 수업 영상",
+            "youtubeId": "D6CqPjm-rBQ"
+          }
+        ]
       },
       {
         "title": "39차시 수업 시연",
@@ -707,7 +1032,13 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/39.pptx"
+        "ppt": "files/demo/39.pptx",
+        "videos": [
+          {
+            "title": "6차시 수업 영상",
+            "youtubeId": "6Ar_e3fO8b8"
+          }
+        ]
       },
       {
         "title": "40차시 수업 시연",
@@ -725,7 +1056,13 @@
             "download": true
           }
         ],
-        "ppt": "files/demo/40.pptx"
+        "ppt": "files/demo/40.pptx",
+        "videos": [
+          {
+            "title": "7차시 수업 영상",
+            "youtubeId": "S4PPp7WZIPY"
+          }
+        ]
       }
     ],
     "groups": [
