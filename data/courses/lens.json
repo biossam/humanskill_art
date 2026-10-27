@@ -26,7 +26,7 @@
           "badge": "assets/img/badges/lens/1.png",
           "videos": [
             {
-              "file": "files/lens/1/video.mp4",
+              "youtubeId": "1FvAzl3s3tA",
               "thumb": "assets/img/thumbs/lens/1.jpg",
               "title": "같은 세상, 다른 눈"
             }
@@ -61,7 +61,7 @@
           "badge": "assets/img/badges/lens/2.png",
           "videos": [
             {
-              "file": "files/lens/2/video.mp4",
+              "youtubeId": "h5ZMOUyoOBo",
               "thumb": "assets/img/thumbs/lens/2.jpg",
               "title": "우리 학교 사진 산책"
             }
@@ -95,7 +95,7 @@
           "badge": "assets/img/badges/lens/3.png",
           "videos": [
             {
-              "file": "files/lens/3/video.mp4",
+              "youtubeId": "xVYYR9p8HI8",
               "thumb": "assets/img/thumbs/lens/3.jpg",
               "title": "카메라 기능 탐험"
             }
@@ -130,7 +130,7 @@
           "badge": "assets/img/badges/lens/4.png",
           "videos": [
             {
-              "file": "files/lens/4/video.mp4",
+              "youtubeId": "pe7hdB0FrNQ",
               "thumb": "assets/img/thumbs/lens/4.jpg",
               "title": "같은 물건, 세 개의 눈"
             }
@@ -166,7 +166,7 @@
           "badge": "assets/img/badges/lens/5.png",
           "videos": [
             {
-              "file": "files/lens/5/video.mp4",
+              "youtubeId": "izfqE5Mgry0",
               "thumb": "assets/img/thumbs/lens/5.jpg",
               "title": "세 가지 구도"
             }
@@ -201,7 +201,7 @@
           "badge": "assets/img/badges/lens/6.png",
           "videos": [
             {
-              "file": "files/lens/6/video.mp4",
+              "youtubeId": "NeEHm2uuE3Q",
               "thumb": "assets/img/thumbs/lens/6.jpg",
               "title": "선생님의 촬영 계획"
             }
@@ -236,7 +236,7 @@
           "badge": "assets/img/badges/lens/7.png",
           "videos": [
             {
-              "file": "files/lens/7/video.mp4",
+              "youtubeId": "3L98jt1XUFo",
               "thumb": "assets/img/thumbs/lens/7.jpg",
               "title": "도슨트가 되어 볼까요"
             }
