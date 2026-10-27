@@ -741,8 +741,8 @@
         "videos": [
           {
             "title": "같은 세상, 다른 눈",
-            "file": "files/lens/1/video.mp4",
-            "slide": 9
+            "slide": 9,
+            "youtubeId": "1FvAzl3s3tA"
           }
         ]
       },
@@ -766,8 +766,8 @@
         "videos": [
           {
             "title": "우리 학교 사진 산책",
-            "file": "files/lens/2/video.mp4",
-            "slide": 13
+            "slide": 13,
+            "youtubeId": "h5ZMOUyoOBo"
           }
         ]
       },
@@ -791,8 +791,8 @@
         "videos": [
           {
             "title": "카메라 기능 탐험",
-            "file": "files/lens/3/video.mp4",
-            "slide": 14
+            "slide": 14,
+            "youtubeId": "xVYYR9p8HI8"
           }
         ]
       },
@@ -816,8 +816,8 @@
         "videos": [
           {
             "title": "같은 물건, 세 개의 눈",
-            "file": "files/lens/4/video.mp4",
-            "slide": 13
+            "slide": 13,
+            "youtubeId": "pe7hdB0FrNQ"
           }
         ]
       },
@@ -841,8 +841,8 @@
         "videos": [
           {
             "title": "세 가지 구도",
-            "file": "files/lens/5/video.mp4",
-            "slide": 11
+            "slide": 11,
+            "youtubeId": "izfqE5Mgry0"
           }
         ]
       },
@@ -866,8 +866,8 @@
         "videos": [
           {
             "title": "선생님의 촬영 계획",
-            "file": "files/lens/6/video.mp4",
-            "slide": 13
+            "slide": 13,
+            "youtubeId": "NeEHm2uuE3Q"
           }
         ]
       },
@@ -891,8 +891,8 @@
         "videos": [
           {
             "title": "도슨트가 되어 볼까요",
-            "file": "files/lens/7/video.mp4",
-            "slide": 14
+            "slide": 14,
+            "youtubeId": "3L98jt1XUFo"
           }
         ]
       },
