@@ -589,21 +589,24 @@ function partsBlock(video, k) {
     </section>`;
 }
 
-function activityHtml(a, j, st) {
+// 파트마다 입력칸을 따로 저장(키 앞에 파트 번호). 예전 키(번호 없음)는 첫 파트에서만 이어서 보여 줌
+const partVal = (bag, i, key) => bag?.[`${i}:${key}`] ?? (i === 0 ? bag?.[key] : undefined);
+
+function activityHtml(a, j, st, i = 0) {
   if (a.type === "write") {
     return `<div class="act act-write">${a.prompts.map((q, n) => `
-      <label class="act-q" for="w-${j}-${n}">${esc(q)}</label>
-      <textarea id="w-${j}-${n}" data-w="${j}-${n}" rows="2" placeholder="내 생각을 써 보세요.">${esc(st.w?.[`${j}-${n}`] ?? "")}</textarea>`).join("")}</div>`;
+      <label class="act-q" for="w-${i}-${j}-${n}">${esc(q)}</label>
+      <textarea id="w-${i}-${j}-${n}" data-w="${i}:${j}-${n}" rows="2" placeholder="내 생각을 써 보세요.">${esc(partVal(st.w, i, `${j}-${n}`) ?? "")}</textarea>`).join("")}</div>`;
   }
   if (a.type === "quiz") {
-    const picked = st.q?.[j];
+    const picked = partVal(st.q, i, String(j));
     return `<fieldset class="act act-quiz"><legend class="act-q">${esc(a.q)}</legend>
-      ${a.options.map((o, n) => `<button type="button" class="quiz-opt${picked === n ? (n === a.answer ? " is-right" : " is-wrong") : ""}" data-q="${j}" data-o="${n}">${esc(o)}</button>`).join("")}
+      ${a.options.map((o, n) => `<button type="button" class="quiz-opt${picked === n ? (n === a.answer ? " is-right" : " is-wrong") : ""}" data-q="${i}:${j}" data-o="${n}">${esc(o)}</button>`).join("")}
       <p class="quiz-explain"${picked === undefined ? " hidden" : ""}>${picked === a.answer ? "정답이에요! " : picked === undefined ? "" : "다시 생각해 봐요. "}${picked === a.answer ? esc(a.explain || "") : ""}</p></fieldset>`;
   }
   if (a.type === "check") {
     return `<ul class="act act-check">${a.items.map((t, n) => `<li><label>
-      <input type="checkbox" data-c="${j}-${n}"${st.c?.[`${j}-${n}`] ? " checked" : ""}><span>${esc(t)}</span></label></li>`).join("")}</ul>`;
+      <input type="checkbox" data-c="${i}:${j}-${n}"${partVal(st.c, i, `${j}-${n}`) ? " checked" : ""}><span>${esc(t)}</span></label></li>`).join("")}</ul>`;
   }
   return "";
 }
@@ -669,7 +672,7 @@ function bindParts(unit, lesson, video, k) {
       const title = t ? (l.teacherTitle || l.title) : l.title;
       return u ? `<li><a class="part-link" href="${esc(u)}" target="_blank" rel="noopener">${icon.external}<span><b>${esc(title)}</b>${!t && l.channel ? `<small>${esc(l.channel)}</small>` : ""}</span></a></li>` : "";
     }).join("");
-    const acts = (p.activity ?? []).map((a, j) => activityHtml(a, j, st)).join("");
+    const acts = (p.activity ?? []).map((a, j) => activityHtml(a, j, st, i)).join("");
     root.querySelector(".part-panel").innerHTML = `
       <p class="part-kicker">파트 ${i + 1} · ${fmtTime(p.start)}~${fmtTime(p.end)}</p>
       <h2 class="part-title">${esc(p.title)}</h2>
