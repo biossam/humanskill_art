@@ -5,13 +5,6 @@
   },
   "courses": [
     {
-      "id": "gongmitalk",
-      "year": 2025,
-      "teacherOnly": true,
-      "title": "누구나 예술가가 될 수 있다",
-      "file": "data/courses/gongmitalk.json"
-    },
-    {
       "id": "anyang",
       "year": 2025,
       "title": "공공미술 작품 속 숨은 이야기 찾기!",
@@ -25,6 +18,13 @@
       "title": "어느 날 눈떠보니 예술가가 되었다",
       "tab": "어느 날 눈떠보니 예술가",
       "file": "data/courses/artist.json"
+    },
+    {
+      "id": "gongmitalk",
+      "year": 2025,
+      "teacherOnly": true,
+      "title": "누구나 예술가가 될 수 있다",
+      "file": "data/courses/gongmitalk.json"
     },
     {
       "id": "publicart",

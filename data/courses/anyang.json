@@ -15,7 +15,76 @@
         "title": "🧭 미술 작품 탐험 보고서 (공통 활동지)",
         "url": "files/anyang/report.pdf"
       }
-    ]
+    ],
+    "studentForm": {
+      "title": "미술 작품 탐험 보고서",
+      "intro": "공공미술 작품 속 숨은 이야기 찾기! 작품을 직접 보거나 영상으로 보고, 탐험 보고서를 채워 보세요.",
+      "fields": [
+        {
+          "id": "name",
+          "label": "탐험대원(이름)",
+          "type": "text",
+          "prefill": "name"
+        },
+        {
+          "id": "date",
+          "label": "탐험일",
+          "type": "date"
+        },
+        {
+          "id": "place",
+          "label": "탐험 장소",
+          "type": "text",
+          "placeholder": "예: 안양예술공원"
+        },
+        {
+          "id": "title",
+          "label": "작품명",
+          "type": "text",
+          "prefill": "lessonTitle"
+        },
+        {
+          "id": "artist",
+          "label": "작가",
+          "type": "text",
+          "help": "작가를 모르면 '미상'이라고 적어요."
+        },
+        {
+          "id": "first",
+          "label": "작품을 처음 봤을 때 어떤 느낌이나 생각이 들었나요?",
+          "type": "textarea"
+        },
+        {
+          "id": "material",
+          "label": "이 작품은 무엇으로 만들어졌나요?",
+          "type": "textarea",
+          "help": "만든 재료를 정확히 모른다면 추측 또는 상상해서 적어 보세요."
+        },
+        {
+          "id": "detail",
+          "label": "작품을 천천히 관찰한 후 색, 모양, 크기, 질감 등 작품을 자세히 소개해요.",
+          "type": "textarea"
+        },
+        {
+          "id": "theme",
+          "label": "작품의 주제(만든 의도)는 무엇인가요? 주변 풍경이랑 잘 어울리는 것 같나요?",
+          "type": "textarea",
+          "help": "아니면 다른 의견이 있나요? 자신의 생각을 자유롭게 적어 보세요."
+        },
+        {
+          "id": "sketch",
+          "label": "작품 스케치",
+          "type": "sketch",
+          "help": "필요하면 손가락이나 마우스로 그려 보세요."
+        },
+        {
+          "id": "experience",
+          "label": "작품과 함께 한 경험을 들려주세요.",
+          "type": "textarea",
+          "help": "작품을 만져 보았는지, 작품 안에 들어갔는지, 작품을 어떻게 이용했는지 등 자신의 경험과 그때의 생각과 느낌을 적어 보세요."
+        }
+      ]
+    }
   },
   "units": [
     {
