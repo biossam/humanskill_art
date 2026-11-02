@@ -42,7 +42,13 @@
             "내 쉼터는 어떤 재료와 모양으로 만들까?"
           ],
           "teacher": {
-            "worksheet": "files/anyang/1/worksheet.pdf"
+            "worksheet": "files/anyang/1/worksheet.pdf",
+            "extra": [
+              {
+                "label": "미술 작품 탐험 보고서",
+                "url": "files/anyang/report.pdf"
+              }
+            ]
           }
         },
         {
@@ -66,7 +72,13 @@
             "그것을 기억하는 기념비는 어떤 모습일까?"
           ],
           "teacher": {
-            "worksheet": "files/anyang/2/worksheet.pdf"
+            "worksheet": "files/anyang/2/worksheet.pdf",
+            "extra": [
+              {
+                "label": "미술 작품 탐험 보고서",
+                "url": "files/anyang/report.pdf"
+              }
+            ]
           }
         },
         {
@@ -90,7 +102,13 @@
             "우리 마을을 위해 나는 무엇을 할 수 있을까?"
           ],
           "teacher": {
-            "worksheet": "files/anyang/3/worksheet.pdf"
+            "worksheet": "files/anyang/3/worksheet.pdf",
+            "extra": [
+              {
+                "label": "미술 작품 탐험 보고서",
+                "url": "files/anyang/report.pdf"
+              }
+            ]
           }
         },
         {
@@ -114,7 +132,13 @@
             "그 미로는 어디에, 어떤 재료와 크기로 만들까?"
           ],
           "teacher": {
-            "worksheet": "files/anyang/4/worksheet.pdf"
+            "worksheet": "files/anyang/4/worksheet.pdf",
+            "extra": [
+              {
+                "label": "미술 작품 탐험 보고서",
+                "url": "files/anyang/report.pdf"
+              }
+            ]
           }
         },
         {
@@ -138,7 +162,13 @@
             "슬픔을 느끼는 사람을 위해 내가 할 수 있는 작은 실천은 무엇일까?"
           ],
           "teacher": {
-            "worksheet": "files/anyang/5/worksheet.pdf"
+            "worksheet": "files/anyang/5/worksheet.pdf",
+            "extra": [
+              {
+                "label": "미술 작품 탐험 보고서",
+                "url": "files/anyang/report.pdf"
+              }
+            ]
           }
         },
         {
@@ -162,7 +192,13 @@
             "지역 주민들이 좋아할 만한 물건이나 장소는 무엇일까?"
           ],
           "teacher": {
-            "worksheet": "files/anyang/6/worksheet.pdf"
+            "worksheet": "files/anyang/6/worksheet.pdf",
+            "extra": [
+              {
+                "label": "미술 작품 탐험 보고서",
+                "url": "files/anyang/report.pdf"
+              }
+            ]
           }
         }
       ]
