@@ -7,7 +7,8 @@
     "author": "장현주",
     "credits": [
       "수업 영상: 경기온라인학교 × 경기도공공미술교육연구회",
-      "활동지 속 작가 작품 예시 그림: APAP(안양공공예술프로젝트) 누리집, 사용 허락을 받아 실었습니다."
+      "활동지 속 작가 작품 예시 그림: APAP(안양공공예술프로젝트) 누리집, 사용 허락을 받아 실었습니다.",
+      "차시 배지: Google Gemini로 생성한 이미지"
     ],
     "teacherLinks": [
       {
@@ -24,6 +25,7 @@
         {
           "no": 1,
           "title": "리.볼.버",
+          "badge": "assets/img/badges/anyang/1.png",
           "topic": "우리 지역 쉼터 제안",
           "videos": [
             {
@@ -54,6 +56,7 @@
         {
           "no": 2,
           "title": "안양상자집-사라진(탑)에 대한 헌정",
+          "badge": "assets/img/badges/anyang/2.png",
           "topic": "사라진 것에 대한 기념비",
           "videos": [
             {
@@ -84,6 +87,7 @@
         {
           "no": 3,
           "title": "용의 꼬리",
+          "badge": "assets/img/badges/anyang/3.png",
           "topic": "마을을 지키는 상상의 '무엇' - 우리 마을 수호자",
           "videos": [
             {
@@ -114,6 +118,7 @@
         {
           "no": 4,
           "title": "거울 미로",
+          "badge": "assets/img/badges/anyang/4.png",
           "topic": "당신을 위한 특별한 미로",
           "videos": [
             {
@@ -144,6 +149,7 @@
         {
           "no": 5,
           "title": "물고기의 눈물이 호수로 떨어지다",
+          "badge": "assets/img/badges/anyang/5.png",
           "topic": "눈물은 STOP! 물고기에게 희망을!",
           "videos": [
             {
@@ -174,6 +180,7 @@
         {
           "no": 6,
           "title": "지상의 낙원",
+          "badge": "assets/img/badges/anyang/6.png",
           "topic": "우리 지역 옛지도를 이용해 무엇을 만들까?",
           "videos": [
             {
