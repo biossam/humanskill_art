@@ -12,6 +12,13 @@
       "file": "data/courses/gongmitalk.json"
     },
     {
+      "id": "anyang",
+      "year": 2025,
+      "title": "공공미술 작품 속 숨은 이야기 찾기!",
+      "tab": "숨은 이야기 찾기(1~6차시)",
+      "file": "data/courses/anyang.json"
+    },
+    {
       "id": "artist",
       "year": 2025,
       "grade": 6,
