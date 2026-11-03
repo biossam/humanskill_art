@@ -30,7 +30,7 @@
     {
       "id": "publicart",
       "year": 2026,
-      "grade": 3,
+      "grade": "3~4",
       "title": "지역 미술 여행(공공미술)",
       "tab": "지역 미술 여행(공공미술)",
       "file": "data/courses/publicart.json"
