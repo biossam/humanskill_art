@@ -23,6 +23,7 @@
     {
       "id": "gongmitalk",
       "year": 2025,
+      "grade": "5~6",
       "teacherOnly": true,
       "title": "누구나 예술가가 될 수 있다",
       "file": "data/courses/gongmitalk.json"
