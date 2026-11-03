@@ -7,6 +7,7 @@
     {
       "id": "anyang",
       "year": 2025,
+      "grade": "3~6",
       "title": "공공미술 작품 속 숨은 이야기 찾기!",
       "tab": "지역 미술 여행(안양편)",
       "file": "data/courses/anyang.json"
