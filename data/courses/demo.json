@@ -292,7 +292,7 @@
         "videos": [
           {
             "title": "3차시 수업 영상 (풍속화)",
-            "file": "files/oldpainting/3/video.mp4",
+            "youtubeId": "PuTMppt2yPU",
             "slide": 6
           }
         ]
@@ -317,7 +317,7 @@
         "videos": [
           {
             "title": "4차시 수업 영상 (인물화)",
-            "file": "files/oldpainting/4/video.mp4",
+            "youtubeId": "EArfbP1HoZg",
             "slide": 6
           }
         ]
@@ -342,7 +342,7 @@
         "videos": [
           {
             "title": "5차시 수업 영상 (동물화/식물화)",
-            "file": "files/oldpainting/5/video.mp4",
+            "youtubeId": "yjRbaF2K5Zs",
             "slide": 6
           }
         ]
@@ -367,7 +367,7 @@
         "videos": [
           {
             "title": "6차시 수업 영상 (기록화)",
-            "file": "files/oldpainting/6/video.mp4",
+            "youtubeId": "5nHUL6zQJvE",
             "slide": 6
           }
         ]
@@ -392,7 +392,7 @@
         "videos": [
           {
             "title": "7차시 수업 영상 (이전 생각, 지금 생각)",
-            "file": "files/oldpainting/7/video.mp4",
+            "youtubeId": "AFFN6CLqRFE",
             "slide": 6
           }
         ]

@@ -97,8 +97,7 @@
           "badge": "assets/img/badges/oldpainting/3.png",
           "videos": [
             {
-              "file": "files/oldpainting/3/video.mp4",
-              "thumb": "assets/img/thumbs/oldpainting/3.jpg",
+              "youtubeId": "PuTMppt2yPU",
               "title": "3차시 수업 영상 (풍속화)"
             }
           ],
@@ -136,8 +135,7 @@
           "badge": "assets/img/badges/oldpainting/4.png",
           "videos": [
             {
-              "file": "files/oldpainting/4/video.mp4",
-              "thumb": "assets/img/thumbs/oldpainting/4.jpg",
+              "youtubeId": "EArfbP1HoZg",
               "title": "4차시 수업 영상 (인물화)"
             }
           ],
@@ -175,8 +173,7 @@
           "badge": "assets/img/badges/oldpainting/5.png",
           "videos": [
             {
-              "file": "files/oldpainting/5/video.mp4",
-              "thumb": "assets/img/thumbs/oldpainting/5.jpg",
+              "youtubeId": "yjRbaF2K5Zs",
               "title": "5차시 수업 영상 (동물화/식물화)"
             }
           ],
@@ -214,8 +211,7 @@
           "badge": "assets/img/badges/oldpainting/6.png",
           "videos": [
             {
-              "file": "files/oldpainting/6/video.mp4",
-              "thumb": "assets/img/thumbs/oldpainting/6.jpg",
+              "youtubeId": "5nHUL6zQJvE",
               "title": "6차시 수업 영상 (기록화)"
             }
           ],
@@ -253,8 +249,7 @@
           "badge": "assets/img/badges/oldpainting/7.png",
           "videos": [
             {
-              "file": "files/oldpainting/7/video.mp4",
-              "thumb": "assets/img/thumbs/oldpainting/7.jpg",
+              "youtubeId": "AFFN6CLqRFE",
               "title": "7차시 수업 영상 (이전 생각, 지금 생각)"
             }
           ],
