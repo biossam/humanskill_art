@@ -67,6 +67,7 @@ a { color: inherit; }
 .header-inner { justify-content: flex-start; flex-wrap: wrap; row-gap: 0; }
 .view-label { margin-left: auto; white-space: nowrap; }
 .brand { white-space: nowrap; padding: 14px 0; }
+@media (max-width: 359px) { .brand { font-size: 1.1875rem; } }
 /* 교재 탭: 연구회 이름 아래. 글자를 조금 작게, 넘치면 다음 줄로 (잘리지 않게) */
 .tabs {
   order: 3; flex-basis: 100%; position: relative; display: flex; flex-wrap: wrap; gap: 0 16px; overflow: visible;
@@ -389,6 +390,26 @@ a.file .icon { color: var(--accent); }
   color: var(--muted); margin-right: 5px;
 }
 .tabs a[aria-current="page"] .tab-grade { color: var(--accent); }
+/* 학년 동그라미: 1 빨강 2 주황 3 노랑 4 초록 5 파랑 6 보라 */
+.grade-chips { display: inline-flex; gap: 2px; margin-right: 6px; vertical-align: 1px; }
+.grade-chip {
+  display: inline-grid; place-items: center; width: 1.25em; height: 1.25em; border-radius: 50%;
+  font-family: var(--font-display); font-weight: 700; font-size: 0.8125rem; line-height: 1;
+  color: #fff; background: var(--gc);
+}
+.grade-chip.g1 { --gc: #f0525a; }
+.grade-chip.g2 { --gc: #f5893a; }
+.grade-chip.g3 { --gc: #f2c230; color: #4a3a00; }
+.grade-chip.g4 { --gc: #3cb46e; }
+.grade-chip.g5 { --gc: #3a8ff2; }
+.grade-chip.g6 { --gc: #9a5ad6; }
+.tabs a:not([aria-current="page"]) .grade-chip { opacity: .85; }
+.group-chips .grade-chips { margin-right: 10px; vertical-align: 2px; }
+.grade-word { margin-left: 3px; font-size: 0.8125rem; font-weight: 700; color: inherit; opacity: .8; align-self: center; }
+.res-group-head h2 .grade-word { font-size: 0.9375rem; font-family: var(--font-body, inherit); margin-right: 4px; }
+.group-chips .grade-chip { font-size: 0.9375rem; }
+.res-group-head h2 .grade-chips { vertical-align: 0.15em; }
+.res-group-head h2 .grade-chip { font-size: 0.875rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* ─── 배지 모으기 (학생용 화면) ─── */
@@ -521,6 +542,27 @@ a.file .icon { color: var(--accent); }
 .notes-status { font-size: 0.875rem; color: var(--accent); }
 .notes-help { margin: var(--s2) 0 0; font-size: 0.875rem; color: var(--muted); }
 @media (max-width: 599px) { .notes-tools .btn-primary { width: 100%; justify-content: center; } }
+
+/* 공통 활동지 화면에서 채우기 (학생용) */
+.form-intro { margin: 0 0 var(--s4); color: var(--muted); line-height: 1.6; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4) var(--s5); }
+.form-field.is-wide { grid-column: 1 / -1; }
+.form-label { display: block; font-weight: 700; line-height: 1.5; }
+.form-help { display: block; font-size: 0.875rem; color: var(--muted); margin: 2px 0 var(--s2); }
+.form-label + .form-help { margin-top: 2px; }
+.form-field > .form-label:only-of-type { margin-bottom: var(--s2); }
+.student-form input {
+  width: 100%; min-height: 48px; padding: 0 var(--s3); box-sizing: border-box; margin-top: var(--s2);
+  font: inherit; font-size: 1.0625rem; color: var(--ink);
+  background: var(--surface, #fff); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.student-form textarea { margin-top: var(--s2); }
+.student-form input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.student-form label::before { content: none; }
+.sketch { display: block; width: 100%; max-width: 640px; height: auto; aspect-ratio: 900 / 560; margin-top: var(--s2); background: #fff; border: 1px solid var(--line); border-radius: var(--radius); touch-action: none; cursor: crosshair; }
+.sketch-tools { display: flex; gap: var(--s2); margin-top: var(--s2); }
+.sketch-tools button { min-height: 44px; padding: 0 var(--s4); font: inherit; font-size: 0.9375rem; color: var(--ink); background: var(--surface, #fff); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; }
+@media (max-width: 599px) { .form-grid { grid-template-columns: 1fr; } }
 
 /* 휴대폰: 탭을 옆으로 숨기지 않고 여러 줄로 모두 보이게 */
 @media (max-width: 599px) {
@@ -766,3 +808,45 @@ a.ri-head:focus-visible, .ri-btn:focus-visible { outline: 3px solid var(--accent
   .tabs { gap: 0 14px; padding: 2px 0 4px; }
   .tabs a { min-height: 34px; }
 }
+
+/* PPT 보기: 이전·다음 차시 넘기기 */
+.pdfv-head { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.pdfv-head .pdfv-title { flex: none; }
+.pdfv-group { font-size: 0.75rem; color: #aaa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pdfv-group:empty { display: none; }
+.pdfv-nav { font-weight: 700; border-color: #8ab; min-height: 40px; }
+.pdfv-nav:disabled { opacity: 0.35; cursor: default; }
+.pdfv-nav:disabled:hover { background: transparent; }
+.pdfv-dl { text-decoration: none; }
+@media (max-width: 720px) {
+  .pdfv-bar { flex-wrap: wrap; gap: 8px; padding: 8px 10px; }
+  .pdfv-head { order: -1; flex-basis: 100%; }
+  .pdfv-nav span, .pdfv-dl, [data-act="full"] { display: none; }
+  .pdfv-nav { padding: 8px 18px; }
+}
+/* 이전 · 몇 번째 · 다음을 왼쪽에 한 덩어리로 */
+.pdfv-bar > [data-act="prev"] { order: 0; }
+.pdfv-bar > .pdfv-count { order: 1; }
+.pdfv-bar > [data-act="next"] { order: 2; }
+.pdfv-bar > .pdfv-head { order: 3; margin-left: 8px; }
+.pdfv-bar > .pdfv-dl { order: 4; }
+.pdfv-bar > [data-act="full"] { order: 5; }
+.pdfv-bar > [data-act="close"] { order: 6; }
+@media (max-width: 720px) { .pdfv-bar > .pdfv-head { order: -1; margin-left: 0; } }
+
+/* 수업 시연 PPT 보기: PPT에 나오는 영상 바로 보기 */
+.pdfv-body { position: relative; flex: 1; display: flex; min-height: 0; }
+.pdfv-body .pdfv-frame { flex: 1; height: 100%; }
+.pdfv-vbtn { font-weight: 700; background: #3a9bfa; border-color: #3a9bfa; }
+.pdfv-vbtn:hover { background: #2a86e0; }
+.pdfv-vlist { position: absolute; top: 8px; right: 16px; z-index: 2; display: flex; flex-direction: column; min-width: 260px; max-width: min(420px, calc(100% - 32px));
+  max-height: calc(100% - 16px); overflow: auto; padding: 6px; background: #1b1b2b; border: 1px solid #444; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+.pdfv-vlist button { display: flex; align-items: baseline; gap: 10px; width: 100%; padding: 10px 12px; border: 0; border-radius: 8px; background: transparent; color: #fff; font: inherit; font-size: 0.9375rem; text-align: left; cursor: pointer; }
+.pdfv-vlist button:hover, .pdfv-vlist button:focus-visible { background: #2c2c44; outline: none; }
+.pdfv-vlist small { flex: none; min-width: 2.6em; color: #9cf; font-size: 0.8125rem; }
+.pdfv-player { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; background: #000; }
+.pdfv-pbar { display: flex; align-items: center; gap: 12px; padding: 8px 16px; }
+.pdfv-ptitle { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pdfv-pbox { flex: 1; min-height: 0; display: flex; }
+.pdfv-pbox iframe, .pdfv-pbox video { flex: 1; width: 100%; height: 100%; border: 0; background: #000; }
+.pdfv-player[hidden], .pdfv-vlist[hidden], .pdfv-vbtn[hidden] { display: none; }
