@@ -21,8 +21,7 @@
           "badge": "assets/img/badges/oldpainting/1.png",
           "videos": [
             {
-              "file": "files/oldpainting/1/video.mp4",
-              "thumb": "assets/img/thumbs/oldpainting/1.jpg",
+              "youtubeId": "l-yNpRM1hjE",
               "title": "1차시 수업 영상 (산수화)"
             }
           ],
@@ -60,8 +59,7 @@
           "badge": "assets/img/badges/oldpainting/2.png",
           "videos": [
             {
-              "file": "files/oldpainting/2/video.mp4",
-              "thumb": "assets/img/thumbs/oldpainting/2.jpg",
+              "youtubeId": "lhJsjP8ZnrY",
               "title": "2차시 수업 영상 (민화)"
             }
           ],

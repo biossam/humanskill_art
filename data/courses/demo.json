@@ -242,7 +242,7 @@
         "videos": [
           {
             "title": "1차시 수업 영상 (산수화)",
-            "file": "files/oldpainting/1/video.mp4",
+            "youtubeId": "l-yNpRM1hjE",
             "slide": 6
           }
         ]
@@ -267,7 +267,7 @@
         "videos": [
           {
             "title": "2차시 수업 영상 (민화)",
-            "file": "files/oldpainting/2/video.mp4",
+            "youtubeId": "lhJsjP8ZnrY",
             "slide": 6
           }
         ]
